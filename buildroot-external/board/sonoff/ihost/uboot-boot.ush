@@ -38,7 +38,7 @@ fi
 fileenv mmc ${devnum}:${boot_partnum} ${ramdisk_addr_r} cmdline.txt cmdline
 
 # Load device tree
-setenv fdtfile rv1126.dtb
+setenv fdtfile rv1126-edgeble-neu2-io.dtb
 echo "Loading standard device tree ${fdtfile}"
 fatload mmc ${devnum}:${boot_partnum} ${fdt_addr_r} ${fdtfile}
 fdt addr ${fdt_addr_r}
@@ -65,7 +65,7 @@ for BOOT_SLOT in "${BOOT_ORDER}"; do
       setexpr BOOT_A_LEFT ${BOOT_A_LEFT} - 1
       echo "Trying to boot slot A, ${BOOT_A_LEFT} attempts remaining. Loading kernel ..."
       part number mmc ${devnum} hassos-kernel0 kernel_partnum
-      if load mmc ${devnum}:${kernel_partnum} ${kernel_addr_r} Image; then
+      if load mmc ${devnum}:${kernel_partnum} ${kernel_addr_r} zImage; then
           setenv bootargs "${bootargs_hassos} ${bootargs_a} rauc.slot=A ${cmdline}"
       fi
     fi
@@ -74,7 +74,7 @@ for BOOT_SLOT in "${BOOT_ORDER}"; do
       setexpr BOOT_B_LEFT ${BOOT_B_LEFT} - 1
       echo "Trying to boot slot B, ${BOOT_B_LEFT} attempts remaining. Loading kernel ..."
       part number mmc ${devnum} hassos-kernel1 kernel_partnum
-      if load mmc ${devnum}:${kernel_partnum} ${kernel_addr_r} Image; then
+      if load mmc ${devnum}:${kernel_partnum} ${kernel_addr_r} zImage; then
           setenv bootargs "${bootargs_hassos} ${bootargs_b} rauc.slot=B ${cmdline}"
       fi
     fi
@@ -92,7 +92,7 @@ else
 fi
 
 echo "Starting kernel"
-booti ${kernel_addr_r} - ${fdt_addr_r}
+bootz ${kernel_addr_r} - ${fdt_addr_r}
 
 echo "Boot failed, resetting..."
 reset

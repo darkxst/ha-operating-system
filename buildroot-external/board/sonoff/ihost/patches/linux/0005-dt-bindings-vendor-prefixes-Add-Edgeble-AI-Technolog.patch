@@ -1,0 +1,33 @@
+From cb84cc8da78abfb0a846a7028f89155dd037d644 Mon Sep 17 00:00:00 2001
+From: Jagan Teki <jagan@edgeble.ai>
+Date: Tue, 29 Nov 2022 13:24:21 +0530
+Subject: [PATCH] dt-bindings: vendor-prefixes: Add Edgeble AI Technologies
+ Pvt. Ltd.
+
+Edgeble AI is an Artificial Intelligence company with a focus on
+deploying Neural Acceleration principles at the Edge.
+
+Add vendor prefix for it.
+
+Acked-by: Rob Herring <robh@kernel.org>
+Signed-off-by: Jagan Teki <jagan@edgeble.ai>
+---
+ Documentation/devicetree/bindings/vendor-prefixes.yaml | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/Documentation/devicetree/bindings/vendor-prefixes.yaml b/Documentation/devicetree/bindings/vendor-prefixes.yaml
+index 6e323a380..0cbb2461a 100644
+--- a/Documentation/devicetree/bindings/vendor-prefixes.yaml
++++ b/Documentation/devicetree/bindings/vendor-prefixes.yaml
+@@ -368,6 +368,8 @@ patternProperties:
+     description: EBV Elektronik
+   "^eckelmann,.*":
+     description: Eckelmann AG
++  "^edgeble,.*":
++    description: Edgeble AI Technologies Pvt. Ltd.
+   "^edimax,.*":
+     description: EDIMAX Technology Co., Ltd
+   "^edt,.*":
+-- 
+2.39.2
+

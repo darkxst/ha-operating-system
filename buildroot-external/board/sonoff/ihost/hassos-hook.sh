@@ -7,19 +7,19 @@ function hassos_pre_image() {
 
     cp -t "${BOOT_DATA}" \
         "${BINARIES_DIR}/boot.scr" \
-        "${BINARIES_DIR}/rv1126.dtb" 
+        "${BINARIES_DIR}/rv1126-edgeble-neu2-io.dtb"
 
     mkdir -p "${BOOT_DATA}/overlays"
-    cp "${BINARIES_DIR}"/*.dtbo "${BOOT_DATA}/overlays/"
+    #cp "${BINARIES_DIR}"/*.dtbo "${BOOT_DATA}/overlays/"
     cp "${BOARD_DIR}/boot-env.txt" "${BOOT_DATA}/haos-config.txt"
+    cp "${BOARD_DIR}/cmdline.txt" "${BOOT_DATA}/cmdline.txt"
 
-    echo "console=tty1" > "${BOOT_DATA}/cmdline.txt"
 
     # SPL
     create_spl_image
 
     dd if="${BINARIES_DIR}/idbloader.img" of="${SPL_IMG}" conv=notrunc bs=512 seek=64
-    dd if="${BINARIES_DIR}/u-boot-dtb.img" of="${SPL_IMG}" conv=notrunc bs=512 seek=8192
+    dd if="${BINARIES_DIR}/u-boot-dtb.img" of="${SPL_IMG}" conv=notrunc bs=512 seek=16384
 }
 
 

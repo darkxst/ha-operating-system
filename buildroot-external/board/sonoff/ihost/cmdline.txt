@@ -1,0 +1,1 @@
+user_debug=31 earlycon=uart8250,mmio32,0xff570000 console=ttyS2

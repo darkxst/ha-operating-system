@@ -1,0 +1,212 @@
+From ad202342de2f6f2a5233ab7846da02661cab67dc Mon Sep 17 00:00:00 2001
+From: Alex Bee <knaerzche@gmail.com>
+Date: Tue, 18 Jul 2023 16:57:11 +0200
+Subject: [PATCH] rockchip: Support OP-TEE for ARM in FIT images created by
+ binman
+
+CONFIG_SPL_OPTEE_IMAGE option is used during DRAM size detection for
+Rockchip ARM platform to indicate that an OP-TEE binary was already loaded
+and a Trusted Execution Environment (TEE) is available in order to
+block/reserve a memory-region for it.
+
+This adds a bunch of new `#if's` to u-boot-rockchip.dtsi to include the
+OP-TEE binary in the FIT image for ARM SOCs if CONFIG_SPL_OPTEE_IMAGE is
+selected.
+That makes it a little harder to read, but I opted for that, because all
+the duplicates in an extra ARM-OP-TEE-specfic .dtsi would be the greater
+evil, IMHO. Besides it's more likley being "forgotten" to sync when changes
+in u-boot-rockchip.dtsi are made.
+
+The no longer required rockchip-optee.dtsi and it's inclusions are dropped.
+
+The hardcoded load address is common across all OP-TEE implemenations for
+Rockchip (vendor and upstream).
+
+The OP-TEE-binary is non-optional if CONFIG_SPL_OPTEE_IMAGE is selected and
+there will be an error if the file does not exist and/or `TEE=` build
+option is missing.
+
+Signed-off-by: Alex Bee <knaerzche@gmail.com>
+Reviewed-by: Kever Yang <kever.yang@rock-chips.com>
+---
+ arch/arm/dts/rk3288-u-boot.dtsi   |  1 -
+ arch/arm/dts/rockchip-optee.dtsi  | 64 -------------------------------
+ arch/arm/dts/rockchip-u-boot.dtsi | 38 ++++++++++++++++--
+ 3 files changed, 35 insertions(+), 68 deletions(-)
+ delete mode 100644 arch/arm/dts/rockchip-optee.dtsi
+
+diff --git a/arch/arm/dts/rk3288-u-boot.dtsi b/arch/arm/dts/rk3288-u-boot.dtsi
+index 1920698884..c4c5a2d225 100644
+--- a/arch/arm/dts/rk3288-u-boot.dtsi
++++ b/arch/arm/dts/rk3288-u-boot.dtsi
+@@ -4,7 +4,6 @@
+  */
+ 
+ #include "rockchip-u-boot.dtsi"
+-#include "rockchip-optee.dtsi"
+ 
+ / {
+ 	aliases {
+diff --git a/arch/arm/dts/rockchip-optee.dtsi b/arch/arm/dts/rockchip-optee.dtsi
+deleted file mode 100644
+index d84c10cf43..0000000000
+--- a/arch/arm/dts/rockchip-optee.dtsi
++++ /dev/null
+@@ -1,64 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0+
+-/*
+- * Copyright 2020 Google LLC
+- */
+-
+-#include <config.h>
+-
+-#if defined(CONFIG_HAS_ROM) && defined(CONFIG_FIT)
+-&binman {
+-	itb {
+-		filename = "u-boot.itb";
+-		fit {
+-			fit,external-offset = <CONFIG_FIT_EXTERNAL_OFFSET>;
+-			description = "FIT image with OP-TEE support";
+-			#address-cells = <1>;
+-
+-			images {
+-				uboot {
+-					description = "U-Boot";
+-					type = "standalone";
+-					os = "U-Boot";
+-					arch = "arm";
+-					compression = "none";
+-					load = <CONFIG_TEXT_BASE>;
+-
+-					u-boot-nodtb {
+-					};
+-				};
+-				optee {
+-					description = "OP-TEE";
+-					type = "firmware";
+-					arch = "arm";
+-					os = "tee";
+-					compression = "none";
+-					load = <(CFG_SYS_SDRAM_BASE + 0x8400000)>;
+-					entry = <(CFG_SYS_SDRAM_BASE + 0x8400000)>;
+-
+-					blob-ext {
+-						filename = "tee.bin";
+-					};
+-				};
+-				fdt {
+-					description = CONFIG_SYS_BOARD;
+-					type = "flat_dt";
+-					compression = "none";
+-
+-					u-boot-dtb {
+-					};
+-				};
+-			};
+-
+-			configurations {
+-				default = "conf";
+-				conf {
+-					description = CONFIG_SYS_BOARD;
+-					firmware = "optee";
+-					loadables = "uboot";
+-					fdt = "fdt";
+-				};
+-			};
+-		};
+-	};
+-};
+-#endif
+diff --git a/arch/arm/dts/rockchip-u-boot.dtsi b/arch/arm/dts/rockchip-u-boot.dtsi
+index 2878b80926..be2658e8ef 100644
+--- a/arch/arm/dts/rockchip-u-boot.dtsi
++++ b/arch/arm/dts/rockchip-u-boot.dtsi
+@@ -33,9 +33,13 @@
+ 			};
+ 		};
+ 
+-#if defined(CONFIG_SPL_FIT) && defined(CONFIG_ARM64)
++#if defined(CONFIG_SPL_FIT) && (defined(CONFIG_ARM64) || defined(CONFIG_SPL_OPTEE_IMAGE))
+ 		fit: fit {
++#ifdef CONFIG_ARM64
+ 			description = "FIT image for U-Boot with bl31 (TF-A)";
++#else
++			description = "FIT image with OP-TEE";
++#endif
+ 			#address-cells = <1>;
+ 			fit,fdt-list = "of-list";
+ 			filename = "u-boot.itb";
+@@ -44,10 +48,14 @@
+ 			offset = <CONFIG_SPL_PAD_TO>;
+ 			images {
+ 				u-boot {
+-					description = "U-Boot (64-bit)";
++					description = "U-Boot";
+ 					type = "standalone";
+ 					os = "U-Boot";
++#ifdef CONFIG_ARM64
+ 					arch = "arm64";
++#else
++					arch = "arm";
++#endif
+ 					compression = "none";
+ 					load = <CONFIG_TEXT_BASE>;
+ 					entry = <CONFIG_TEXT_BASE>;
+@@ -60,6 +68,7 @@
+ #endif
+ 				};
+ 
++#ifdef CONFIG_ARM64
+ 				@atf-SEQ {
+ 					fit,operation = "split-elf";
+ 					description = "ARM Trusted Firmware";
+@@ -99,6 +108,25 @@
+ 					};
+ #endif
+ 				};
++#else
++				op-tee {
++					description = "OP-TEE";
++					type = "tee";
++					arch = "arm";
++					os = "tee";
++					compression = "none";
++					load = <(CFG_SYS_SDRAM_BASE + 0x8400000)>;
++					entry = <(CFG_SYS_SDRAM_BASE + 0x8400000)>;
++
++					tee-os {
++					};
++#ifdef CONFIG_SPL_FIT_SIGNATURE
++					hash {
++						algo = "sha256";
++					};
++#endif
++				};
++#endif
+ 
+ 				@fdt-SEQ {
+ 					description = "fdt-NAME";
+@@ -117,7 +145,11 @@
+ 				@config-SEQ {
+ 					description = "NAME.dtb";
+ 					fdt = "fdt-SEQ";
++#ifdef CONFIG_ARM64
+ 					fit,firmware = "atf-1", "u-boot";
++#else
++					fit,firmware = "op-tee", "u-boot";
++#endif
+ 					fit,loadables;
+ 				};
+ 			};
+@@ -150,7 +182,7 @@
+ 			};
+ 		};
+ 
+-#ifdef CONFIG_ARM64
++#if defined(CONFIG_ARM64) || defined(CONFIG_SPL_OPTEE_IMAGE)
+ 		fit {
+ 			type = "blob";
+ 			filename = "u-boot.itb";
+-- 
+2.39.2
+

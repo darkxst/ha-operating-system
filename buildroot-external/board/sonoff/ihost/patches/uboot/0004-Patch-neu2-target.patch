@@ -1,0 +1,24 @@
+From cd56ec4e83a086669b00b0f3749167545d3c6503 Mon Sep 17 00:00:00 2001
+From: Tim Lunn <tim@feathertop.org>
+Date: Tue, 12 Sep 2023 11:17:09 +1000
+Subject: [PATCH] Patch neu2 target
+
+---
+ board/edgeble/neural-compute-module-2/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/board/edgeble/neural-compute-module-2/Kconfig b/board/edgeble/neural-compute-module-2/Kconfig
+index 21faf4ad26..34153d8653 100644
+--- a/board/edgeble/neural-compute-module-2/Kconfig
++++ b/board/edgeble/neural-compute-module-2/Kconfig
+@@ -11,6 +11,6 @@ config SYS_CONFIG_NAME
+ 
+ config BOARD_SPECIFIC_OPTIONS # dummy
+ 	def_bool y
+-	select RAM_ROCKCHIP_LPDDR4
++	select RAM_ROCKCHIP_DDR4
+ 
+ endif
+-- 
+2.39.2
+

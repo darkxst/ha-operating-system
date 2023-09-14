@@ -10,12 +10,16 @@ dockerd -s vfs &> /dev/null &
 # Setup local group, if not existing
 if [ "${BUILDER_GID:-0}" -ne 0 ] && ! getent group "${BUILDER_GID:-0}"; then
   groupadd -g "${BUILDER_GID}" builder
+
+
+  # Setup local user
+  if [ "${BUILDER_UID:-0}" -ne 0 ]; then
+    useradd -m -u "${BUILDER_UID}" -g "${BUILDER_GID}" -G docker,sudo builder
+    echo "builder ALL=(ALL:ALL) NOPASSWD: ALL" >> /etc/sudoers
+  fi
 fi
 
-# Setup local user
 if [ "${BUILDER_UID:-0}" -ne 0 ]; then
-  useradd -m -u "${BUILDER_UID}" -g "${BUILDER_GID}" -G docker,sudo builder
-  echo "builder ALL=(ALL:ALL) NOPASSWD: ALL" >> /etc/sudoers
   # Make sure cache is accessible by builder
   chown "${BUILDER_UID}:${BUILDER_GID}" /cache
   # Make sure output is accessible by builder (if anonymous volume is used)

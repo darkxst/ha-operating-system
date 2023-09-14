@@ -1,0 +1,28 @@
+// Mostly emulate enter.sh
+// - Adjust UID/GID for your user as required
+// - Cache dir "/tmp/haos-cache" must exist with correct permissions, or conatiner will fail to start
+{
+	"name": "HAOS Builder",
+	//"image": "ghcr.io/home-assistant/haos-builder:latest",
+	"dockerFile": "../Dockerfile",
+	"runArgs": ["--privileged"],
+
+    "containerEnv": {
+		"BUILDER_UID": "1000",
+		"BUILDER_GID": "1000",
+    },
+
+	"mounts": [
+		"source=${localEnv:HOME}/haos-cache,target=/cache,type=bind,consistency=cached",
+		"source=${localWorkspaceFolder},target=/build,type=bind,consistency=cached"
+	],
+
+	"postStartCommand": "/usr/sbin/entry.sh 'bash'",
+	
+
+
+	//Can't implement host setup
+	// - buildroot submodule init
+	// - losetup
+
+}

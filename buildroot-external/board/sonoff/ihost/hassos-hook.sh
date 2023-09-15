@@ -19,7 +19,7 @@ function hassos_pre_image() {
     create_spl_image
 
     dd if="${BINARIES_DIR}/idbloader.img" of="${SPL_IMG}" conv=notrunc bs=512 seek=64
-    dd if="${BINARIES_DIR}/u-boot-dtb.img" of="${SPL_IMG}" conv=notrunc bs=512 seek=16384
+    dd if="${BINARIES_DIR}/u-boot.itb" of="${SPL_IMG}" conv=notrunc bs=512 seek=16384
 }
 
 

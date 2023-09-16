@@ -1,53 +1,52 @@
-From 3de95c93e5aa7b86deb04125988fcb2079e65088 Mon Sep 17 00:00:00 2001
-From: Jagan Teki <jagan@edgeble.ai>
-Date: Tue, 29 Nov 2022 13:24:23 +0530
-Subject: [PATCH] ARM: dts: rockchip: rv1126: Add Edgeble Neural Compute Module
- 2(Neu2)
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+From f16b60de98fab7267dd5db1f9f12c4d7137fead4 Mon Sep 17 00:00:00 2001
+From: Tim Lunn <tim@feathertop.org>
+Date: Sat, 16 Sep 2023 20:51:35 +1000
+Subject: [PATCH] Copy and merge edgeble config into rv1126-sonoff-ihost.dts
 
-Neural Compute Module 2(Neu2) is a 96boards SoM-CB compute module
-based on Rockchip RV1126 from Edgeble AI.
-
-General features:
-- Rockchip RV1126
-- 2/4GB LPDDR4
-- 8/16/32GB eMMC
-- 2x MIPI CSI2 FPC connector
-- Fn-link 8223A-SR WiFi/BT
-
-Industrial grade (-40 °C to +85 °C) version of the same class of module
-called Neu2k powered with Rockchip RV1126K.
-
-Neu2 needs to mount on top of Edgeble IO boards for creating complete
-platform solutions.
-
-Add support for it.
-
-Signed-off-by: Jagan Teki <jagan@edgeble.ai>
 ---
- arch/arm/boot/dts/rv1126-edgeble-neu2.dtsi | 338 +++++++++++++++++++++
- 1 file changed, 338 insertions(+)
- create mode 100644 arch/arm/boot/dts/rv1126-edgeble-neu2.dtsi
+ arch/arm/boot/dts/Makefile                |   1 +
+ arch/arm/boot/dts/rv1126-sonoff-ihost.dts | 382 ++++++++++++++++++++++
+ 2 files changed, 383 insertions(+)
+ create mode 100644 arch/arm/boot/dts/rv1126-sonoff-ihost.dts
 
-diff --git a/arch/arm/boot/dts/rv1126-edgeble-neu2.dtsi b/arch/arm/boot/dts/rv1126-edgeble-neu2.dtsi
+diff --git a/arch/arm/boot/dts/Makefile b/arch/arm/boot/dts/Makefile
+index c78b44386..95f57b1bb 100644
+--- a/arch/arm/boot/dts/Makefile
++++ b/arch/arm/boot/dts/Makefile
+@@ -1125,6 +1125,7 @@ dtb-$(CONFIG_ARCH_ROCKCHIP) += \
+ 	rv1108-elgin-r1.dtb \
+ 	rv1108-evb.dtb \
+ 	rv1126-edgeble-neu2-io.dtb \
++	rv1126-sonoff-ihost.dtb \
+ 	rk3036-evb.dtb \
+ 	rk3036-kylin.dtb \
+ 	rk3066a-bqcurie2.dtb \
+diff --git a/arch/arm/boot/dts/rv1126-sonoff-ihost.dts b/arch/arm/boot/dts/rv1126-sonoff-ihost.dts
 new file mode 100644
-index 000000000..7db3f8bb5
+index 000000000..35df6e1ec
 --- /dev/null
-+++ b/arch/arm/boot/dts/rv1126-edgeble-neu2.dtsi
-@@ -0,0 +1,338 @@
++++ b/arch/arm/boot/dts/rv1126-sonoff-ihost.dts
+@@ -0,0 +1,382 @@
 +// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
 +/*
 + * Copyright (c) 2020 Rockchip Electronics Co., Ltd.
 + * Copyright (c) 2022 Edgeble AI Technologies Pvt. Ltd.
 + */
 +
++/dts-v1/;
++#include "rv1126.dtsi"
++
 +/ {
-+	compatible = "edgeble,neural-compute-module-2", "rockchip,rv1126";
++	model = "Sonoff iHost";
++	compatible = "sonoff,ihost", "rockchip,rv1126";
 +
 +	aliases {
 +		mmc0 = &emmc;
++		serial2 = &uart2;
++	};
++
++	chosen {
++		stdout-path = "serial2:1500000n8";
 +	};
 +
 +	vcc5v0_sys: regulator-vcc5v0-sys {
@@ -57,20 +56,6 @@ index 000000000..7db3f8bb5
 +		regulator-boot-on;
 +		regulator-min-microvolt = <5000000>;
 +		regulator-max-microvolt = <5000000>;
-+	};
-+
-+	vccio_flash: regulator-vccio-flash {
-+		compatible = "regulator-fixed";
-+		enable-active-high;
-+		gpio = <&gpio0 RK_PB3 GPIO_ACTIVE_HIGH>;
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&flash_vol_sel>;
-+		regulator-name = "vccio_flash";
-+		regulator-always-on;
-+		regulator-boot-on;
-+		regulator-min-microvolt = <1800000>;
-+		regulator-max-microvolt = <1800000>;
-+		vin-supply = <&vcc_3v3>;
 +	};
 +
 +	sdio_pwrseq: pwrseq-sdio {
@@ -89,12 +74,14 @@ index 000000000..7db3f8bb5
 +
 +&emmc {
 +	bus-width = <8>;
++	cap-mmc-highspeed;
++	mmc-hs200-1_8v;
 +	non-removable;
 +	pinctrl-names = "default";
 +	pinctrl-0 = <&emmc_bus8 &emmc_cmd &emmc_clk &emmc_rstnout>;
 +	rockchip,default-sample-phase = <90>;
 +	vmmc-supply = <&vcc_3v3>;
-+	vqmmc-supply = <&vccio_flash>;
++	vqmmc-supply = <&vcc_1v8>;
 +	status = "okay";
 +};
 +
@@ -235,6 +222,7 @@ index 000000000..7db3f8bb5
 +
 +			vcc_dovdd: LDO_REG5 {
 +				regulator-name = "vcc_dovdd";
++				regulator-always-on;
 +				regulator-boot-on;
 +				regulator-min-microvolt = <1800000>;
 +				regulator-max-microvolt = <1800000>;
@@ -295,17 +283,44 @@ index 000000000..7db3f8bb5
 +		};
 +	};
 +};
++&gmac {
++	assigned-clocks = <&cru CLK_GMAC_SRC>, <&cru CLK_GMAC_TX_RX>,
++			  <&cru CLK_GMAC_ETHERNET_OUT>;
++	assigned-clock-parents = <&cru CLK_GMAC_SRC_M1>, <&cru RGMII_MODE_CLK>;
++	assigned-clock-rates = <125000000>, <0>, <25000000>;
++	clock_in_out = "input";
++	phy-handle = <&phy>;
++	phy-mode = "rgmii";
++	phy-supply = <&vcc_3v3>;
++	pinctrl-names = "default";
++	pinctrl-0 = <&rgmiim1_pins &clk_out_ethernetm1_pins>;
++	tx_delay = <0x2a>;
++	rx_delay = <0x1a>;
++	status = "okay";
++};
++
++&mdio {
++	phy: ethernet-phy@0 {
++		compatible = "ethernet-phy-id001c.c916",
++			     "ethernet-phy-ieee802.3-c22";
++		reg = <0x0>;
++		pinctrl-names = "default";
++		pinctrl-0 = <&eth_phy_rst>;
++		reset-assert-us = <20000>;
++		reset-deassert-us = <100000>;
++		reset-gpios = <&gpio0 RK_PB6 GPIO_ACTIVE_LOW>;
++	};
++};
 +
 +&pinctrl {
++	ethernet {
++		eth_phy_rst: eth-phy-rst {
++			rockchip,pins = <0 RK_PB6 RK_FUNC_GPIO &pcfg_pull_down>;
++		};
++	};
 +	bt {
 +		bt_enable: bt-enable {
 +			rockchip,pins = <3 RK_PA5 RK_FUNC_GPIO &pcfg_pull_none>;
-+		};
-+	};
-+
-+	flash {
-+		flash_vol_sel: flash-vol-sel {
-+			rockchip,pins = <0 RK_PB3 RK_FUNC_GPIO &pcfg_pull_none>;
 +		};
 +	};
 +
@@ -359,6 +374,21 @@ index 000000000..7db3f8bb5
 +	#size-cells = <0>;
 +};
 +
++&sdmmc {
++	bus-width = <4>;
++	cap-mmc-highspeed;
++	cap-sd-highspeed;
++	card-detect-delay = <200>;
++	pinctrl-names = "default";
++	pinctrl-0 = <&sdmmc0_clk &sdmmc0_cmd &sdmmc0_bus4 &sdmmc0_det>;
++	rockchip,default-sample-phase = <90>;
++	sd-uhs-sdr12;
++	sd-uhs-sdr25;
++	sd-uhs-sdr104;
++	vqmmc-supply = <&vccio_sd>;
++	status = "okay";
++};
++
 +&uart0 {
 +	pinctrl-names = "default";
 +	pinctrl-0 = <&uart0_xfer &uart0_ctsn &uart0_rtsn>;
@@ -374,6 +404,10 @@ index 000000000..7db3f8bb5
 +		vddxo-supply = <&vcc3v3_sys>;
 +		vddio-supply = <&vcc_1v8>;
 +	};
++};
++
++&uart2 {
++	status = "okay";
 +};
 -- 
 2.40.1

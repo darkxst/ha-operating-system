@@ -1,4 +1,4 @@
-From cb84cc8da78abfb0a846a7028f89155dd037d644 Mon Sep 17 00:00:00 2001
+From bf8736c5b36f60a192fa5ceb09efb9a2954cd675 Mon Sep 17 00:00:00 2001
 From: Jagan Teki <jagan@edgeble.ai>
 Date: Tue, 29 Nov 2022 13:24:21 +0530
 Subject: [PATCH] dt-bindings: vendor-prefixes: Add Edgeble AI Technologies
@@ -29,5 +29,5 @@ index 6e323a380..0cbb2461a 100644
      description: EDIMAX Technology Co., Ltd
    "^edt,.*":
 -- 
-2.39.2
+2.40.1
 

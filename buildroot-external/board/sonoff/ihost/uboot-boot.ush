@@ -37,7 +37,7 @@ fi
 fileenv mmc ${devnum}:${boot_partnum} ${ramdisk_addr_r} cmdline.txt cmdline
 
 # Load device tree
-setenv fdtfile rv1126-edgeble-neu2-io.dtb
+setenv fdtfile rv1126-sonoff-ihost.dtb
 echo "Loading standard device tree ${fdtfile}"
 fatload mmc ${devnum}:${boot_partnum} ${fdt_addr_r} ${fdtfile}
 fdt addr ${fdt_addr_r}

@@ -1,4 +1,4 @@
-From d4c5580be71902ec8e49ebaf506a43c45258d862 Mon Sep 17 00:00:00 2001
+From 6669740b0ef95a65a9f72b91bf24bee75a376544 Mon Sep 17 00:00:00 2001
 From: Anand Moon <anand@edgeble.ai>
 Date: Wed, 11 Jan 2023 17:24:32 +0000
 Subject: [PATCH] ARM: dts: rockchip: rv1126: Add ethernet rgmiim1 pin-control
@@ -73,5 +73,5 @@ index 4bc419cc1..b77021772 100644
  		/omit-if-no-ref/
  		sdmmc0_bus4: sdmmc0-bus4 {
 -- 
-2.39.2
+2.40.1
 

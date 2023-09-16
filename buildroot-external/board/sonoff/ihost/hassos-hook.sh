@@ -7,7 +7,7 @@ function hassos_pre_image() {
 
     cp -t "${BOOT_DATA}" \
         "${BINARIES_DIR}/boot.scr" \
-        "${BINARIES_DIR}/rv1126-edgeble-neu2-io.dtb"
+        "${BINARIES_DIR}/rv1126-sonoff-ihost.dtb"
 
     mkdir -p "${BOOT_DATA}/overlays"
     #cp "${BINARIES_DIR}"/*.dtbo "${BOOT_DATA}/overlays/"

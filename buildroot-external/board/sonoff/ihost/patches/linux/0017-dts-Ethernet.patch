@@ -1,0 +1,142 @@
+From 1a5ac9608fbb60f11792f167c686b87829cbb383 Mon Sep 17 00:00:00 2001
+From: Tim Lunn <tim@feathertop.org>
+Date: Sat, 16 Sep 2023 21:47:20 +1000
+Subject: [PATCH] dts: Ethernet
+
+---
+ arch/arm/boot/dts/rv1126-pinctrl.dtsi     | 52 +++++++++++++++++++++++
+ arch/arm/boot/dts/rv1126-sonoff-ihost.dts | 31 +++++++-------
+ 2 files changed, 67 insertions(+), 16 deletions(-)
+
+diff --git a/arch/arm/boot/dts/rv1126-pinctrl.dtsi b/arch/arm/boot/dts/rv1126-pinctrl.dtsi
+index b77021772..fd9e94e61 100644
+--- a/arch/arm/boot/dts/rv1126-pinctrl.dtsi
++++ b/arch/arm/boot/dts/rv1126-pinctrl.dtsi
+@@ -102,6 +102,58 @@ rgmiim1_pins: rgmiim1-pins {
+ 				/* rgmii_txen_m1 */
+ 				<2 RK_PC6 2 &pcfg_pull_none_drv_level_3>;
+ 		};
++		/omit-if-no-ref/
++		rgmiim1_miim: rgmiim1-miim {
++			rockchip,pins =
++				/* rgmii_mdc_m1 */
++				<2 RK_PC2 2 &pcfg_pull_none>,
++				/* rgmii_mdio_m1 */
++				<2 RK_PC1 2 &pcfg_pull_none>;
++		};
++		/omit-if-no-ref/
++		rgmiim1_rxer: rgmiim1-rxer {
++			rockchip,pins =
++				/* rgmii_rxer_m1 */
++				<2 RK_PC0 2 &pcfg_pull_none>;
++		};
++		/omit-if-no-ref/
++		rgmiim1_bus2: rgmiim1-bus2 {
++			rockchip,pins =
++				/* rgmii_rxd0_m1 */
++				<2 RK_PB5 2 &pcfg_pull_none>,
++				/* rgmii_rxd1_m1 */
++				<2 RK_PB6 2 &pcfg_pull_none>,
++				/* rgmii_rxdv_m1 */
++				<2 RK_PB4 2 &pcfg_pull_none>,
++				/* rgmii_txd0_m1 */
++				<2 RK_PC3 2 &pcfg_pull_none_drv_level_3>,
++				/* rgmii_txd1_m1 */
++				<2 RK_PC4 2 &pcfg_pull_none_drv_level_3>,
++				/* rgmii_txen_m1 */
++				<2 RK_PC6 2 &pcfg_pull_none_drv_level_3>;
++		};
++		/omit-if-no-ref/
++		rgmiim1_bus4: rgmiim1-bus4 {
++			rockchip,pins =
++				/* rgmii_rxclk_m1 */
++				<2 RK_PD3 2 &pcfg_pull_none>,
++				/* rgmii_rxd2_m1 */
++				<2 RK_PC7 2 &pcfg_pull_none>,
++				/* rgmii_rxd3_m1 */
++				<2 RK_PD0 2 &pcfg_pull_none>,
++				/* rgmii_txclk_m1 */
++				<2 RK_PD2 2 &pcfg_pull_none_drv_level_3>,
++				/* rgmii_txd2_m1 */
++				<2 RK_PD1 2 &pcfg_pull_none_drv_level_3>,
++				/* rgmii_txd3_m1 */
++				<2 RK_PA4 2 &pcfg_pull_none_drv_level_3>;
++		};
++		/omit-if-no-ref/
++		rgmiim1_mclkinout: rgmiim1-mclkinout {
++			rockchip,pins =
++				/* rgmii_clk_m1 */
++				<2 RK_PB7 2 &pcfg_pull_none>;
++		};
+ 	};
+ 	sdmmc0 {
+ 		/omit-if-no-ref/
+diff --git a/arch/arm/boot/dts/rv1126-sonoff-ihost.dts b/arch/arm/boot/dts/rv1126-sonoff-ihost.dts
+index 35df6e1ec..b94bf002b 100644
+--- a/arch/arm/boot/dts/rv1126-sonoff-ihost.dts
++++ b/arch/arm/boot/dts/rv1126-sonoff-ihost.dts
+@@ -255,38 +255,37 @@ vcc_3v3: SWITCH_REG2 {
+ 	};
+ };
+ &gmac {
+-	assigned-clocks = <&cru CLK_GMAC_SRC>, <&cru CLK_GMAC_TX_RX>,
+-			  <&cru CLK_GMAC_ETHERNET_OUT>;
+-	assigned-clock-parents = <&cru CLK_GMAC_SRC_M1>, <&cru RGMII_MODE_CLK>;
+-	assigned-clock-rates = <125000000>, <0>, <25000000>;
+-	clock_in_out = "input";
++	assigned-clocks = <&cru CLK_GMAC_SRC_M1>, <&cru CLK_GMAC_SRC>,
++			  <&cru CLK_GMAC_TX_RX>;
++	assigned-clock-parents = <&cru CLK_GMAC_RGMII_M1>, <&cru CLK_GMAC_SRC_M1>,
++				 <&cru RMII_MODE_CLK>;
++	assigned-clock-rates = <0>, <50000000>;
++	clock_in_out = "output";
+ 	phy-handle = <&phy>;
+-	phy-mode = "rgmii";
++	phy-mode = "rmii";
+ 	phy-supply = <&vcc_3v3>;
+ 	pinctrl-names = "default";
+-	pinctrl-0 = <&rgmiim1_pins &clk_out_ethernetm1_pins>;
+-	tx_delay = <0x2a>;
+-	rx_delay = <0x1a>;
++	pinctrl-0 = <&rgmiim1_miim &rgmiim1_rxer &rgmiim1_bus2 &rgmiim1_mclkinout>;
+ 	status = "okay";
+ };
+ 
+ &mdio {
+ 	phy: ethernet-phy@0 {
+-		compatible = "ethernet-phy-id001c.c916",
+-			     "ethernet-phy-ieee802.3-c22";
++		compatible = "ethernet-phy-ieee802.3-c22";
+ 		reg = <0x0>;
+ 		pinctrl-names = "default";
+ 		pinctrl-0 = <&eth_phy_rst>;
+-		reset-assert-us = <20000>;
+-		reset-deassert-us = <100000>;
+-		reset-gpios = <&gpio0 RK_PB6 GPIO_ACTIVE_LOW>;
++		reset-active-low;
++		reset-assert-us = <50000>;
++		reset-deassert-us = <10000>;
++		reset-gpios = <&gpio2 RK_PA6 GPIO_ACTIVE_LOW>;
+ 	};
+ };
+ 
+ &pinctrl {
+ 	ethernet {
+ 		eth_phy_rst: eth-phy-rst {
+-			rockchip,pins = <0 RK_PB6 RK_FUNC_GPIO &pcfg_pull_down>;
++			rockchip,pins = <2 RK_PA6 RK_FUNC_GPIO &pcfg_pull_down>;
+ 		};
+ 	};
+ 	bt {
+@@ -311,7 +310,7 @@ wifi_enable_h: wifi-enable-h {
+ &pmu_io_domains {
+ 	pmuio0-supply = <&vcc1v8_pmu>;
+ 	pmuio1-supply = <&vcc3v3_sys>;
+-	vccio1-supply = <&vccio_flash>;
++	vccio1-supply = <&vcc_1v8>;
+ 	vccio2-supply = <&vccio_sd>;
+ 	vccio3-supply = <&vcc_1v8>;
+ 	vccio4-supply = <&vcc_dovdd>;
+-- 
+2.40.1
+

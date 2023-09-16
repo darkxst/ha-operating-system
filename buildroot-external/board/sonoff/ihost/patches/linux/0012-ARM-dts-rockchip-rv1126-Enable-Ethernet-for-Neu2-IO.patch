@@ -1,4 +1,4 @@
-From 25b486316cd2b99aea5c08cc6b364b09bc1c664f Mon Sep 17 00:00:00 2001
+From d3855fe5a2d998790de2c138ce6d4f26366b6ceb Mon Sep 17 00:00:00 2001
 From: Anand Moon <anand@edgeble.ai>
 Date: Wed, 11 Jan 2023 17:24:34 +0000
 Subject: [PATCH] ARM: dts: rockchip: rv1126: Enable Ethernet for Neu2-IO
@@ -62,5 +62,5 @@ index dded0a12f..3340fc3f0 100644
  	bus-width = <4>;
  	cap-mmc-highspeed;
 -- 
-2.39.2
+2.40.1
 

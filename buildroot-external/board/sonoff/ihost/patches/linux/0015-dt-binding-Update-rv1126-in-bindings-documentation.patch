@@ -1,0 +1,50 @@
+From f70e6eeb3aab4630c43fba57cad3baecf4549473 Mon Sep 17 00:00:00 2001
+From: Tim Lunn <tim@feathertop.org>
+Date: Mon, 2 Oct 2023 13:18:09 +1100
+Subject: [PATCH] dt-binding: Update rv1126 in bindings documentation
+
+---
+ Documentation/devicetree/bindings/iio/adc/rockchip-saradc.yaml | 1 +
+ Documentation/devicetree/bindings/net/realtek-bluetooth.yaml   | 1 +
+ Documentation/devicetree/bindings/watchdog/snps,dw-wdt.yaml    | 1 +
+ 3 files changed, 3 insertions(+)
+
+diff --git a/Documentation/devicetree/bindings/iio/adc/rockchip-saradc.yaml b/Documentation/devicetree/bindings/iio/adc/rockchip-saradc.yaml
+index e512a14e4..da50b529c 100644
+--- a/Documentation/devicetree/bindings/iio/adc/rockchip-saradc.yaml
++++ b/Documentation/devicetree/bindings/iio/adc/rockchip-saradc.yaml
+@@ -22,6 +22,7 @@ properties:
+               - rockchip,rk3328-saradc
+               - rockchip,rk3568-saradc
+               - rockchip,rv1108-saradc
++              - rockchip,rv1126-saradc
+           - const: rockchip,rk3399-saradc
+ 
+   reg:
+diff --git a/Documentation/devicetree/bindings/net/realtek-bluetooth.yaml b/Documentation/devicetree/bindings/net/realtek-bluetooth.yaml
+index e329ef06e..143b5667a 100644
+--- a/Documentation/devicetree/bindings/net/realtek-bluetooth.yaml
++++ b/Documentation/devicetree/bindings/net/realtek-bluetooth.yaml
+@@ -20,6 +20,7 @@ properties:
+     enum:
+       - realtek,rtl8723bs-bt
+       - realtek,rtl8723cs-bt
++      - realtek,rtl8723ds-bt
+       - realtek,rtl8822cs-bt
+ 
+   device-wake-gpios:
+diff --git a/Documentation/devicetree/bindings/watchdog/snps,dw-wdt.yaml b/Documentation/devicetree/bindings/watchdog/snps,dw-wdt.yaml
+index 92df6e453..4a5c71b6a 100644
+--- a/Documentation/devicetree/bindings/watchdog/snps,dw-wdt.yaml
++++ b/Documentation/devicetree/bindings/watchdog/snps,dw-wdt.yaml
+@@ -30,6 +30,7 @@ properties:
+               - rockchip,rk3399-wdt
+               - rockchip,rk3568-wdt
+               - rockchip,rv1108-wdt
++              - rockchip,rv1126-wdt
+           - const: snps,dw-wdt
+ 
+   reg:
+-- 
+2.40.1
+

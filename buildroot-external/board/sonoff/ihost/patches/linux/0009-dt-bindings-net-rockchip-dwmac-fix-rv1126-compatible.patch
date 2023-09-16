@@ -1,4 +1,4 @@
-From a23f14fa5c2ffa73bf327d4058b4956e390e854f Mon Sep 17 00:00:00 2001
+From b6dcff5f21fadcf7b1540437c2edffe9f5b0c005 Mon Sep 17 00:00:00 2001
 From: Anand Moon <anand@edgeble.ai>
 Date: Wed, 11 Jan 2023 17:24:31 +0000
 Subject: [PATCH] dt-bindings: net: rockchip-dwmac: fix rv1126 compatible
@@ -40,5 +40,5 @@ index 42fb72b69..04936632f 100644
  
    clocks:
 -- 
-2.39.2
+2.40.1
 

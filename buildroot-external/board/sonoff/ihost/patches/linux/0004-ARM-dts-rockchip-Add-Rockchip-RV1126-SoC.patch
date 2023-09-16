@@ -1,4 +1,4 @@
-From 4b4ee6c9e20864b1d5cc93214865a7e12f7b5930 Mon Sep 17 00:00:00 2001
+From 22dd4afdba9f1ec80db6bf2db169c5df5cd4a998 Mon Sep 17 00:00:00 2001
 From: Jagan Teki <jagan@edgeble.ai>
 Date: Tue, 29 Nov 2022 13:24:20 +0530
 Subject: [PATCH] ARM: dts: rockchip: Add Rockchip RV1126 SoC
@@ -466,5 +466,5 @@ index 000000000..1cb43147e
 +
 +#include "rv1126-pinctrl.dtsi"
 -- 
-2.39.2
+2.40.1
 

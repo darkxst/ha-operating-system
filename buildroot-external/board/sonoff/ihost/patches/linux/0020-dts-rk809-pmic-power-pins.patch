@@ -1,0 +1,94 @@
+From 81c50004415fd6a7031aa0700b65cad723b7da89 Mon Sep 17 00:00:00 2001
+From: Tim Lunn <tim@feathertop.org>
+Date: Sun, 17 Sep 2023 12:35:07 +1000
+Subject: [PATCH] dts: rk809 pmic power pins
+
+---
+ arch/arm/boot/dts/rv1126-sonoff-ihost.dts | 42 ++++++++++++++++++++++-
+ include/dt-bindings/pinctrl/rockchip.h    |  3 ++
+ 2 files changed, 44 insertions(+), 1 deletion(-)
+
+diff --git a/arch/arm/boot/dts/rv1126-sonoff-ihost.dts b/arch/arm/boot/dts/rv1126-sonoff-ihost.dts
+index 43f1d92be..35c2cc0d0 100644
+--- a/arch/arm/boot/dts/rv1126-sonoff-ihost.dts
++++ b/arch/arm/boot/dts/rv1126-sonoff-ihost.dts
+@@ -74,8 +74,13 @@ rk809: pmic@20 {
+ 		interrupts = <RK_PB1 IRQ_TYPE_LEVEL_LOW>;
+ 		#clock-cells = <1>;
+ 		clock-output-names = "rk808-clkout1", "rk808-clkout2";
+-		pinctrl-names = "default";
++		pinctrl-names = "default", "pmic-sleep",
++			"pmic-power-off", "pmic-reset";
+ 		pinctrl-0 = <&pmic_int_l>;
++		pinctrl-1 = <&soc_slppin_gpio>, <&rk817_slppin_slp>;
++		pinctrl-2 = <&soc_slppin_gpio>, <&rk817_slppin_pwrdn>;
++		pinctrl-3 = <&soc_slppin_slp>, <&rk817_slppin_rst>;
++
+ 		rockchip,system-power-controller;
+ 		wakeup-source;
+ 
+@@ -93,6 +98,29 @@ rtc {
+ 			status = "disabled";
+ 		};
+ 
++		pinctrl_rk8xx: pinctrl_rk8xx {
++			gpio-controller;
++			#gpio-cells = <2>;
++
++			/omit-if-no-ref/
++			rk817_slppin_slp: rk817_slppin_slp {
++				pins = "gpio_slp";
++				function = "pin_fun1";
++			};
++
++			/omit-if-no-ref/
++			rk817_slppin_pwrdn: rk817_slppin_pwrdn {
++				pins = "gpio_slp";
++				function = "pin_fun2";
++			};
++
++			/omit-if-no-ref/
++			rk817_slppin_rst: rk817_slppin_rst {
++				pins = "gpio_slp";
++				function = "pin_fun3";
++			};
++		};
++
+ 		regulators {
+ 			vdd_npu_vepu: DCDC_REG1 {
+ 				regulator-name = "vdd_npu_vepu";
+@@ -324,6 +352,18 @@ pmic {
+ 		pmic_int_l: pmic-int-l {
+ 			rockchip,pins = <0 RK_PB1 RK_FUNC_GPIO &pcfg_pull_up>;
+ 		};
++
++		soc_slppin_gpio: soc_slppin_gpio {
++			rockchip,pins = <0 RK_PB2 RK_FUNC_GPIO &pcfg_output_low>;
++		};
++
++		soc_slppin_slp: soc_slppin_slp {
++			rockchip,pins = <0 RK_PB2 RK_FUNC_1 &pcfg_pull_none>;
++		};
++
++		soc_slppin_rst: soc_slppin_rst {
++			rockchip,pins = <0 RK_PB2 RK_FUNC_2 &pcfg_pull_none>;
++		};
+ 	};
+ 
+ 	wifi {
+diff --git a/include/dt-bindings/pinctrl/rockchip.h b/include/dt-bindings/pinctrl/rockchip.h
+index 5f291045e..5924f74d0 100644
+--- a/include/dt-bindings/pinctrl/rockchip.h
++++ b/include/dt-bindings/pinctrl/rockchip.h
+@@ -43,5 +43,8 @@
+ #define RK_PD7		31
+ 
+ #define RK_FUNC_GPIO	0
++#define RK_FUNC_0	0
++#define RK_FUNC_1	1
++#define RK_FUNC_2	2
+ 
+ #endif
+-- 
+2.40.1
+

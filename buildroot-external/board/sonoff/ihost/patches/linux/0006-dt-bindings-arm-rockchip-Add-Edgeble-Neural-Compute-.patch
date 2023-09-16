@@ -1,4 +1,4 @@
-From be815013076a16f4dbbcb2823c8042c3370189dc Mon Sep 17 00:00:00 2001
+From 7b9fdc57780f5c339ad6674d5b935652c4593834 Mon Sep 17 00:00:00 2001
 From: Jagan Teki <jagan@edgeble.ai>
 Date: Tue, 29 Nov 2022 13:24:22 +0530
 Subject: [PATCH] dt-bindings: arm: rockchip: Add Edgeble Neural Compute Module
@@ -40,5 +40,5 @@ index c6c69a4e3..f37ffd72f 100644
          items:
            - const: elgin,rv1108-r1
 -- 
-2.39.2
+2.40.1
 

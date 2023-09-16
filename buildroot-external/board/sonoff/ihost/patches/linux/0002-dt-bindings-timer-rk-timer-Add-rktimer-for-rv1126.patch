@@ -1,4 +1,4 @@
-From 752e851b45496a38e3b04cfcfc322a8d0e865d60 Mon Sep 17 00:00:00 2001
+From 72b0909ca9a10ff215e03465a60904685e144cc5 Mon Sep 17 00:00:00 2001
 From: Jagan Teki <jagan@edgeble.ai>
 Date: Tue, 29 Nov 2022 13:24:18 +0530
 Subject: [PATCH] dt-bindings: timer: rk-timer: Add rktimer for rv1126
@@ -24,5 +24,5 @@ index dc3bc1e62..a6221222e 100644
                - rockchip,rk3188-timer
                - rockchip,rk3228-timer
 -- 
-2.39.2
+2.40.1
 

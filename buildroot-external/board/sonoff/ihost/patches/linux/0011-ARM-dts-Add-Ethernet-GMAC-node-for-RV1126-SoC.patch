@@ -1,4 +1,4 @@
-From 288c2344b3bc7e828225aa78bd7bd9a4fcf35218 Mon Sep 17 00:00:00 2001
+From ea664636520c684fe2902ba7a4692cdce93e71ba Mon Sep 17 00:00:00 2001
 From: Anand Moon <anand@edgeble.ai>
 Date: Wed, 11 Jan 2023 17:24:33 +0000
 Subject: [PATCH] ARM: dts: Add Ethernet GMAC node for RV1126 SoC
@@ -73,5 +73,5 @@ index 1cb43147e..1f07d0a4f 100644
  		compatible = "rockchip,rv1126-dw-mshc", "rockchip,rk3288-dw-mshc";
  		reg = <0xffc50000 0x4000>;
 -- 
-2.39.2
+2.40.1
 

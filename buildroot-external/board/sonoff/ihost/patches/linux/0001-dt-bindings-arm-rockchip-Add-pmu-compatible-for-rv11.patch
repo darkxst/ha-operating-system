@@ -1,4 +1,4 @@
-From cc947c080304f090269509446a6dd9214effab6a Mon Sep 17 00:00:00 2001
+From 27559f3955b00ce94550a689e6ae9efbb82d3b58 Mon Sep 17 00:00:00 2001
 From: Jagan Teki <jagan@edgeble.ai>
 Date: Tue, 29 Nov 2022 13:24:17 +0530
 Subject: [PATCH] dt-bindings: arm: rockchip: Add pmu compatible for rv1126
@@ -32,5 +32,5 @@ index 8c73bc7f4..b79c81cd9 100644
        - const: simple-mfd
  
 -- 
-2.39.2
+2.40.1
 

@@ -1,4 +1,4 @@
-From afa2c2cbcd4f3d91e6a01ec279a4a810ade82da4 Mon Sep 17 00:00:00 2001
+From b56c81da717ed7a527742845f308e6b00e0ca89a Mon Sep 17 00:00:00 2001
 From: Jagan Teki <jagan@edgeble.ai>
 Date: Tue, 29 Nov 2022 13:24:19 +0530
 Subject: [PATCH] ARM: dts: rockchip: Add Rockchip RV1126 pinctrl
@@ -249,5 +249,5 @@ index 000000000..4bc419cc1
 +	};
 +};
 -- 
-2.39.2
+2.40.1
 

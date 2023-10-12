@@ -16,6 +16,9 @@ BOARD_DIR=${2}
 # HassOS tasks
 fix_rootfs
 install_tini_docker
+if [ "${BOARD_ID}" == "ihost" ]; then
+    gadget_console
+fi
 
 # Write os-release
 # shellcheck disable=SC2153

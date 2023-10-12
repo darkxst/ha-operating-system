@@ -37,3 +37,8 @@ function fix_rootfs() {
 function install_tini_docker() {
     ln -fs /usr/bin/tini "${TARGET_DIR}/usr/bin/docker-init"
 }
+
+function gadget_console() {
+    mkdir -p "${TARGET_DIR}/etc/systemd/system/getty.target.wants"
+    ln -fs "/usr/lib/systemd/system/serial-getty@.service" "${TARGET_DIR}/etc/systemd/system/getty.target.wants/serial-getty@ttyGS0.service"
+}

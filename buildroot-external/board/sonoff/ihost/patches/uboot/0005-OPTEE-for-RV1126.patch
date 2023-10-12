@@ -1,26 +1,19 @@
-From 7e330a878fb7280b490cb713d1e1e04df6d507d8 Mon Sep 17 00:00:00 2001
+From b629194e7907701d18a27e2a87def139a8af914c Mon Sep 17 00:00:00 2001
 From: Tim Lunn <tim@feathertop.org>
-Date: Fri, 15 Sep 2023 12:43:01 +1000
+Date: Fri, 29 Sep 2023 10:51:30 +1000
 Subject: [PATCH] OPTEE for RV1126
 
 ---
- arch/arm/mach-rockchip/Kconfig   | 4 +++-
+ arch/arm/mach-rockchip/Kconfig   | 3 ++-
  configs/neu2-io-rv1126_defconfig | 4 ++++
- 2 files changed, 7 insertions(+), 1 deletion(-)
+ include/configs/rv1126_common.h  | 2 +-
+ 3 files changed, 7 insertions(+), 2 deletions(-)
 
 diff --git a/arch/arm/mach-rockchip/Kconfig b/arch/arm/mach-rockchip/Kconfig
-index bba332098f..39cee24fce 100644
+index d0c22ae7cc..3c30d39553 100644
 --- a/arch/arm/mach-rockchip/Kconfig
 +++ b/arch/arm/mach-rockchip/Kconfig
-@@ -338,6 +338,7 @@ config ROCKCHIP_RV1108
- config ROCKCHIP_RV1126
- 	bool "Support Rockchip RV1126"
- 	select CPU_V7A
-+	select HAS_ROM
- 	select SKIP_LOWLEVEL_INIT_ONLY
- 	select TPL
- 	select SUPPORT_TPL
-@@ -377,6 +378,7 @@ config ROCKCHIP_RV1126
+@@ -377,6 +377,7 @@ config ROCKCHIP_RV1126
  	imply SPL_RAM
  	imply SPL_REGMAP
  	imply SPL_ROCKCHIP_COMMON_BOARD
@@ -28,12 +21,12 @@ index bba332098f..39cee24fce 100644
  	imply SPL_SERIAL
  	imply SPL_SYSCON
  
-@@ -451,7 +453,7 @@ config ROCKCHIP_BOOT_MODE_REG
+@@ -451,7 +452,7 @@ config ROCKCHIP_BOOT_MODE_REG
  config ROCKCHIP_OPTEE_BINARY
  	bool "Use a OP-TEE binary provided by Rockchip"
  	depends on SPL_OPTEE_IMAGE
 -	default y if ROCKCHIP_RK3036 || ROCKCHIP_RK3128 || ROCKCHIP_RK3288
-+	default y if ROCKCHIP_RV1126
++	default y if ROCKCHIP_RK3036 || ROCKCHIP_RK3128 || ROCKCHIP_RK3288 || ROCKCHIP_RV1126
  	help
  	  This option enables the usage of vendor-provided OP-TEE binaries.
  	  Say Y if you are using OP-TEE binary provided by Rockchip.
@@ -52,6 +45,19 @@ index f02c38c566..6ef1dd1bf5 100644
  CONFIG_DEFAULT_FDT_FILE="rv1126-edgeble-neu2-io.dtb"
  # CONFIG_DISPLAY_CPUINFO is not set
  CONFIG_DISPLAY_BOARDINFO_LATE=y
+diff --git a/include/configs/rv1126_common.h b/include/configs/rv1126_common.h
+index 1ec1640f99..43e0bdf5b5 100644
+--- a/include/configs/rv1126_common.h
++++ b/include/configs/rv1126_common.h
+@@ -25,7 +25,7 @@
+ 	"pxefile_addr_r=0x00100000\0" \
+ 	"fdt_addr_r=0x08300000\0" \
+ 	"kernel_addr_r=0x02008000\0" \
+-	"ramdisk_addr_r=0x0a200000\0"
++	"ramdisk_addr_r=0x0a400000\0"
+ 
+ #include <config_distro_bootcmd.h>
+ #define CFG_EXTRA_ENV_SETTINGS \
 -- 
 2.39.2
 

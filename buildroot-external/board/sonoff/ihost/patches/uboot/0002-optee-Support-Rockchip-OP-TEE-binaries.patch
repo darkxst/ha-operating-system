@@ -53,5 +53,5 @@ index a269904d38..ea41d8adb6 100644
  	mov pc, r3
  ENDPROC(spl_optee_entry)
 -- 
-2.39.2
+2.40.1
 

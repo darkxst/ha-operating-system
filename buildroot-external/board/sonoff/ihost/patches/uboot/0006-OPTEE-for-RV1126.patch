@@ -1,13 +1,13 @@
-From b629194e7907701d18a27e2a87def139a8af914c Mon Sep 17 00:00:00 2001
+From 8d9fcc9008c55a6874cb7d2309cf80305504ba70 Mon Sep 17 00:00:00 2001
 From: Tim Lunn <tim@feathertop.org>
 Date: Fri, 29 Sep 2023 10:51:30 +1000
 Subject: [PATCH] OPTEE for RV1126
 
 ---
  arch/arm/mach-rockchip/Kconfig   | 3 ++-
- configs/neu2-io-rv1126_defconfig | 4 ++++
+ configs/neu2-io-rv1126_defconfig | 5 +++++
  include/configs/rv1126_common.h  | 2 +-
- 3 files changed, 7 insertions(+), 2 deletions(-)
+ 3 files changed, 8 insertions(+), 2 deletions(-)
 
 diff --git a/arch/arm/mach-rockchip/Kconfig b/arch/arm/mach-rockchip/Kconfig
 index d0c22ae7cc..3c30d39553 100644
@@ -31,13 +31,14 @@ index d0c22ae7cc..3c30d39553 100644
  	  This option enables the usage of vendor-provided OP-TEE binaries.
  	  Say Y if you are using OP-TEE binary provided by Rockchip.
 diff --git a/configs/neu2-io-rv1126_defconfig b/configs/neu2-io-rv1126_defconfig
-index f02c38c566..6ef1dd1bf5 100644
+index f02c38c566..2f53600861 100644
 --- a/configs/neu2-io-rv1126_defconfig
 +++ b/configs/neu2-io-rv1126_defconfig
-@@ -14,6 +14,10 @@ CONFIG_DEBUG_UART_CLOCK=24000000
+@@ -14,6 +14,11 @@ CONFIG_DEBUG_UART_CLOCK=24000000
  CONFIG_SYS_LOAD_ADDR=0xe00800
  CONFIG_DEBUG_UART=y
  CONFIG_FIT_VERBOSE=y
++CONFIG_NR_DRAM_BANKS=2
 +CONFIG_ROCKCHIP_OPTEE_BINARY=y
 +CONFIG_SPL_FIT=y
 +CONFIG_SPL_LOAD_FIT=y
@@ -59,5 +60,5 @@ index 1ec1640f99..43e0bdf5b5 100644
  #include <config_distro_bootcmd.h>
  #define CFG_EXTRA_ENV_SETTINGS \
 -- 
-2.39.2
+2.40.1
 

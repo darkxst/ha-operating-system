@@ -1,0 +1,24 @@
+From 83398412c7207cfa5780cfb29c7e78d6baa6be7d Mon Sep 17 00:00:00 2001
+From: Tim Lunn <tim@feathertop.org>
+Date: Sun, 22 Oct 2023 23:37:04 +1100
+Subject: [PATCH] dts: add alies for ethernet pass mac from uboot
+
+---
+ arch/arm/boot/dts/rv1126.dtsi | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/arch/arm/boot/dts/rv1126.dtsi b/arch/arm/boot/dts/rv1126.dtsi
+index 8ffa045b4..53bf7c8c2 100644
+--- a/arch/arm/boot/dts/rv1126.dtsi
++++ b/arch/arm/boot/dts/rv1126.dtsi
+@@ -20,6 +20,7 @@ / {
+ 	interrupt-parent = <&gic>;
+ 
+ 	aliases {
++		ethernet0 = &gmac;
+ 		i2c0 = &i2c0;
+ 		i2c2 = &i2c2;
+ 		serial0 = &uart0;
+-- 
+2.40.1
+

@@ -1,56 +1,19 @@
-From be2ad8fb741761dc394e7e081a352f78619ccd2e Mon Sep 17 00:00:00 2001
+From a2b9a0982d1ebb74b6c0139b415c49e287450dfd Mon Sep 17 00:00:00 2001
 From: Tim Lunn <tim@feathertop.org>
-Date: Sun, 22 Oct 2023 22:25:15 +1100
-Subject: [PATCH] rockchip: otp: Add support for rv1126
+Date: Tue, 31 Oct 2023 13:07:14 +1100
+Subject: [PATCH] rockchip: otp: Add support for RV1126
 
-Patch need splitting
+Extend the otp driver to read rv1126 otp. This driver code was
+adapted from the Rockchip BSP stack.
+
+Signed-off-by: Tim Lunn <tim@feathertop.org>
+Reviewed-by: Kever Yang <kever.yang@rock-chips.com>
 ---
- arch/arm/dts/rv1126-u-boot.dtsi | 15 +++++++
- arch/arm/mach-rockchip/Kconfig  |  2 +
- drivers/misc/rockchip-otp.c     | 76 +++++++++++++++++++++++++++++++++
- 3 files changed, 93 insertions(+)
+ drivers/misc/rockchip-otp.c | 76 +++++++++++++++++++++++++++++++++++++
+ 1 file changed, 76 insertions(+)
 
-diff --git a/arch/arm/dts/rv1126-u-boot.dtsi b/arch/arm/dts/rv1126-u-boot.dtsi
-index 657db9c701..bc5590e2a3 100644
---- a/arch/arm/dts/rv1126-u-boot.dtsi
-+++ b/arch/arm/dts/rv1126-u-boot.dtsi
-@@ -15,6 +15,21 @@
- 		compatible = "rockchip,rv1126-dmc";
- 		bootph-all;
- 	};
-+
-+	otp: otp@ff5c0000 {
-+		compatible = "rockchip,rv1126-otp";
-+		reg = <0xff5c0000 0x1000>;
-+		#address-cells = <1>;
-+		#size-cells = <1>;
-+		/*clocks = <&cru CLK_OTP>, <&cru PCLK_OTP>;
-+		clock-names = "otp", "apb_pclk";*/
-+		status = "okay";
-+
-+		/* Data cells */
-+		cpu_id: id@7 {
-+			reg = <0x07 0x10>;
-+		};
-+	};
- };
- 
- &gpio0 {
-diff --git a/arch/arm/mach-rockchip/Kconfig b/arch/arm/mach-rockchip/Kconfig
-index 3c30d39553..c76dae426b 100644
---- a/arch/arm/mach-rockchip/Kconfig
-+++ b/arch/arm/mach-rockchip/Kconfig
-@@ -360,6 +360,8 @@ config ROCKCHIP_RV1126
- 	select PMIC_RK8XX
- 	select BOARD_LATE_INIT
- 	imply ROCKCHIP_COMMON_BOARD
-+	imply ROCKCHIP_OTP
-+	imply MISC_INIT_R
- 	imply TPL_DM
- 	imply TPL_LIBCOMMON_SUPPORT
- 	imply TPL_LIBGENERIC_SUPPORT
 diff --git a/drivers/misc/rockchip-otp.c b/drivers/misc/rockchip-otp.c
-index 4814e0e501..c5b126dc5a 100644
+index 4814e0e501..4f757083a1 100644
 --- a/drivers/misc/rockchip-otp.c
 +++ b/drivers/misc/rockchip-otp.c
 @@ -61,11 +61,20 @@
@@ -110,7 +73,7 @@ index 4814e0e501..c5b126dc5a 100644
 +		writel(offset++, otp->base + RV1126_OTP_NVM_RADDR);
 +		writel(0x1, otp->base + RV1126_OTP_NVM_RSTART);
 +		ret = readl_poll_timeout(otp->base + RV1126_OTP_READ_ST,
-+					 status, status == 0, OTPC_TIMEOUT);
++					 status, !status, OTPC_TIMEOUT);
 +		if (ret)
 +			return ret;
 +

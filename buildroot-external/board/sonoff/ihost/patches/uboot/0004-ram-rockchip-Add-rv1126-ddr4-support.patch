@@ -1,4 +1,4 @@
-From 1640cd1dbaf71306690b311a7a451eb6685fdd02 Mon Sep 17 00:00:00 2001
+From 6c31ea9d75a3f70fbf3e3dc73057fd2fef3c6b59 Mon Sep 17 00:00:00 2001
 From: Tim Lunn <tim@feathertop.org>
 Date: Sat, 14 Oct 2023 15:02:44 +1100
 Subject: [PATCH] ram: rockchip: Add rv1126 ddr4 support
@@ -24,7 +24,7 @@ Copied from downstream Rockchip BSP u-boot
  create mode 100644 drivers/ram/rockchip/sdram-rv1126-ddr4-detect-924.inc
 
 diff --git a/arch/arm/mach-rockchip/sdram.c b/arch/arm/mach-rockchip/sdram.c
-index 1d17a740ad..636f5d6f18 100644
+index 99ecbdc341..fd549192ab 100644
 --- a/arch/arm/mach-rockchip/sdram.c
 +++ b/arch/arm/mach-rockchip/sdram.c
 @@ -64,6 +64,7 @@ int dram_init_banksize(void)

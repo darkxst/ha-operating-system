@@ -197,10 +197,6 @@ jobs:
         with:
           python-version: ${{ env.PYTHON_VERSION }}
 
-      - name: Install AWS CLI
-        if: ${{ github.event_name != 'release' && needs.prepare.outputs.publish_build == 'true' }}
-        run: pip install awscli
-
       - name: Set version suffix
         if: ${{ github.event_name != 'release' }}
         env:

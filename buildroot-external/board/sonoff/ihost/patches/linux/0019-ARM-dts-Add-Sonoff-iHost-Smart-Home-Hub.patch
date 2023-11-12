@@ -1,48 +1,139 @@
-From f16b60de98fab7267dd5db1f9f12c4d7137fead4 Mon Sep 17 00:00:00 2001
+From 9a56c84a95523bc6b8dbe8795873eef8250d5845 Mon Sep 17 00:00:00 2001
 From: Tim Lunn <tim@feathertop.org>
-Date: Sat, 16 Sep 2023 20:51:35 +1000
-Subject: [PATCH] Copy and merge edgeble config into rv1126-sonoff-ihost.dts
+Date: Tue, 31 Oct 2023 14:38:24 +1100
+Subject: [PATCH] ARM: dts: Add Sonoff iHost Smart Home Hub
 
+Sonoff iHost is gateway device designed to provide a Smart Home Hub,
+it is based on Rockchip RV1126. There is also a version with 2GB RAM
+based off the RV1109.
+
+Features:
+- Rockchip RV1126
+- 4GB DDR4
+- 8GB eMMC
+- microSD slot
+- Ethernet
+- 1x USB 2.0 Host
+- 1x USB 2.0 OTG
+- Realtek RTL8723DS WiFi/BT
+- EFR32MG21 Silabs Zigbee radio
+- Speaker/Microphone
+
+This patch adds the initial device tree for this device, it is largely
+based off the device trees for Edgeble Neu2 and downstream Rockchip
+rv1126-evb-v13.
+
+Signed-off-by: Tim Lunn <tim@feathertop.org>
 ---
- arch/arm/boot/dts/Makefile                |   1 +
- arch/arm/boot/dts/rv1126-sonoff-ihost.dts | 382 ++++++++++++++++++++++
- 2 files changed, 383 insertions(+)
+ arch/arm/boot/dts/Makefile                 |   2 +
+ arch/arm/boot/dts/rv1109-sonoff-ihost.dts  |  13 +
+ arch/arm/boot/dts/rv1109.dtsi              |  23 ++
+ arch/arm/boot/dts/rv1126-sonoff-ihost.dts  |  13 +
+ arch/arm/boot/dts/rv1126-sonoff-ihost.dtsi | 409 +++++++++++++++++++++
+ 5 files changed, 460 insertions(+)
+ create mode 100644 arch/arm/boot/dts/rv1109-sonoff-ihost.dts
+ create mode 100644 arch/arm/boot/dts/rv1109.dtsi
  create mode 100644 arch/arm/boot/dts/rv1126-sonoff-ihost.dts
+ create mode 100644 arch/arm/boot/dts/rv1126-sonoff-ihost.dtsi
 
 diff --git a/arch/arm/boot/dts/Makefile b/arch/arm/boot/dts/Makefile
-index c78b44386..95f57b1bb 100644
+index c78b44386..fb11278f2 100644
 --- a/arch/arm/boot/dts/Makefile
 +++ b/arch/arm/boot/dts/Makefile
-@@ -1125,6 +1125,7 @@ dtb-$(CONFIG_ARCH_ROCKCHIP) += \
+@@ -1124,7 +1124,9 @@ dtb-$(CONFIG_ARCH_RENESAS) += \
+ dtb-$(CONFIG_ARCH_ROCKCHIP) += \
  	rv1108-elgin-r1.dtb \
  	rv1108-evb.dtb \
++	rv1109-sonoff-ihost.dtb \
  	rv1126-edgeble-neu2-io.dtb \
 +	rv1126-sonoff-ihost.dtb \
  	rk3036-evb.dtb \
  	rk3036-kylin.dtb \
  	rk3066a-bqcurie2.dtb \
+diff --git a/arch/arm/boot/dts/rv1109-sonoff-ihost.dts b/arch/arm/boot/dts/rv1109-sonoff-ihost.dts
+new file mode 100644
+index 000000000..5bae0ea1f
+--- /dev/null
++++ b/arch/arm/boot/dts/rv1109-sonoff-ihost.dts
+@@ -0,0 +1,13 @@
++// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
++/*
++ * Copyright (c) 2020 Rockchip Electronics Co., Ltd.
++ */
++
++/dts-v1/;
++#include "rv1109.dtsi"
++#include "rv1126-sonoff-ihost.dtsi"
++
++/ {
++	model = "Sonoff iHost 2G";
++	compatible = "itead,sonoff-ihost", "rockchip,rv1109";
++};
+\ No newline at end of file
+diff --git a/arch/arm/boot/dts/rv1109.dtsi b/arch/arm/boot/dts/rv1109.dtsi
+new file mode 100644
+index 000000000..9cbaa08ab
+--- /dev/null
++++ b/arch/arm/boot/dts/rv1109.dtsi
+@@ -0,0 +1,23 @@
++// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
++/*
++ * Copyright (c) 2019 Fuzhou Rockchip Electronics Co., Ltd.
++ */
++
++/dts-v1/;
++
++#include "rv1126.dtsi"
++
++/ {
++	compatible = "rockchip,rv1109";
++
++	cpus {
++		/delete-node/ cpu@f02;
++		/delete-node/ cpu@f03;
++	};
++
++	arm-pmu {
++		interrupts = <GIC_SPI 123 IRQ_TYPE_LEVEL_HIGH>,
++			     <GIC_SPI 124 IRQ_TYPE_LEVEL_HIGH>;
++		interrupt-affinity = <&cpu0>, <&cpu1>;
++	};
++};
 diff --git a/arch/arm/boot/dts/rv1126-sonoff-ihost.dts b/arch/arm/boot/dts/rv1126-sonoff-ihost.dts
 new file mode 100644
-index 000000000..35df6e1ec
+index 000000000..b25bf093f
 --- /dev/null
 +++ b/arch/arm/boot/dts/rv1126-sonoff-ihost.dts
-@@ -0,0 +1,382 @@
+@@ -0,0 +1,13 @@
++// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
++/*
++ * Copyright (c) 2020 Rockchip Electronics Co., Ltd.
++ */
++
++/dts-v1/;
++#include "rv1126.dtsi"
++#include "rv1126-sonoff-ihost.dtsi"
++
++/ {
++	model = "Sonoff iHost 4G";
++	compatible = "itead,sonoff-ihost", "rockchip,rv1126";
++};
+\ No newline at end of file
+diff --git a/arch/arm/boot/dts/rv1126-sonoff-ihost.dtsi b/arch/arm/boot/dts/rv1126-sonoff-ihost.dtsi
+new file mode 100644
+index 000000000..9060795d8
+--- /dev/null
++++ b/arch/arm/boot/dts/rv1126-sonoff-ihost.dtsi
+@@ -0,0 +1,409 @@
 +// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
 +/*
 + * Copyright (c) 2020 Rockchip Electronics Co., Ltd.
 + * Copyright (c) 2022 Edgeble AI Technologies Pvt. Ltd.
 + */
 +
-+/dts-v1/;
-+#include "rv1126.dtsi"
-+
 +/ {
-+	model = "Sonoff iHost";
-+	compatible = "sonoff,ihost", "rockchip,rv1126";
-+
 +	aliases {
 +		mmc0 = &emmc;
-+		serial2 = &uart2;
 +	};
 +
 +	chosen {
@@ -283,44 +374,66 @@ index 000000000..35df6e1ec
 +		};
 +	};
 +};
++
++&i2c2 {
++	status = "okay";
++	clock-frequency = <400000>;
++
++	pcf8563: rtc@51 {
++		compatible = "nxp,pcf8563";
++		reg = <0x51>;
++		#clock-cells = <0>;
++		interrupt-parent = <&gpio0>;
++		interrupts = <RK_PA2 IRQ_TYPE_LEVEL_LOW>;
++		clock-output-names = "xin32k";
++	};
++};
++
 +&gmac {
-+	assigned-clocks = <&cru CLK_GMAC_SRC>, <&cru CLK_GMAC_TX_RX>,
-+			  <&cru CLK_GMAC_ETHERNET_OUT>;
-+	assigned-clock-parents = <&cru CLK_GMAC_SRC_M1>, <&cru RGMII_MODE_CLK>;
-+	assigned-clock-rates = <125000000>, <0>, <25000000>;
-+	clock_in_out = "input";
++	assigned-clocks = <&cru CLK_GMAC_SRC_M1>, <&cru CLK_GMAC_SRC>,
++			  <&cru CLK_GMAC_TX_RX>;
++	assigned-clock-parents = <&cru CLK_GMAC_RGMII_M1>, <&cru CLK_GMAC_SRC_M1>,
++				 <&cru RMII_MODE_CLK>;
++	assigned-clock-rates = <0>, <50000000>;
++	clock_in_out = "output";
 +	phy-handle = <&phy>;
-+	phy-mode = "rgmii";
++	phy-mode = "rmii";
 +	phy-supply = <&vcc_3v3>;
 +	pinctrl-names = "default";
-+	pinctrl-0 = <&rgmiim1_pins &clk_out_ethernetm1_pins>;
-+	tx_delay = <0x2a>;
-+	rx_delay = <0x1a>;
++	pinctrl-0 = <&rgmiim1_miim &rgmiim1_rxer &rgmiim1_bus2 &rgmiim1_mclkinout>;
 +	status = "okay";
 +};
 +
 +&mdio {
 +	phy: ethernet-phy@0 {
-+		compatible = "ethernet-phy-id001c.c916",
-+			     "ethernet-phy-ieee802.3-c22";
++		compatible = "ethernet-phy-ieee802.3-c22";
 +		reg = <0x0>;
 +		pinctrl-names = "default";
 +		pinctrl-0 = <&eth_phy_rst>;
-+		reset-assert-us = <20000>;
-+		reset-deassert-us = <100000>;
-+		reset-gpios = <&gpio0 RK_PB6 GPIO_ACTIVE_LOW>;
++		reset-active-low;
++		reset-assert-us = <50000>;
++		reset-deassert-us = <10000>;
++		reset-gpios = <&gpio2 RK_PA6 GPIO_ACTIVE_LOW>;
 +	};
 +};
 +
 +&pinctrl {
 +	ethernet {
 +		eth_phy_rst: eth-phy-rst {
-+			rockchip,pins = <0 RK_PB6 RK_FUNC_GPIO &pcfg_pull_down>;
++			rockchip,pins = <2 RK_PA6 RK_FUNC_GPIO &pcfg_pull_down>;
 +		};
 +	};
 +	bt {
 +		bt_enable: bt-enable {
-+			rockchip,pins = <3 RK_PA5 RK_FUNC_GPIO &pcfg_pull_none>;
++			rockchip,pins = <1 RK_PC6 RK_FUNC_GPIO &pcfg_pull_none>;
++		};
++
++		bt_wake_dev: bt-wake-dev {
++			rockchip,pins = <1 RK_PC7 RK_FUNC_GPIO &pcfg_pull_none>;
++		};
++
++		bt_wake_host: bt-wake-host {
++			rockchip,pins = <1 RK_PC5 RK_FUNC_GPIO &pcfg_pull_none>;
 +		};
 +	};
 +
@@ -340,7 +453,7 @@ index 000000000..35df6e1ec
 +&pmu_io_domains {
 +	pmuio0-supply = <&vcc1v8_pmu>;
 +	pmuio1-supply = <&vcc3v3_sys>;
-+	vccio1-supply = <&vccio_flash>;
++	vccio1-supply = <&vcc_1v8>;
 +	vccio2-supply = <&vccio_sd>;
 +	vccio3-supply = <&vcc_1v8>;
 +	vccio4-supply = <&vcc_dovdd>;
@@ -392,21 +505,33 @@ index 000000000..35df6e1ec
 +&uart0 {
 +	pinctrl-names = "default";
 +	pinctrl-0 = <&uart0_xfer &uart0_ctsn &uart0_rtsn>;
++	uart-has-rtscts;
 +	status = "okay";
 +
 +	bluetooth {
-+		compatible = "qcom,qca9377-bt";
-+		clocks = <&rk809 1>;
-+		enable-gpios = <&gpio3 RK_PA5 GPIO_ACTIVE_HIGH>; /* BT_RST */
++		compatible = "realtek,rtl8723ds-bt";
++		device-wake-gpios = <&gpio1 RK_PC7 GPIO_ACTIVE_HIGH>; /* BT_WAKE */
++		enable-gpios = <&gpio1 RK_PC6 GPIO_ACTIVE_HIGH>; /* BT_RST */
++		host-wake-gpios = <&gpio1 RK_PC5 GPIO_ACTIVE_HIGH>; /* BT_WAKE_HOST */
 +		max-speed = <2000000>;
 +		pinctrl-names = "default";
-+		pinctrl-0 = <&bt_enable>;
-+		vddxo-supply = <&vcc3v3_sys>;
-+		vddio-supply = <&vcc_1v8>;
++		pinctrl-0 = <&bt_enable>, <&bt_wake_dev>, <&bt_wake_host>;
 +	};
 +};
 +
 +&uart2 {
++	status = "okay";
++};
++
++&uart3 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&uart3m2_xfer>;
++	status = "okay";
++};
++
++&uart4 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&uart4m2_xfer>;
 +	status = "okay";
 +};
 -- 

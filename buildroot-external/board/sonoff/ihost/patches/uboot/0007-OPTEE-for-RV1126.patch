@@ -1,8 +1,10 @@
-From 8d9fcc9008c55a6874cb7d2309cf80305504ba70 Mon Sep 17 00:00:00 2001
+From 77bd086a5635b7f059bda2c8d787fc19712d3e15 Mon Sep 17 00:00:00 2001
 From: Tim Lunn <tim@feathertop.org>
 Date: Fri, 29 Sep 2023 10:51:30 +1000
 Subject: [PATCH] OPTEE for RV1126
 
+Add RV1126 as target for OP-TEE and add various configs for build.
+Also ajusts ramdisk address to clear OPTEE memory region.
 ---
  arch/arm/mach-rockchip/Kconfig   | 3 ++-
  configs/neu2-io-rv1126_defconfig | 5 +++++
@@ -10,10 +12,10 @@ Subject: [PATCH] OPTEE for RV1126
  3 files changed, 8 insertions(+), 2 deletions(-)
 
 diff --git a/arch/arm/mach-rockchip/Kconfig b/arch/arm/mach-rockchip/Kconfig
-index d0c22ae7cc..3c30d39553 100644
+index 95f89827e0..b818ab9520 100644
 --- a/arch/arm/mach-rockchip/Kconfig
 +++ b/arch/arm/mach-rockchip/Kconfig
-@@ -377,6 +377,7 @@ config ROCKCHIP_RV1126
+@@ -379,6 +379,7 @@ config ROCKCHIP_RV1126
  	imply SPL_RAM
  	imply SPL_REGMAP
  	imply SPL_ROCKCHIP_COMMON_BOARD
@@ -21,7 +23,7 @@ index d0c22ae7cc..3c30d39553 100644
  	imply SPL_SERIAL
  	imply SPL_SYSCON
  
-@@ -451,7 +452,7 @@ config ROCKCHIP_BOOT_MODE_REG
+@@ -453,7 +454,7 @@ config ROCKCHIP_BOOT_MODE_REG
  config ROCKCHIP_OPTEE_BINARY
  	bool "Use a OP-TEE binary provided by Rockchip"
  	depends on SPL_OPTEE_IMAGE
@@ -47,12 +49,12 @@ index f02c38c566..2f53600861 100644
  # CONFIG_DISPLAY_CPUINFO is not set
  CONFIG_DISPLAY_BOARDINFO_LATE=y
 diff --git a/include/configs/rv1126_common.h b/include/configs/rv1126_common.h
-index 1ec1640f99..43e0bdf5b5 100644
+index a64c0c6364..6961dbe20b 100644
 --- a/include/configs/rv1126_common.h
 +++ b/include/configs/rv1126_common.h
-@@ -25,7 +25,7 @@
- 	"pxefile_addr_r=0x00100000\0" \
+@@ -26,7 +26,7 @@
  	"fdt_addr_r=0x08300000\0" \
+ 	"fdtoverlay_addr_r=0x02000000\0" \
  	"kernel_addr_r=0x02008000\0" \
 -	"ramdisk_addr_r=0x0a200000\0"
 +	"ramdisk_addr_r=0x0a400000\0"

@@ -150,10 +150,6 @@ jobs:
         with:
           python-version: ${{ env.PYTHON_VERSION }}
 
-      - name: Install AWS CLI
-        if: ${{ github.event_name != 'release' }}
-        run: pip install awscli
-
       - name: Set version suffix
         if: ${{ github.event_name != 'release' }}
         env:
@@ -200,18 +196,12 @@ jobs:
             ${{ needs.prepare.outputs.build_container_image }} \
             make BUILDDIR=/build ${{ matrix.board.defconfig }}
 
-      - name: Upload artifacts
-        if: ${{ github.event_name != 'release' }}
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.R2_OS_ARTIFACTS_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_OS_ARTIFACTS_KEY }}
-        run: |
-          aws s3 sync \
-            output/images/ \
-            s3://${{ secrets.R2_OS_ARTIFACTS_BUCKET }}/${{ needs.prepare.outputs.version_full }}/ \
-            --exclude "*" \
-            --include "haos_*" \
-            --endpoint-url ${{ secrets.R2_OS_ARTIFACTS_ENDPOINT }}
+      - name: Upload artificats
+        uses: actions/upload-artifact@v3
+        if: success() || failure()
+        with:
+          name: ${{ needs.prepare.outputs.version_full }}
+          path: output/images/haos_*
 
       - name: Upload release assets
         if: ${{ github.event_name == 'release' }}

@@ -1,4 +1,4 @@
-From ab02c15a2dd4a7f7324a593bf4f5d8d295e52f57 Mon Sep 17 00:00:00 2001
+From 4462d89dab72f12b2015798ad30d6bf504f39ebb Mon Sep 17 00:00:00 2001
 From: Tim Lunn <tim@feathertop.org>
 Date: Tue, 12 Sep 2023 11:17:09 +1000
 Subject: [PATCH] Patch neu2 target
@@ -23,7 +23,7 @@ index dded0a12f0..cdcf681f69 100644
  		     "edgeble,neural-compute-module-2", "rockchip,rv1126";
  
 diff --git a/arch/arm/dts/rv1126-u-boot.dtsi b/arch/arm/dts/rv1126-u-boot.dtsi
-index 5e348278f2..657db9c701 100644
+index 811a3cee98..b98583e96e 100644
 --- a/arch/arm/dts/rv1126-u-boot.dtsi
 +++ b/arch/arm/dts/rv1126-u-boot.dtsi
 @@ -8,7 +8,7 @@

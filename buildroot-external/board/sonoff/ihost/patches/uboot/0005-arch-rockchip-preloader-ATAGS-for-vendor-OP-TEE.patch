@@ -1,4 +1,4 @@
-From 0c8bd74a55dd6dac620e04f7603221b7da353df2 Mon Sep 17 00:00:00 2001
+From 680324e36202645828d4f43c9b702e5956cc17cd Mon Sep 17 00:00:00 2001
 From: Tim Lunn <tim@feathertop.org>
 Date: Sat, 14 Oct 2023 15:03:27 +1100
 Subject: [PATCH] arch: rockchip: preloader ATAGS for vendor OP-TEE
@@ -343,10 +343,10 @@ index 0000000000..d48cf92ab3
 +
 +#endif
 diff --git a/arch/arm/mach-rockchip/Kconfig b/arch/arm/mach-rockchip/Kconfig
-index bba332098f..d0c22ae7cc 100644
+index 130c825179..95f89827e0 100644
 --- a/arch/arm/mach-rockchip/Kconfig
 +++ b/arch/arm/mach-rockchip/Kconfig
-@@ -525,6 +525,14 @@ config ROCKCHIP_SPI_IMAGE
+@@ -527,6 +527,14 @@ config ROCKCHIP_SPI_IMAGE
  	  option to produce a SPI-flash image containing U-Boot. The image
  	  is built by binman. U-Boot sits near the start of the image.
  

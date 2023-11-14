@@ -1,4 +1,4 @@
-From fe7ed93319f40cf6405f3d07aca40604b32e0007 Mon Sep 17 00:00:00 2001
+From 5e3b58215375fa4231f22ab01e82bde284f4f7a4 Mon Sep 17 00:00:00 2001
 From: Alex Bee <knaerzche@gmail.com>
 Date: Tue, 18 Jul 2023 16:57:15 +0200
 Subject: [PATCH] optee: Support Rockchip OP-TEE binaries
@@ -13,16 +13,17 @@ of those vendor binaries is used and changes the calling convension
 accordingly.
 
 Signed-off-by: Alex Bee <knaerzche@gmail.com>
+Rejected upstream as vendor specific
 ---
  arch/arm/mach-rockchip/Kconfig | 8 ++++++++
  common/spl/spl_optee.S         | 4 ++++
  2 files changed, 12 insertions(+)
 
 diff --git a/arch/arm/mach-rockchip/Kconfig b/arch/arm/mach-rockchip/Kconfig
-index 9d6d20bf8e..bba332098f 100644
+index 299a17a4c7..130c825179 100644
 --- a/arch/arm/mach-rockchip/Kconfig
 +++ b/arch/arm/mach-rockchip/Kconfig
-@@ -448,6 +448,14 @@ config ROCKCHIP_BOOT_MODE_REG
+@@ -450,6 +450,14 @@ config ROCKCHIP_BOOT_MODE_REG
  	  The Soc will enter to different boot mode(defined in asm/arch-rockchip/boot_mode.h)
  	  according to the value from this register.
  

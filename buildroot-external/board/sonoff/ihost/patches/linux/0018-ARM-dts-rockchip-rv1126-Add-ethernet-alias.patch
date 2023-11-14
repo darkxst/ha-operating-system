@@ -1,14 +1,17 @@
-From 83398412c7207cfa5780cfb29c7e78d6baa6be7d Mon Sep 17 00:00:00 2001
+From 229cea669f4e294816e65fa1f0a5ab2b0d1a2d07 Mon Sep 17 00:00:00 2001
 From: Tim Lunn <tim@feathertop.org>
-Date: Sun, 22 Oct 2023 23:37:04 +1100
-Subject: [PATCH] dts: add alies for ethernet pass mac from uboot
+Date: Tue, 31 Oct 2023 21:19:28 +1100
+Subject: [PATCH] ARM: dts: rockchip: rv1126: Add ethernet alias
 
+Add alias for ethernet0 to pick up mac address from u-boot
+
+Signed-off-by: Tim Lunn <tim@feathertop.org>
 ---
  arch/arm/boot/dts/rv1126.dtsi | 1 +
  1 file changed, 1 insertion(+)
 
 diff --git a/arch/arm/boot/dts/rv1126.dtsi b/arch/arm/boot/dts/rv1126.dtsi
-index 8ffa045b4..53bf7c8c2 100644
+index 6ef34c33c..5b4ea29b9 100644
 --- a/arch/arm/boot/dts/rv1126.dtsi
 +++ b/arch/arm/boot/dts/rv1126.dtsi
 @@ -20,6 +20,7 @@ / {

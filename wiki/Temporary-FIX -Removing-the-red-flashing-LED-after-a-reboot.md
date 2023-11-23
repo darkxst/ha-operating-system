@@ -1,4 +1,5 @@
 This is a temporary fix to the red flashing light after a reboot of the iHost:
+
 ![ihost_RED-LED](ihost_RED-LED.jpg)
 
 1. Install the AppDaemon from Settings --> Add-On --> Add-on Store

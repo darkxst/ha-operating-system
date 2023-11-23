@@ -1,0 +1,36 @@
+This is an unofficial port of Home Assistant Operating System (HAOS) to run on Sonoff iHost
+
+`boot.img.xz` - Installer image that will flash HAOS to eMMC flash. Indicator will turn blue when flash finished (approx 3-5mins)  
+`haos_ihost-11.1.img.xz` - Full system image you can run from SD Card (No indicator yet)
+
+Flash images to SD Card using Balena Etcher or Rufus (Windows)
+
+## maskROM
+Permanently short contacts on internal MaskROM button to always boot from SD Card.
+Short for about 5s if booting the installer image.
+
+## Debug Console
+Power your ihost from a USB port on your PC and you get a debug console on iHost host.  
+`/dev/ttyACM0` on Linux, `COMx` on Windows.
+
+## USB Updates
+Copy the `haos*.raucb` file to USB thumbdrive, name the drive `CONFIG`  
+From debug console or ssh host shell, run:  
+`systemctl start hassos-config`  
+System will reboot and upgrade.
+
+## Datadisk
+iHost only has 8GB internal eMMC flash, after initial install you will want to use `Move data disk` feature, to move data to SD card or USB drive under:  
+`Settings -> System -> Storage`
+
+## Zigbee
+On-board EFR32MG21 EZSP Zigbee radio  
+Port: /dev/ttyS4  
+Baud: 115200  
+Flow Control: software
+
+ZHA may require updating firmware first. Use `Silabs Flasher` addon with custom url. Disable ZHA while flashing.
+
+[EZSP firmware 6.10.7](https://github.com/xsp1989/zigbeeFirmware/raw/master/firmware/Zigbee3.0_Dongle-NoSigned/EZSP/ncp-uart-sw_6.10.7.0_115200.gbl)
+  
+[EZSP firmware 7.3.2](https://github.com/darkxst/silabs-firmware-builder/raw/main/firmware_builds/zbdonglee/ncp-uart-hw-v7.3.2.0-zbdonglee-115200.gbl)

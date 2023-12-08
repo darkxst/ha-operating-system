@@ -1,4 +1,4 @@
-From 6669740b0ef95a65a9f72b91bf24bee75a376544 Mon Sep 17 00:00:00 2001
+From f3e81ee42f2dd2ca33961175cdb2786cb0f8c3c4 Mon Sep 17 00:00:00 2001
 From: Anand Moon <anand@edgeble.ai>
 Date: Wed, 11 Jan 2023 17:24:32 +0000
 Subject: [PATCH] ARM: dts: rockchip: rv1126: Add ethernet rgmiim1 pin-control
@@ -13,7 +13,7 @@ Signed-off-by: Anand Moon <anand@edgeble.ai>
  1 file changed, 42 insertions(+)
 
 diff --git a/arch/arm/boot/dts/rv1126-pinctrl.dtsi b/arch/arm/boot/dts/rv1126-pinctrl.dtsi
-index 4bc419cc1..b77021772 100644
+index 4bc419cc1210..b77021772781 100644
 --- a/arch/arm/boot/dts/rv1126-pinctrl.dtsi
 +++ b/arch/arm/boot/dts/rv1126-pinctrl.dtsi
 @@ -11,6 +11,14 @@

@@ -1,4 +1,4 @@
-From 7b9fdc57780f5c339ad6674d5b935652c4593834 Mon Sep 17 00:00:00 2001
+From af022453790a09f06b88de0b20f6b33a110cfa30 Mon Sep 17 00:00:00 2001
 From: Jagan Teki <jagan@edgeble.ai>
 Date: Tue, 29 Nov 2022 13:24:22 +0530
 Subject: [PATCH] dt-bindings: arm: rockchip: Add Edgeble Neural Compute Module
@@ -23,7 +23,7 @@ Acked-by: Heiko Stuebner <heiko@sntech.de>
  1 file changed, 6 insertions(+)
 
 diff --git a/Documentation/devicetree/bindings/arm/rockchip.yaml b/Documentation/devicetree/bindings/arm/rockchip.yaml
-index c6c69a4e3..f37ffd72f 100644
+index c6c69a4e3777..f37ffd72f529 100644
 --- a/Documentation/devicetree/bindings/arm/rockchip.yaml
 +++ b/Documentation/devicetree/bindings/arm/rockchip.yaml
 @@ -75,6 +75,12 @@ properties:

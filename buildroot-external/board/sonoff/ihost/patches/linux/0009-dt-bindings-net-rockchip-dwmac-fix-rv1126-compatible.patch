@@ -1,4 +1,4 @@
-From b6dcff5f21fadcf7b1540437c2edffe9f5b0c005 Mon Sep 17 00:00:00 2001
+From c205ee226a0ae0cb1d1814be4178b5dc56514e8b Mon Sep 17 00:00:00 2001
 From: Anand Moon <anand@edgeble.ai>
 Date: Wed, 11 Jan 2023 17:24:31 +0000
 Subject: [PATCH] dt-bindings: net: rockchip-dwmac: fix rv1126 compatible
@@ -23,7 +23,7 @@ Signed-off-by: Anand Moon <anand@edgeble.ai>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/Documentation/devicetree/bindings/net/rockchip-dwmac.yaml b/Documentation/devicetree/bindings/net/rockchip-dwmac.yaml
-index 42fb72b69..04936632f 100644
+index 42fb72b6909d..04936632fcbb 100644
 --- a/Documentation/devicetree/bindings/net/rockchip-dwmac.yaml
 +++ b/Documentation/devicetree/bindings/net/rockchip-dwmac.yaml
 @@ -49,11 +49,11 @@ properties:

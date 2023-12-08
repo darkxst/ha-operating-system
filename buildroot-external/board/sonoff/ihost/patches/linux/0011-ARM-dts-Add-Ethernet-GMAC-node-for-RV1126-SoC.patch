@@ -1,4 +1,4 @@
-From ea664636520c684fe2902ba7a4692cdce93e71ba Mon Sep 17 00:00:00 2001
+From 19447649a336863533dfa7682d28a379217b2a33 Mon Sep 17 00:00:00 2001
 From: Anand Moon <anand@edgeble.ai>
 Date: Wed, 11 Jan 2023 17:24:33 +0000
 Subject: [PATCH] ARM: dts: Add Ethernet GMAC node for RV1126 SoC
@@ -13,7 +13,7 @@ Signed-off-by: Jagan Teki <jagan@edgeble.ai>
  1 file changed, 49 insertions(+)
 
 diff --git a/arch/arm/boot/dts/rv1126.dtsi b/arch/arm/boot/dts/rv1126.dtsi
-index 1cb43147e..1f07d0a4f 100644
+index 1cb43147e90b..1f07d0a4fa73 100644
 --- a/arch/arm/boot/dts/rv1126.dtsi
 +++ b/arch/arm/boot/dts/rv1126.dtsi
 @@ -332,6 +332,55 @@ timer0: timer@ff660000 {

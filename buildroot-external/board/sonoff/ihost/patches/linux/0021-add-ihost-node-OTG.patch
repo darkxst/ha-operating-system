@@ -1,18 +1,18 @@
-From dfb37577f8e2edc80ee020df6fded48543801661 Mon Sep 17 00:00:00 2001
+From c48c18b2caa2b0d96b3b7488c1eaf56c0b7d5235 Mon Sep 17 00:00:00 2001
 From: Tim Lunn <tim@feathertop.org>
-Date: Wed, 1 Nov 2023 22:04:06 +1100
-Subject: [PATCH] ARM: dts: rockchip: rv1126: Add USB Host, OTG node
+Date: Fri, 8 Dec 2023 17:48:06 +1100
+Subject: [PATCH] add ihost node OTG
 
 ---
- arch/arm/boot/dts/rv1126-sonoff-ihost.dtsi |  54 +++++++++
- arch/arm/boot/dts/rv1126.dtsi              | 122 +++++++++++++++++++++
- 2 files changed, 176 insertions(+)
+ arch/arm/boot/dts/rv1126-sonoff-ihost.dtsi |  54 ++++++++
+ arch/arm/boot/dts/rv1126.dtsi              | 137 +++++++++++++++++++++
+ 2 files changed, 191 insertions(+)
 
 diff --git a/arch/arm/boot/dts/rv1126-sonoff-ihost.dtsi b/arch/arm/boot/dts/rv1126-sonoff-ihost.dtsi
-index 9060795d8..208f20576 100644
+index 543b4ec8d244..e10c512df9b5 100644
 --- a/arch/arm/boot/dts/rv1126-sonoff-ihost.dtsi
 +++ b/arch/arm/boot/dts/rv1126-sonoff-ihost.dtsi
-@@ -13,6 +13,18 @@ chosen {
+@@ -14,6 +14,18 @@ chosen {
  		stdout-path = "serial2:1500000n8";
  	};
  
@@ -31,7 +31,7 @@ index 9060795d8..208f20576 100644
  	vcc5v0_sys: regulator-vcc5v0-sys {
  		compatible = "regulator-fixed";
  		regulator-name = "vcc5v0_sys";
-@@ -316,6 +328,12 @@ pmic_int_l: pmic-int-l {
+@@ -317,6 +329,12 @@ pmic_int_l: pmic-int-l {
  		};
  	};
  
@@ -44,7 +44,7 @@ index 9060795d8..208f20576 100644
  	wifi {
  		wifi_enable_h: wifi-enable-h {
  			rockchip,pins = <1 RK_PD0 RK_FUNC_GPIO &pcfg_pull_none>;
-@@ -375,6 +393,24 @@ &sdmmc {
+@@ -374,6 +392,24 @@ &sdmmc {
  	status = "okay";
  };
  
@@ -69,7 +69,7 @@ index 9060795d8..208f20576 100644
  &uart0 {
  	pinctrl-names = "default";
  	pinctrl-0 = <&uart0_xfer &uart0_ctsn &uart0_rtsn>;
-@@ -407,3 +443,21 @@ &uart4 {
+@@ -406,3 +442,21 @@ &uart4 {
  	pinctrl-0 = <&uart4m2_xfer>;
  	status = "okay";
  };
@@ -92,10 +92,18 @@ index 9060795d8..208f20576 100644
 +	status = "okay";
 +};
 diff --git a/arch/arm/boot/dts/rv1126.dtsi b/arch/arm/boot/dts/rv1126.dtsi
-index 5b4ea29b9..6b30fee43 100644
+index fe26d5d53f3c..9402abebce08 100644
 --- a/arch/arm/boot/dts/rv1126.dtsi
 +++ b/arch/arm/boot/dts/rv1126.dtsi
-@@ -132,6 +132,16 @@ qos_sdio: qos@fe86c000 {
+@@ -21,6 +21,7 @@ / {
+ 
+ 	aliases {
+ 		i2c0 = &i2c0;
++		i2c2 = &i2c2;
+ 		serial0 = &uart0;
+ 		serial1 = &uart1;
+ 		serial2 = &uart2;
+@@ -131,6 +132,16 @@ qos_sdio: qos@fe86c000 {
  		reg = <0xfe86c000 0x20>;
  	};
  
@@ -112,7 +120,7 @@ index 5b4ea29b9..6b30fee43 100644
  	gic: interrupt-controller@feff0000 {
  		compatible = "arm,gic-400";
  		interrupt-controller;
-@@ -177,6 +187,19 @@ power-domain@RV1126_PD_SDIO {
+@@ -176,6 +187,19 @@ power-domain@RV1126_PD_SDIO {
  				pm_qos = <&qos_sdio>;
  				#power-domain-cells = <0>;
  			};
@@ -132,7 +140,28 @@ index 5b4ea29b9..6b30fee43 100644
  		};
  	};
  
-@@ -253,6 +276,51 @@ dmac: dma-controller@ff4e0000 {
+@@ -193,6 +217,20 @@ i2c0: i2c@ff3f0000 {
+ 		status = "disabled";
+ 	};
+ 
++	i2c2: i2c@ff400000 {
++		compatible = "rockchip,rv1126-i2c", "rockchip,rk3399-i2c";
++		reg = <0xff400000 0x1000>;
++		interrupts = <GIC_SPI 6 IRQ_TYPE_LEVEL_HIGH>;
++		rockchip,grf = <&pmugrf>;
++		clocks = <&pmucru CLK_I2C2>, <&pmucru PCLK_I2C2>;
++		clock-names = "i2c", "pclk";
++		pinctrl-names = "default";
++		pinctrl-0 = <&i2c2_xfer>;
++		#address-cells = <1>;
++		#size-cells = <0>;
++		status = "disabled";
++	};
++
+ 	uart1: serial@ff410000 {
+ 		compatible = "rockchip,rv1126-uart", "snps,dw-apb-uart";
+ 		reg = <0xff410000 0x100>;
+@@ -238,6 +276,51 @@ dmac: dma-controller@ff4e0000 {
  		clock-names = "apb_pclk";
  	};
  
@@ -184,7 +213,7 @@ index 5b4ea29b9..6b30fee43 100644
  	uart0: serial@ff560000 {
  		compatible = "rockchip,rv1126-uart", "snps,dw-apb-uart";
  		reg = <0xff560000 0x100>;
-@@ -332,6 +400,60 @@ uart5: serial@ff5a0000 {
+@@ -317,6 +400,60 @@ uart5: serial@ff5a0000 {
  		reg-io-width = <4>;
  		status = "disabled";
  	};

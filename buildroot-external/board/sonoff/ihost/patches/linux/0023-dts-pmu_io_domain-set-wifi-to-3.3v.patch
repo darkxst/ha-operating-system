@@ -1,0 +1,25 @@
+From cce92d6277bfe4b9f0d7d241389d2aa879bfc1fc Mon Sep 17 00:00:00 2001
+From: Tim Lunn <tim@feathertop.org>
+Date: Thu, 7 Dec 2023 10:42:18 +1100
+Subject: [PATCH] dts: pmu_io_domain set wifi to 3.3v
+
+---
+ arch/arm/boot/dts/rv1126-sonoff-ihost.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/arm/boot/dts/rv1126-sonoff-ihost.dtsi b/arch/arm/boot/dts/rv1126-sonoff-ihost.dtsi
+index e10c512df9b5..6b4e4edf3dde 100644
+--- a/arch/arm/boot/dts/rv1126-sonoff-ihost.dtsi
++++ b/arch/arm/boot/dts/rv1126-sonoff-ihost.dtsi
+@@ -347,7 +347,7 @@ &pmu_io_domains {
+ 	pmuio1-supply = <&vcc3v3_sys>;
+ 	vccio1-supply = <&vcc_1v8>;
+ 	vccio2-supply = <&vccio_sd>;
+-	vccio3-supply = <&vcc_1v8>;
++	vccio3-supply = <&vcc3v3_sd>;
+ 	vccio4-supply = <&vcc_dovdd>;
+ 	vccio5-supply = <&vcc_1v8>;
+ 	vccio6-supply = <&vcc_1v8>;
+-- 
+2.40.1
+

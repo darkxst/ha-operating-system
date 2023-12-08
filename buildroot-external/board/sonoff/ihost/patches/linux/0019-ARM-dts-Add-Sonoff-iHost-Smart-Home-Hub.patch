@@ -1,18 +1,18 @@
-From 9a56c84a95523bc6b8dbe8795873eef8250d5845 Mon Sep 17 00:00:00 2001
+From 1cb183d18f145221d31399029c0c324414c6f464 Mon Sep 17 00:00:00 2001
 From: Tim Lunn <tim@feathertop.org>
-Date: Tue, 31 Oct 2023 14:38:24 +1100
+Date: Fri, 8 Dec 2023 20:19:45 +1100
 Subject: [PATCH] ARM: dts: Add Sonoff iHost Smart Home Hub
 
 Sonoff iHost is gateway device designed to provide a Smart Home Hub,
 it is based on Rockchip RV1126. There is also a version with 2GB RAM
-based off the RV1109.
+based off the RV1109 dual core SoC.
 
 Features:
 - Rockchip RV1126
 - 4GB DDR4
 - 8GB eMMC
 - microSD slot
-- Ethernet
+- RMII Ethernet PHY
 - 1x USB 2.0 Host
 - 1x USB 2.0 OTG
 - Realtek RTL8723DS WiFi/BT
@@ -20,24 +20,23 @@ Features:
 - Speaker/Microphone
 
 This patch adds the initial device tree for this device, it is largely
-based off the device trees for Edgeble Neu2 and downstream Rockchip
-rv1126-evb-v13.
+based off the device trees for mainline Edgeble Neu2 and downstream
+Rockchip rv1126-evb-v13 configs. It has been adapted with relevant
+peripheral and GPIO pins for the iHost.
 
 Signed-off-by: Tim Lunn <tim@feathertop.org>
 ---
  arch/arm/boot/dts/Makefile                 |   2 +
  arch/arm/boot/dts/rv1109-sonoff-ihost.dts  |  13 +
- arch/arm/boot/dts/rv1109.dtsi              |  23 ++
  arch/arm/boot/dts/rv1126-sonoff-ihost.dts  |  13 +
- arch/arm/boot/dts/rv1126-sonoff-ihost.dtsi | 409 +++++++++++++++++++++
- 5 files changed, 460 insertions(+)
+ arch/arm/boot/dts/rv1126-sonoff-ihost.dtsi | 408 +++++++++++++++++++++
+ 4 files changed, 436 insertions(+)
  create mode 100644 arch/arm/boot/dts/rv1109-sonoff-ihost.dts
- create mode 100644 arch/arm/boot/dts/rv1109.dtsi
  create mode 100644 arch/arm/boot/dts/rv1126-sonoff-ihost.dts
  create mode 100644 arch/arm/boot/dts/rv1126-sonoff-ihost.dtsi
 
 diff --git a/arch/arm/boot/dts/Makefile b/arch/arm/boot/dts/Makefile
-index c78b44386..fb11278f2 100644
+index c78b44386221..fb11278f2ef7 100644
 --- a/arch/arm/boot/dts/Makefile
 +++ b/arch/arm/boot/dts/Makefile
 @@ -1124,7 +1124,9 @@ dtb-$(CONFIG_ARCH_RENESAS) += \
@@ -52,7 +51,7 @@ index c78b44386..fb11278f2 100644
  	rk3066a-bqcurie2.dtb \
 diff --git a/arch/arm/boot/dts/rv1109-sonoff-ihost.dts b/arch/arm/boot/dts/rv1109-sonoff-ihost.dts
 new file mode 100644
-index 000000000..5bae0ea1f
+index 000000000000..3bfdb00ac8e1
 --- /dev/null
 +++ b/arch/arm/boot/dts/rv1109-sonoff-ihost.dts
 @@ -0,0 +1,13 @@
@@ -69,39 +68,9 @@ index 000000000..5bae0ea1f
 +	model = "Sonoff iHost 2G";
 +	compatible = "itead,sonoff-ihost", "rockchip,rv1109";
 +};
-\ No newline at end of file
-diff --git a/arch/arm/boot/dts/rv1109.dtsi b/arch/arm/boot/dts/rv1109.dtsi
-new file mode 100644
-index 000000000..9cbaa08ab
---- /dev/null
-+++ b/arch/arm/boot/dts/rv1109.dtsi
-@@ -0,0 +1,23 @@
-+// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
-+/*
-+ * Copyright (c) 2019 Fuzhou Rockchip Electronics Co., Ltd.
-+ */
-+
-+/dts-v1/;
-+
-+#include "rv1126.dtsi"
-+
-+/ {
-+	compatible = "rockchip,rv1109";
-+
-+	cpus {
-+		/delete-node/ cpu@f02;
-+		/delete-node/ cpu@f03;
-+	};
-+
-+	arm-pmu {
-+		interrupts = <GIC_SPI 123 IRQ_TYPE_LEVEL_HIGH>,
-+			     <GIC_SPI 124 IRQ_TYPE_LEVEL_HIGH>;
-+		interrupt-affinity = <&cpu0>, <&cpu1>;
-+	};
-+};
 diff --git a/arch/arm/boot/dts/rv1126-sonoff-ihost.dts b/arch/arm/boot/dts/rv1126-sonoff-ihost.dts
 new file mode 100644
-index 000000000..b25bf093f
+index 000000000000..106d1e42f285
 --- /dev/null
 +++ b/arch/arm/boot/dts/rv1126-sonoff-ihost.dts
 @@ -0,0 +1,13 @@
@@ -118,13 +87,12 @@ index 000000000..b25bf093f
 +	model = "Sonoff iHost 4G";
 +	compatible = "itead,sonoff-ihost", "rockchip,rv1126";
 +};
-\ No newline at end of file
 diff --git a/arch/arm/boot/dts/rv1126-sonoff-ihost.dtsi b/arch/arm/boot/dts/rv1126-sonoff-ihost.dtsi
 new file mode 100644
-index 000000000..9060795d8
+index 000000000000..543b4ec8d244
 --- /dev/null
 +++ b/arch/arm/boot/dts/rv1126-sonoff-ihost.dtsi
-@@ -0,0 +1,409 @@
+@@ -0,0 +1,408 @@
 +// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
 +/*
 + * Copyright (c) 2020 Rockchip Electronics Co., Ltd.
@@ -133,6 +101,7 @@ index 000000000..9060795d8
 +
 +/ {
 +	aliases {
++		ethernet0 = &gmac;
 +		mmc0 = &emmc;
 +	};
 +
@@ -483,8 +452,6 @@ index 000000000..9060795d8
 +	vmmc-supply = <&vcc3v3_sys>;
 +	vqmmc-supply = <&vcc_1v8>;
 +	status = "okay";
-+	#address-cells = <1>;
-+	#size-cells = <0>;
 +};
 +
 +&sdmmc {

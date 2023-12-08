@@ -1,4 +1,4 @@
-From 2af0292d4274ded9de134b20439eee9aad69bfdc Mon Sep 17 00:00:00 2001
+From 9f0f7ff124dc644d426743816278da513d943dc6 Mon Sep 17 00:00:00 2001
 From: Tim Lunn <tim@feathertop.org>
 Date: Tue, 31 Oct 2023 20:31:06 +1100
 Subject: [PATCH] ARM: dts: rockchip: rv1126: Split up rgmii1 pinctrl
@@ -13,7 +13,7 @@ Signed-off-by: Tim Lunn <tim@feathertop.org>
  2 files changed, 34 insertions(+), 14 deletions(-)
 
 diff --git a/arch/arm/boot/dts/rv1126-edgeble-neu2-io.dts b/arch/arm/boot/dts/rv1126-edgeble-neu2-io.dts
-index 3340fc3f0..e0404d4fb 100644
+index 3340fc3f0739..e0404d4fb1fd 100644
 --- a/arch/arm/boot/dts/rv1126-edgeble-neu2-io.dts
 +++ b/arch/arm/boot/dts/rv1126-edgeble-neu2-io.dts
 @@ -32,7 +32,7 @@ &gmac {
@@ -26,7 +26,7 @@ index 3340fc3f0..e0404d4fb 100644
  	rx_delay = <0x1a>;
  	status = "okay";
 diff --git a/arch/arm/boot/dts/rv1126-pinctrl.dtsi b/arch/arm/boot/dts/rv1126-pinctrl.dtsi
-index d6f33b060..1998246fc 100644
+index cd81000a65d5..92229bc548db 100644
 --- a/arch/arm/boot/dts/rv1126-pinctrl.dtsi
 +++ b/arch/arm/boot/dts/rv1126-pinctrl.dtsi
 @@ -81,36 +81,56 @@ i2c2_xfer: i2c2-xfer {

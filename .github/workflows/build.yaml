@@ -88,7 +88,7 @@ jobs:
           fi
 
       - name: Create build matrix
-        uses: actions/github-script@v6
+        uses: actions/github-script@v7
         id: generate_matrix
         with:
           script: |
@@ -117,7 +117,7 @@ jobs:
             username: ${{ github.repository_owner }}
             password: ${{ secrets.GITHUB_TOKEN }}
       - name: Build and Push
-        uses: docker/build-push-action@v5.0.0
+        uses: docker/build-push-action@v5.1.0
         id: build_haos_builder
         with:
           context: .
@@ -174,13 +174,7 @@ jobs:
           sudo mkdir /mnt/cache
           sudo chown -R runner:runner /mnt/cache
 
-      - name: Cache downloads
-        uses: actions/cache/restore@v3
-        with:
-          path: /mnt/cache/dl
-          key: haos-dl
-
-      - name: Cache object files
+      - name: "Restore cache: object files"
         uses: actions/cache/restore@v3
         with:
           path: /mnt/cache/cc
@@ -210,13 +204,16 @@ jobs:
           upload_url: ${{ github.event.release.upload_url }}
           asset_path: output/images/haos_*
 
-      - name: Cache downloads
-        uses: actions/cache/save@v3
-        with:
-          path: /mnt/cache/dl
-          key: haos-dl-${{ github.run_id }}
+      - name: Print cache stats
+        run: |
+          echo "Cache size: $(du -sh /mnt/cache/cc)"
+          echo "Files total: $(find /mnt/cache/cc -mindepth 1 -type f | wc -l)"
+          echo "Old files to remove: $(find /mnt/cache/cc -mindepth 1 -type f -not -anewer output/Makefile | wc -l)"
+          find /mnt/cache/cc -mindepth 1 -type f -not -anewer output/Makefile -delete
+          echo "Cache size after pruning: $(du -sh /mnt/cache/cc)"
 
-      - name: Cache build
+      - name: "Save cache: object files"
+        if: github.ref == 'refs/heads/dev'
         uses: actions/cache/save@v3
         with:
           path: /mnt/cache/cc
@@ -230,14 +227,39 @@ jobs:
           path: |
             output/images/haos_ova*.qcow2.xz
 
+  test:
+    name: Test OS image
+    needs: [ build, prepare ]
+    uses: ./.github/workflows/test.yaml
+
+  update_index:
+    name: Update artifacts index
+    if: ${{ github.event_name != 'release' }}
+    needs: [ build, prepare ]
+    uses: home-assistant/operating-system/.github/workflows/artifacts-index.yaml@dev
+    with:
+      version: ${{ needs.prepare.outputs.version_full }}
+    secrets:
+      R2_OS_ARTIFACTS_ID: ${{ secrets.R2_OS_ARTIFACTS_ID }}
+      R2_OS_ARTIFACTS_KEY: ${{ secrets.R2_OS_ARTIFACTS_KEY }}
+      R2_OS_ARTIFACTS_BUCKET: ${{ secrets.R2_OS_ARTIFACTS_BUCKET }}
+      R2_OS_ARTIFACTS_ENDPOINT: ${{ secrets.R2_OS_ARTIFACTS_ENDPOINT }}
+      CF_ZONE: ${{ secrets.CF_ZONE }}
+      CF_PURGE_TOKEN: ${{ secrets.CF_PURGE_TOKEN }}
+
   bump_version:
     name: Bump ${{ needs.prepare.outputs.channel }} channel version
     if: ${{ github.repository == 'home-assistant/operating-system' }}
-    environment: "${{ github.event_name == 'release' && needs.prepare.outputs.channel || '' }}"
+    environment: ${{ needs.prepare.outputs.channel }}
     needs: [ build, prepare ]
     runs-on: ubuntu-22.04
 
     steps:
+    - name: Checkout source
+      uses: actions/checkout@v4
+      with:
+        persist-credentials: false
+
     - name: Initialize git
       uses: home-assistant/actions/helpers/git-init@master
       with:
@@ -252,3 +274,19 @@ jobs:
         key-description: "Home Assistant OS"
         version: ${{ needs.prepare.outputs.version_full }}
         channel: ${{ needs.prepare.outputs.channel }}
+
+    - name: Bump Home Assistant OS beta channel version on stable release
+      if: ${{ needs.prepare.outputs.channel == 'stable' }}
+      uses: home-assistant/actions/helpers/version-push@master
+      with:
+        key: "hassos[]"
+        key-description: "Home Assistant OS"
+        version: ${{ needs.prepare.outputs.version_full }}
+        channel: beta
+
+    - name: Bump stable Home Assistant version for RPi Imager
+      if: ${{ github.event_name == 'release' && needs.prepare.outputs.channel == 'stable' }}
+      uses: "./.github/actions/bump-rpi-imager-version"
+      with:
+        version: ${{ needs.prepare.outputs.version_full }}
+        release-date: ${{ github.event.release.published_at }}

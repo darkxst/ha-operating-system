@@ -1,9 +1,10 @@
-From 16b8504be119cc75078999b6eab7ed0b4f5b2b02 Mon Sep 17 00:00:00 2001
+From 65b86b9e74079b89246da1058fb9ac4578753739 Mon Sep 17 00:00:00 2001
 From: Tim Lunn <tim@feathertop.org>
 Date: Tue, 31 Oct 2023 14:51:47 +1100
 Subject: [PATCH] ARM: dts: rockchip: rv1126: Add alternate UART pins
 
-Add uart3m2_xfer and uart4m2_xfer pins for Rockchip RV1126
+Add uart3m2_xfer and uart4m2_xfer pins for Rockchip RV1126. These are
+used as serial ports for the indicator and Zigbee radio on the iHost.
 
 Signed-off-by: Tim Lunn <tim@feathertop.org>
 ---
@@ -11,7 +12,7 @@ Signed-off-by: Tim Lunn <tim@feathertop.org>
  1 file changed, 16 insertions(+)
 
 diff --git a/arch/arm/boot/dts/rv1126-pinctrl.dtsi b/arch/arm/boot/dts/rv1126-pinctrl.dtsi
-index b77021772..2acd7c0e5 100644
+index b77021772781..2acd7c0e507b 100644
 --- a/arch/arm/boot/dts/rv1126-pinctrl.dtsi
 +++ b/arch/arm/boot/dts/rv1126-pinctrl.dtsi
 @@ -229,6 +229,14 @@ uart3m0_xfer: uart3m0-xfer {

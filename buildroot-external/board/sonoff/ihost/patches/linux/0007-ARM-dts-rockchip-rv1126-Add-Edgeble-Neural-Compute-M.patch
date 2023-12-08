@@ -1,4 +1,4 @@
-From 3de95c93e5aa7b86deb04125988fcb2079e65088 Mon Sep 17 00:00:00 2001
+From 0987065966d5184ecb8255bc96150bc8b9884925 Mon Sep 17 00:00:00 2001
 From: Jagan Teki <jagan@edgeble.ai>
 Date: Tue, 29 Nov 2022 13:24:23 +0530
 Subject: [PATCH] ARM: dts: rockchip: rv1126: Add Edgeble Neural Compute Module
@@ -33,7 +33,7 @@ Signed-off-by: Jagan Teki <jagan@edgeble.ai>
 
 diff --git a/arch/arm/boot/dts/rv1126-edgeble-neu2.dtsi b/arch/arm/boot/dts/rv1126-edgeble-neu2.dtsi
 new file mode 100644
-index 000000000..7db3f8bb5
+index 000000000000..7db3f8bb581d
 --- /dev/null
 +++ b/arch/arm/boot/dts/rv1126-edgeble-neu2.dtsi
 @@ -0,0 +1,338 @@

@@ -1,4 +1,4 @@
-From 72b0909ca9a10ff215e03465a60904685e144cc5 Mon Sep 17 00:00:00 2001
+From 41d0ff4ecd889707d956ad434e1596628fb93538 Mon Sep 17 00:00:00 2001
 From: Jagan Teki <jagan@edgeble.ai>
 Date: Tue, 29 Nov 2022 13:24:18 +0530
 Subject: [PATCH] dt-bindings: timer: rk-timer: Add rktimer for rv1126
@@ -12,7 +12,7 @@ Signed-off-by: Jagan Teki <jagan@edgeble.ai>
  1 file changed, 1 insertion(+)
 
 diff --git a/Documentation/devicetree/bindings/timer/rockchip,rk-timer.yaml b/Documentation/devicetree/bindings/timer/rockchip,rk-timer.yaml
-index dc3bc1e62..a6221222e 100644
+index dc3bc1e62fe9..a6221222e948 100644
 --- a/Documentation/devicetree/bindings/timer/rockchip,rk-timer.yaml
 +++ b/Documentation/devicetree/bindings/timer/rockchip,rk-timer.yaml
 @@ -17,6 +17,7 @@ properties:

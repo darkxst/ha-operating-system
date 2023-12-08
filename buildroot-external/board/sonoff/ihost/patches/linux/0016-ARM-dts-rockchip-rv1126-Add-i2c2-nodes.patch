@@ -1,4 +1,4 @@
-From c1df3df0a1aa6acf636d4da2b0b17c7ff211cb4e Mon Sep 17 00:00:00 2001
+From 4904b9c51e990e21b1bd8a48de178e3edd5deff7 Mon Sep 17 00:00:00 2001
 From: Tim Lunn <tim@feathertop.org>
 Date: Tue, 31 Oct 2023 15:25:18 +1100
 Subject: [PATCH] ARM: dts: rockchip: rv1126: Add i2c2 nodes
@@ -8,11 +8,10 @@ Add i2c2 node and i2c2_xfer pinctrl for Rockchip RV1126
 Signed-off-by: Tim Lunn <tim@feathertop.org>
 ---
  arch/arm/boot/dts/rv1126-pinctrl.dtsi | 10 ++++++++++
- arch/arm/boot/dts/rv1126.dtsi         | 15 +++++++++++++++
- 2 files changed, 25 insertions(+)
+ 1 file changed, 10 insertions(+)
 
 diff --git a/arch/arm/boot/dts/rv1126-pinctrl.dtsi b/arch/arm/boot/dts/rv1126-pinctrl.dtsi
-index 2acd7c0e5..d6f33b060 100644
+index 2acd7c0e507b..cd81000a65d5 100644
 --- a/arch/arm/boot/dts/rv1126-pinctrl.dtsi
 +++ b/arch/arm/boot/dts/rv1126-pinctrl.dtsi
 @@ -69,6 +69,16 @@ i2c0_xfer: i2c0-xfer {
@@ -23,7 +22,7 @@ index 2acd7c0e5..d6f33b060 100644
 +		/omit-if-no-ref/
 +		i2c2_xfer: i2c2-xfer {
 +			rockchip,pins =
-+				/* i2c2_scl */
++	 			/* i2c2_scl */
 +				<0 RK_PC2 1 &pcfg_pull_none_drv_level_0_smt>,
 +				/* i2c2_sda */
 +				<0 RK_PC3 1 &pcfg_pull_none_drv_level_0_smt>;
@@ -32,39 +31,6 @@ index 2acd7c0e5..d6f33b060 100644
  	rgmii {
  		/omit-if-no-ref/
  		rgmiim1_pins: rgmiim1-pins {
-diff --git a/arch/arm/boot/dts/rv1126.dtsi b/arch/arm/boot/dts/rv1126.dtsi
-index 8321b2c67..6ef34c33c 100644
---- a/arch/arm/boot/dts/rv1126.dtsi
-+++ b/arch/arm/boot/dts/rv1126.dtsi
-@@ -21,6 +21,7 @@ / {
- 
- 	aliases {
- 		i2c0 = &i2c0;
-+		i2c2 = &i2c2;
- 		serial0 = &uart0;
- 		serial1 = &uart1;
- 		serial2 = &uart2;
-@@ -192,6 +193,20 @@ i2c0: i2c@ff3f0000 {
- 		status = "disabled";
- 	};
- 
-+	i2c2: i2c@ff400000 {
-+		compatible = "rockchip,rv1126-i2c", "rockchip,rk3399-i2c";
-+		reg = <0xff400000 0x1000>;
-+		interrupts = <GIC_SPI 6 IRQ_TYPE_LEVEL_HIGH>;
-+		rockchip,grf = <&pmugrf>;
-+		clocks = <&pmucru CLK_I2C2>, <&pmucru PCLK_I2C2>;
-+		clock-names = "i2c", "pclk";
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&i2c2_xfer>;
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+		status = "disabled";
-+	};
-+
- 	uart1: serial@ff410000 {
- 		compatible = "rockchip,rv1126-uart", "snps,dw-apb-uart";
- 		reg = <0xff410000 0x100>;
 -- 
 2.40.1
 

@@ -1,4 +1,4 @@
-From 27559f3955b00ce94550a689e6ae9efbb82d3b58 Mon Sep 17 00:00:00 2001
+From 37972c798751e8e0dfafab3aae9c5dd086507985 Mon Sep 17 00:00:00 2001
 From: Jagan Teki <jagan@edgeble.ai>
 Date: Tue, 29 Nov 2022 13:24:17 +0530
 Subject: [PATCH] dt-bindings: arm: rockchip: Add pmu compatible for rv1126
@@ -12,7 +12,7 @@ Signed-off-by: Jagan Teki <jagan@edgeble.ai>
  1 file changed, 2 insertions(+)
 
 diff --git a/Documentation/devicetree/bindings/arm/rockchip/pmu.yaml b/Documentation/devicetree/bindings/arm/rockchip/pmu.yaml
-index 8c73bc7f4..b79c81cd9 100644
+index 8c73bc7f4009..b79c81cd9f0e 100644
 --- a/Documentation/devicetree/bindings/arm/rockchip/pmu.yaml
 +++ b/Documentation/devicetree/bindings/arm/rockchip/pmu.yaml
 @@ -27,6 +27,7 @@ select:

@@ -1,20 +1,20 @@
-From c013c404e63f734f89934a44a1979bcd1261328f Mon Sep 17 00:00:00 2001
+From d3a83898f71c6f82d76762426911bbc17fe8a83a Mon Sep 17 00:00:00 2001
 From: Tim Lunn <tim@feathertop.org>
 Date: Tue, 31 Oct 2023 14:59:06 +1100
 Subject: [PATCH] ARM: dts: rockchip: rv1126: Serial aliases
 
-Add serial aliases for uart nodes
+Add serial aliases for uart nodes so that serial devices are created
 
 Signed-off-by: Tim Lunn <tim@feathertop.org>
 ---
- arch/arm/boot/dts/rv1126.dtsi | 5 +++++
- 1 file changed, 5 insertions(+)
+ arch/arm/boot/dts/rv1126.dtsi | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
 diff --git a/arch/arm/boot/dts/rv1126.dtsi b/arch/arm/boot/dts/rv1126.dtsi
-index 1f07d0a4f..8321b2c67 100644
+index 1f07d0a4fa73..fe26d5d53f3c 100644
 --- a/arch/arm/boot/dts/rv1126.dtsi
 +++ b/arch/arm/boot/dts/rv1126.dtsi
-@@ -21,6 +21,11 @@ / {
+@@ -21,6 +21,12 @@ / {
  
  	aliases {
  		i2c0 = &i2c0;
@@ -23,6 +23,7 @@ index 1f07d0a4f..8321b2c67 100644
 +		serial2 = &uart2;
 +		serial3 = &uart3;
 +		serial4 = &uart4;
++		serial5 = &uart5;
  	};
  
  	cpus {

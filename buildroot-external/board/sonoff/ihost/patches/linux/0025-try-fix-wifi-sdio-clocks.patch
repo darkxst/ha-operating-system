@@ -1,0 +1,43 @@
+From 2be019a43e919bc658bf418f80395d38b98961a7 Mon Sep 17 00:00:00 2001
+From: Tim Lunn <tim@feathertop.org>
+Date: Fri, 8 Dec 2023 22:01:53 +1100
+Subject: [PATCH] try fix wifi sdio clocks
+
+---
+ arch/arm/boot/dts/rv1126-sonoff-ihost.dtsi | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
+
+diff --git a/arch/arm/boot/dts/rv1126-sonoff-ihost.dtsi b/arch/arm/boot/dts/rv1126-sonoff-ihost.dtsi
+index 0ccb55c40a85..9a4b020033d1 100644
+--- a/arch/arm/boot/dts/rv1126-sonoff-ihost.dtsi
++++ b/arch/arm/boot/dts/rv1126-sonoff-ihost.dtsi
+@@ -339,7 +339,7 @@ host_vbus_drv: host-vbus-drv {
+ 
+ 	wifi {
+ 		wifi_enable_h: wifi-enable-h {
+-			rockchip,pins = <1 RK_PD0 RK_FUNC_GPIO &pcfg_pull_none>;
++			rockchip,pins = <1 RK_PD0 RK_FUNC_GPIO &pcfg_pull_down>;
+ 		};
+ 	};
+ };
+@@ -367,13 +367,15 @@ &sdio {
+ 	cap-sd-highspeed;
+ 	cap-sdio-irq;
+ 	keep-power-in-suspend;
+-	max-frequency = <100000000>;
++	max-frequency = <50000000>;
+ 	mmc-pwrseq = <&sdio_pwrseq>;
+ 	non-removable;
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&sdmmc1_clk &sdmmc1_cmd &sdmmc1_bus4>;
+ 	rockchip,default-sample-phase = <90>;
+-	sd-uhs-sdr104;
++	sd-uhs-sdr12;
++	sd-uhs-sdr25;
++	sd-uhs-sdr50;
+ 	vmmc-supply = <&vcc3v3_sys>;
+ 	vqmmc-supply = <&vcc_1v8>;
+ 	status = "okay";
+-- 
+2.40.1
+

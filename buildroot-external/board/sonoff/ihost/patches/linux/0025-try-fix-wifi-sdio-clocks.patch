@@ -1,14 +1,14 @@
-From 2be019a43e919bc658bf418f80395d38b98961a7 Mon Sep 17 00:00:00 2001
+From 28aa80a449c60097a226876d9a8ab25753435918 Mon Sep 17 00:00:00 2001
 From: Tim Lunn <tim@feathertop.org>
 Date: Fri, 8 Dec 2023 22:01:53 +1100
 Subject: [PATCH] try fix wifi sdio clocks
 
 ---
- arch/arm/boot/dts/rv1126-sonoff-ihost.dtsi | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ arch/arm/boot/dts/rv1126-sonoff-ihost.dtsi | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
 diff --git a/arch/arm/boot/dts/rv1126-sonoff-ihost.dtsi b/arch/arm/boot/dts/rv1126-sonoff-ihost.dtsi
-index 0ccb55c40a85..9a4b020033d1 100644
+index 0ccb55c40a85..3678ca9df038 100644
 --- a/arch/arm/boot/dts/rv1126-sonoff-ihost.dtsi
 +++ b/arch/arm/boot/dts/rv1126-sonoff-ihost.dtsi
 @@ -339,7 +339,7 @@ host_vbus_drv: host-vbus-drv {
@@ -20,12 +20,16 @@ index 0ccb55c40a85..9a4b020033d1 100644
  		};
  	};
  };
-@@ -367,13 +367,15 @@ &sdio {
- 	cap-sd-highspeed;
+@@ -364,16 +364,18 @@ &saradc {
+ 
+ &sdio {
+ 	bus-width = <4>;
+-	cap-sd-highspeed;
++	//cap-sd-highspeed;
  	cap-sdio-irq;
  	keep-power-in-suspend;
 -	max-frequency = <100000000>;
-+	max-frequency = <50000000>;
++	max-frequency = <25000000>;
  	mmc-pwrseq = <&sdio_pwrseq>;
  	non-removable;
  	pinctrl-names = "default";

@@ -3,6 +3,6 @@
     "id": "ihost",
     "defconfig": "ihost",
     "architecture": "arm",
-    "label": "board/ihostr"
+    "label": "board/ihost"
   }
 ]

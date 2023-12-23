@@ -1,4 +1,4 @@
-From d3855fe5a2d998790de2c138ce6d4f26366b6ceb Mon Sep 17 00:00:00 2001
+From 892f00c89d586acc004167d5450cb3cec59a31d5 Mon Sep 17 00:00:00 2001
 From: Anand Moon <anand@edgeble.ai>
 Date: Wed, 11 Jan 2023 17:24:34 +0000
 Subject: [PATCH] ARM: dts: rockchip: rv1126: Enable Ethernet for Neu2-IO
@@ -14,7 +14,7 @@ Signed-off-by: Anand Moon <anand@edgeble.ai>
  1 file changed, 37 insertions(+)
 
 diff --git a/arch/arm/boot/dts/rv1126-edgeble-neu2-io.dts b/arch/arm/boot/dts/rv1126-edgeble-neu2-io.dts
-index dded0a12f..3340fc3f0 100644
+index dded0a12f0cd..3340fc3f0739 100644
 --- a/arch/arm/boot/dts/rv1126-edgeble-neu2-io.dts
 +++ b/arch/arm/boot/dts/rv1126-edgeble-neu2-io.dts
 @@ -22,6 +22,43 @@ chosen {

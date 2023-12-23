@@ -1,4 +1,4 @@
-From 03bc320c14ff7b7ba195199f8c347092551cdc6d Mon Sep 17 00:00:00 2001
+From b36ac068eba9b2db075c4f64d038a172d03581f6 Mon Sep 17 00:00:00 2001
 From: Tim Lunn <tim@feathertop.org>
 Date: Sat, 7 Oct 2023 10:57:48 +1100
 Subject: [PATCH] Port Naneng USB2 phy from Rockchip BSP kernel
@@ -18,7 +18,7 @@ Subject: [PATCH] Port Naneng USB2 phy from Rockchip BSP kernel
 
 diff --git a/Documentation/devicetree/bindings/phy/phy-rockchip-naneng-usb2.txt b/Documentation/devicetree/bindings/phy/phy-rockchip-naneng-usb2.txt
 new file mode 100644
-index 000000000..b54fbfff2
+index 000000000000..b54fbfff2821
 --- /dev/null
 +++ b/Documentation/devicetree/bindings/phy/phy-rockchip-naneng-usb2.txt
 @@ -0,0 +1,74 @@
@@ -97,7 +97,7 @@ index 000000000..b54fbfff2
 +	};
 +};
 diff --git a/drivers/extcon/extcon.c b/drivers/extcon/extcon.c
-index 7141dd0d4..77d7ec98c 100644
+index 7141dd0d407d..77d7ec98c256 100644
 --- a/drivers/extcon/extcon.c
 +++ b/drivers/extcon/extcon.c
 @@ -52,6 +52,12 @@ static const struct __extcon_info {
@@ -114,7 +114,7 @@ index 7141dd0d4..77d7ec98c 100644
  	[EXTCON_CHG_USB_SDP] = {
  		.type = EXTCON_TYPE_CHG | EXTCON_TYPE_USB,
 diff --git a/drivers/phy/rockchip/Kconfig b/drivers/phy/rockchip/Kconfig
-index 94360fc96..114d847e2 100644
+index 94360fc96a6f..114d847e2acb 100644
 --- a/drivers/phy/rockchip/Kconfig
 +++ b/drivers/phy/rockchip/Kconfig
 @@ -74,6 +74,17 @@ config PHY_ROCKCHIP_NANENG_COMBO_PHY
@@ -136,7 +136,7 @@ index 94360fc96..114d847e2 100644
  	tristate "Rockchip PCIe PHY Driver"
  	depends on (ARCH_ROCKCHIP && OF) || COMPILE_TEST
 diff --git a/drivers/phy/rockchip/Makefile b/drivers/phy/rockchip/Makefile
-index 7eab12923..dcb2c2285 100644
+index 7eab129230d1..dcb2c2285f5b 100644
 --- a/drivers/phy/rockchip/Makefile
 +++ b/drivers/phy/rockchip/Makefile
 @@ -7,6 +7,7 @@ obj-$(CONFIG_PHY_ROCKCHIP_INNO_DSIDPHY)	+= phy-rockchip-inno-dsidphy.o
@@ -149,7 +149,7 @@ index 7eab12923..dcb2c2285 100644
  obj-$(CONFIG_PHY_ROCKCHIP_TYPEC)	+= phy-rockchip-typec.o
 diff --git a/drivers/phy/rockchip/phy-rockchip-naneng-usb2.c b/drivers/phy/rockchip/phy-rockchip-naneng-usb2.c
 new file mode 100644
-index 000000000..fcc2b9531
+index 000000000000..fcc2b9531c34
 --- /dev/null
 +++ b/drivers/phy/rockchip/phy-rockchip-naneng-usb2.c
 @@ -0,0 +1,1934 @@
@@ -2088,7 +2088,7 @@ index 000000000..fcc2b9531
 +MODULE_DESCRIPTION("Rockchip USB2.0 Naneng PHY driver");
 +MODULE_LICENSE("GPL v2");
 diff --git a/include/linux/extcon.h b/include/linux/extcon.h
-index 3c45c3846..1ba671fb9 100644
+index 3c45c3846fe9..1ba671fb92bd 100644
 --- a/include/linux/extcon.h
 +++ b/include/linux/extcon.h
 @@ -37,6 +37,7 @@
@@ -2101,7 +2101,7 @@ index 3c45c3846..1ba671fb9 100644
   * Charging external connector
 diff --git a/include/linux/wakelock.h b/include/linux/wakelock.h
 new file mode 100644
-index 000000000..7b4825ba9
+index 000000000000..7b4825ba9521
 --- /dev/null
 +++ b/include/linux/wakelock.h
 @@ -0,0 +1,76 @@

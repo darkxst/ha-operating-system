@@ -1,4 +1,4 @@
-From b56c81da717ed7a527742845f308e6b00e0ca89a Mon Sep 17 00:00:00 2001
+From 7e21dd501a5e193391ec1d497bc5142ecf0ed15e Mon Sep 17 00:00:00 2001
 From: Jagan Teki <jagan@edgeble.ai>
 Date: Tue, 29 Nov 2022 13:24:19 +0530
 Subject: [PATCH] ARM: dts: rockchip: Add Rockchip RV1126 pinctrl
@@ -19,7 +19,7 @@ Signed-off-by: Jagan Teki <jagan@edgeble.ai>
  create mode 100644 arch/arm/boot/dts/rv1126-pinctrl.dtsi
 
 diff --git a/MAINTAINERS b/MAINTAINERS
-index 07a9c274c..0a5615864 100644
+index 07a9c274c0e2..0a5615864660 100644
 --- a/MAINTAINERS
 +++ b/MAINTAINERS
 @@ -2740,7 +2740,7 @@ F:	Documentation/devicetree/bindings/i2c/i2c-rk3x.yaml
@@ -33,7 +33,7 @@ index 07a9c274c..0a5615864 100644
  F:	drivers/*/*rockchip*
 diff --git a/arch/arm/boot/dts/rv1126-pinctrl.dtsi b/arch/arm/boot/dts/rv1126-pinctrl.dtsi
 new file mode 100644
-index 000000000..4bc419cc1
+index 000000000000..4bc419cc1210
 --- /dev/null
 +++ b/arch/arm/boot/dts/rv1126-pinctrl.dtsi
 @@ -0,0 +1,211 @@

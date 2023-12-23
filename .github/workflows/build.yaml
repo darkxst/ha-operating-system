@@ -11,6 +11,11 @@ on:
         description: 'List of boards to build (comma separated identifiers)'
         required: false
         type: string
+      publish:
+        description: 'Publish build artifacts to R2 (not applicable to forks)'
+        required: true
+        type: boolean
+        default: true
 
 env:
   PYTHON_VERSION: "3.10"
@@ -30,18 +35,39 @@ jobs:
       channel: ${{ steps.channel.outputs.channel }}
       matrix: ${{ steps.generate_matrix.outputs.result }}
       build_container_image: ghcr.io/${{ github.repository_owner }}/haos-builder@${{ steps.build_haos_builder.outputs.digest }}
+      publish_build: ${{ steps.check_publish.outputs.publish_build }}
     steps:
       - name: Checkout source
         uses: actions/checkout@v4
         with:
           persist-credentials: false
 
+      - name: Check if build should be published
+        id: check_publish
+        env:
+          PUBLISH_FLAG: ${{ inputs.publish }}
+        run: |
+          if [ "${{ github.repository }}" == "home-assistant/operating-system" ]; then
+            if [ "${PUBLISH_FLAG}" != "true" ] && [ "${{ github.event_name }}" != "release" ]; then
+              echo "publish_build=false" >> "$GITHUB_OUTPUT"
+            else
+              echo "publish_build=true" >> "$GITHUB_OUTPUT"
+            fi
+          else
+            echo "publish_build=false" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Generate development version
         shell: bash
         id: version_dev
         if: ${{ github.event_name != 'release' }}
+        env:
+          PUBLISH_BUILD: ${{ steps.check_publish.outputs.publish_build }}
         run: |
           version_dev="dev$(date --utc +'%Y%m%d')"
+          if [ "${{ env.PUBLISH_BUILD }}" != "true" ]; then
+            version_dev="dev$(date +%s)"
+          fi
           echo "Development version \"${version_dev}\""
           echo "version_dev=${version_dev}" >> $GITHUB_OUTPUT
 
@@ -88,7 +114,7 @@ jobs:
           fi
 
       - name: Create build matrix
-        uses: actions/github-script@v6
+        uses: actions/github-script@v7
         id: generate_matrix
         with:
           script: |
@@ -117,7 +143,7 @@ jobs:
             username: ${{ github.repository_owner }}
             password: ${{ secrets.GITHUB_TOKEN }}
       - name: Build and Push
-        uses: docker/build-push-action@v5.0.0
+        uses: docker/build-push-action@v5.1.0
         id: build_haos_builder
         with:
           context: .
@@ -146,9 +172,13 @@ jobs:
 
       - name: Setup Python version ${{ env.PYTHON_VERSION }}
         if: ${{ github.event_name != 'release' }}
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Install AWS CLI
+        if: ${{ github.event_name != 'release' && needs.prepare.outputs.publish_build == 'true' }}
+        run: pip install awscli
 
       - name: Set version suffix
         if: ${{ github.event_name != 'release' }}
@@ -162,8 +192,12 @@ jobs:
           RAUC_CERTIFICATE: ${{ secrets.RAUC_CERTIFICATE }}
           RAUC_PRIVATE_KEY: ${{ secrets.RAUC_PRIVATE_KEY }}
         run: |
-          echo -e "-----BEGIN CERTIFICATE-----\n${RAUC_CERTIFICATE}\n-----END CERTIFICATE-----" > cert.pem
-          echo -e "-----BEGIN PRIVATE KEY-----\n${RAUC_PRIVATE_KEY}\n-----END PRIVATE KEY-----" > key.pem
+          if [ -z "${RAUC_CERTIFICATE}" ] || [ -z "${RAUC_PRIVATE_KEY}" ]; then
+              echo "::warning:: RAUC certificate or key is missing. Building with a self-signed certificate!"
+          else
+              echo -e "-----BEGIN CERTIFICATE-----\n${RAUC_CERTIFICATE}\n-----END CERTIFICATE-----" > cert.pem
+              echo -e "-----BEGIN PRIVATE KEY-----\n${RAUC_PRIVATE_KEY}\n-----END PRIVATE KEY-----" > key.pem
+          fi
 
       - name: Free space on build drive
         run: |
@@ -174,13 +208,7 @@ jobs:
           sudo mkdir /mnt/cache
           sudo chown -R runner:runner /mnt/cache
 
-      - name: Cache downloads
-        uses: actions/cache/restore@v3
-        with:
-          path: /mnt/cache/dl
-          key: haos-dl
-
-      - name: Cache object files
+      - name: "Restore cache: object files"
         uses: actions/cache/restore@v3
         with:
           path: /mnt/cache/cc
@@ -196,12 +224,28 @@ jobs:
             ${{ needs.prepare.outputs.build_container_image }} \
             make BUILDDIR=/build ${{ matrix.board.defconfig }}
 
-      - name: Upload artificats
-        uses: actions/upload-artifact@v3
-        if: success() || failure()
-        with:
-          name: ${{ needs.prepare.outputs.version_full }}
-          path: output/images/haos_*
+      - name: Check Linux config
+        run: |
+          docker run --rm --privileged -v "${GITHUB_WORKSPACE}:/build" \
+            -e BUILDER_UID="$(id -u)" -e BUILDER_GID="$(id -g)" \
+            -v "/mnt/cache:/cache" \
+            ${{ needs.prepare.outputs.build_container_image }} \
+            make -C buildroot O="/build/output" BR2_EXTERNAL="/build/buildroot-external" \
+            BR2_CHECK_DOTCONFIG_OPTS="--github-format --strip-path-prefix=/build/" linux-check-dotconfig
+
+      - name: Upload artifacts
+        if: ${{ github.event_name != 'release' && needs.prepare.outputs.publish_build == 'true' }}
+        working-directory: output/images/
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.R2_OS_ARTIFACTS_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_OS_ARTIFACTS_KEY }}
+        run: |
+          aws s3 sync \
+            ./ \
+            s3://${{ secrets.R2_OS_ARTIFACTS_BUCKET }}/${{ needs.prepare.outputs.version_full }}/ \
+            --exclude "*" \
+            --include "haos_*" \
+            --endpoint-url ${{ secrets.R2_OS_ARTIFACTS_ENDPOINT }}
 
       - name: Upload release assets
         if: ${{ github.event_name == 'release' }}
@@ -210,34 +254,134 @@ jobs:
           upload_url: ${{ github.event.release.upload_url }}
           asset_path: output/images/haos_*
 
-      - name: Cache downloads
-        uses: actions/cache/save@v3
-        with:
-          path: /mnt/cache/dl
-          key: haos-dl-${{ github.run_id }}
+      - name: Print cache stats
+        run: |
+          echo "Cache size: $(du -sh /mnt/cache/cc)"
+          echo "Files total: $(find /mnt/cache/cc -mindepth 1 -type f | wc -l)"
+          echo "Old files to remove: $(find /mnt/cache/cc -mindepth 1 -type f -not -anewer output/Makefile | wc -l)"
+          find /mnt/cache/cc -mindepth 1 -type f -not -anewer output/Makefile -delete
+          echo "Cache size after pruning: $(du -sh /mnt/cache/cc)"
 
-      - name: Cache build
+      - name: "Save cache: object files"
+        if: github.ref == 'refs/heads/dev'
         uses: actions/cache/save@v3
         with:
           path: /mnt/cache/cc
           key: haos-cc-${{ matrix.board.id }}-${{ github.run_id }}
 
-      - name: Upload ova image to artifacts for test job
-        uses: actions/upload-artifact@v3
+      - name: Generate build summary
+        run: |
+          echo "# ${{ matrix.board.id }} build summary" >> $GITHUB_STEP_SUMMARY
+          echo "## Artifacts" >> $GITHUB_STEP_SUMMARY
+          echo "| File | Size (bytes) | Size (formatted) |" >> $GITHUB_STEP_SUMMARY
+          echo "|:-|:-|:-|" >> $GITHUB_STEP_SUMMARY
+          for f in output/images/haos_*; do
+            echo "| $(basename $f) | $(du -b $f | cut -f1) | $(du -bh $f | cut -f1) |" >> $GITHUB_STEP_SUMMARY
+          done
+          echo "## Partitions" >> $GITHUB_STEP_SUMMARY
+          echo "| File | Size (bytes) | Size (formatted) |" >> $GITHUB_STEP_SUMMARY
+          echo "|:-|:-|:-|" >> $GITHUB_STEP_SUMMARY
+          for f in boot.vfat kernel.img rootfs.squashfs overlay.ext4 data.ext4; do
+            echo "| ${f} | $(du -b output/images/$f | cut -f1) | $(du -bh output/images/$f | cut -f1) |" >> $GITHUB_STEP_SUMMARY
+          done
+
+      - name: Upload ova image to artifacts for the test job
+        uses: actions/upload-artifact@v4
         if: ${{ matrix.board.id == 'ova' }}
         with:
           name: ova-image
           path: |
             output/images/haos_ova*.qcow2.xz
 
+      - name: Upload OS image artifact
+        uses: actions/upload-artifact@v4
+        if: ${{ github.event_name != 'release' && needs.prepare.outputs.publish_build != 'true' && matrix.board.id != 'ova' }}
+        with:
+          name: haos_${{ matrix.board.id }}-${{ needs.prepare.outputs.version_full }}.img.xz
+          path: |
+            output/images/haos_${{ matrix.board.id }}-${{ needs.prepare.outputs.version_full }}.img.xz
+
+      - name: Upload RAUC bundle artifact
+        uses: actions/upload-artifact@v4
+        if: ${{ github.event_name != 'release' && needs.prepare.outputs.publish_build != 'true' }}
+        with:
+          name: haos_${{ matrix.board.id }}-${{ needs.prepare.outputs.version_full }}.raucb
+          path: |
+            output/images/haos_${{ matrix.board.id }}-${{ needs.prepare.outputs.version_full }}.raucb
+
+      - name: Upload Open Virtualization Format (OVA) artifact
+        uses: actions/upload-artifact@v4
+        if: ${{ github.event_name != 'release' && needs.prepare.outputs.publish_build != 'true' && matrix.board.id == 'ova' }}
+        with:
+          name: haos_${{ matrix.board.id }}-${{ needs.prepare.outputs.version_full }}.ova
+          path: |
+            output/images/haos_${{ matrix.board.id }}-${{ needs.prepare.outputs.version_full }}.ova
+
+      - name: Upload QEMU disk image artifact
+        uses: actions/upload-artifact@v4
+        if: ${{ github.event_name != 'release' && needs.prepare.outputs.publish_build != 'true' && (matrix.board.id == 'generic-aarch64' || matrix.board.id == 'ova') }}
+        with:
+          name: haos_${{ matrix.board.id }}-${{ needs.prepare.outputs.version_full }}.qcow2.xz
+          path: |
+            output/images/haos_${{ matrix.board.id }}-${{ needs.prepare.outputs.version_full }}.qcow2.xz
+
+      - name: Upload VMware Virtual Machine Disk (VMDK) artifact
+        uses: actions/upload-artifact@v4
+        if: ${{ github.event_name != 'release' && needs.prepare.outputs.publish_build != 'true' && (matrix.board.id == 'generic-aarch64' || matrix.board.id == 'ova') }}
+        with:
+          name: haos_${{ matrix.board.id }}-${{ needs.prepare.outputs.version_full }}.vmdk.zip
+          path: |
+            output/images/haos_${{ matrix.board.id }}-${{ needs.prepare.outputs.version_full }}.vmdk.zip
+
+      - name: Upload VirtualBox Virtual Disk Image (VDI) artifact
+        uses: actions/upload-artifact@v4
+        if: ${{ github.event_name != 'release' && needs.prepare.outputs.publish_build != 'true' && matrix.board.id == 'ova' }}
+        with:
+          name: haos_${{ matrix.board.id }}-${{ needs.prepare.outputs.version_full }}.vdi.zip
+          path: |
+            output/images/haos_${{ matrix.board.id }}-${{ needs.prepare.outputs.version_full }}.vdi.zip
+
+      - name: Upload Virtual Hard Disk v2 (VHDX) artifact
+        uses: actions/upload-artifact@v4
+        if: ${{ github.event_name != 'release' && needs.prepare.outputs.publish_build != 'true' && matrix.board.id == 'ova' }}
+        with:
+          name: haos_${{ matrix.board.id }}-${{ needs.prepare.outputs.version_full }}.vhdx.zip
+          path: |
+            output/images/haos_${{ matrix.board.id }}-${{ needs.prepare.outputs.version_full }}.vhdx..zip
+
+  test:
+    name: Test OS image
+    needs: [ build, prepare ]
+    uses: ./.github/workflows/test.yaml
+
+  update_index:
+    name: Update artifacts index
+    if: ${{ github.event_name != 'release' && needs.prepare.outputs.publish_build == 'true' }}
+    needs: [ build, prepare ]
+    uses: home-assistant/operating-system/.github/workflows/artifacts-index.yaml@dev
+    with:
+      version: ${{ needs.prepare.outputs.version_full }}
+    secrets:
+      R2_OS_ARTIFACTS_ID: ${{ secrets.R2_OS_ARTIFACTS_ID }}
+      R2_OS_ARTIFACTS_KEY: ${{ secrets.R2_OS_ARTIFACTS_KEY }}
+      R2_OS_ARTIFACTS_BUCKET: ${{ secrets.R2_OS_ARTIFACTS_BUCKET }}
+      R2_OS_ARTIFACTS_ENDPOINT: ${{ secrets.R2_OS_ARTIFACTS_ENDPOINT }}
+      CF_ZONE: ${{ secrets.CF_ZONE }}
+      CF_PURGE_TOKEN: ${{ secrets.CF_PURGE_TOKEN }}
+
   bump_version:
     name: Bump ${{ needs.prepare.outputs.channel }} channel version
-    if: ${{ github.repository == 'home-assistant/operating-system' }}
-    environment: "${{ github.event_name == 'release' && needs.prepare.outputs.channel || '' }}"
+    if: ${{ github.repository == 'home-assistant/operating-system' && needs.prepare.outputs.publish_build == 'true' }}
+    environment: ${{ needs.prepare.outputs.channel }}
     needs: [ build, prepare ]
     runs-on: ubuntu-22.04
 
     steps:
+    - name: Checkout source
+      uses: actions/checkout@v4
+      with:
+        persist-credentials: false
+
     - name: Initialize git
       uses: home-assistant/actions/helpers/git-init@master
       with:
@@ -252,3 +396,19 @@ jobs:
         key-description: "Home Assistant OS"
         version: ${{ needs.prepare.outputs.version_full }}
         channel: ${{ needs.prepare.outputs.channel }}
+
+    - name: Bump Home Assistant OS beta channel version on stable release
+      if: ${{ needs.prepare.outputs.channel == 'stable' }}
+      uses: home-assistant/actions/helpers/version-push@master
+      with:
+        key: "hassos[]"
+        key-description: "Home Assistant OS"
+        version: ${{ needs.prepare.outputs.version_full }}
+        channel: beta
+
+    - name: Bump stable Home Assistant version for RPi Imager
+      if: ${{ github.event_name == 'release' && needs.prepare.outputs.channel == 'stable' }}
+      uses: "./.github/actions/bump-rpi-imager-version"
+      with:
+        version: ${{ needs.prepare.outputs.version_full }}
+        release-date: ${{ github.event.release.published_at }}

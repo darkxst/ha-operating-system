@@ -4,5 +4,11 @@
     "defconfig": "ihost",
     "architecture": "arm",
     "label": "board/ihost"
+  },
+  {
+    "id": "odroid-m1s",
+    "defconfig": "odroid_m1s",
+    "architecture": "aarch64",
+    "label": "board/odroid"
   }
 ]

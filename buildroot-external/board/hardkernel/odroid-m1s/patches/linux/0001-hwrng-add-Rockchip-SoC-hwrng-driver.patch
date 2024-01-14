@@ -1,4 +1,4 @@
-From ef365072cb06f537f46a70d9e29dc4503aafb23d Mon Sep 17 00:00:00 2001
+From 40449a9e3c7fd54d1271137dc71f13d60e7f4b2c Mon Sep 17 00:00:00 2001
 From: Aurelien Jarno <aurelien@aurel32.net>
 Date: Mon, 28 Nov 2022 19:47:17 +0100
 Subject: [PATCH] hwrng: add Rockchip SoC hwrng driver
@@ -315,3 +315,6 @@ index 000000000000..9b7b334d6410
 +MODULE_DESCRIPTION("Rockchip True Random Number Generator driver");
 +MODULE_AUTHOR("Lin Jinhan <troy.lin@rock-chips.com>, Aurelien Jarno <aurelien@aurel32.net>");
 +MODULE_LICENSE("GPL v2");
+-- 
+2.40.1
+

@@ -1,4 +1,4 @@
-From b62a7f3dac7d98085838cda97237b032d91a80d4 Mon Sep 17 00:00:00 2001
+From b9d4e48280951636f6886f3312dab485b72e92af Mon Sep 17 00:00:00 2001
 From: Tim Lunn <tim@feathertop.org>
 Date: Mon, 25 Dec 2023 21:49:30 +1100
 Subject: [PATCH] swap i2s to rockchip,trcm-sync-tx-only

@@ -1,4 +1,4 @@
-From 37125610d7b79d2618671611641be7078653d24f Mon Sep 17 00:00:00 2001
+From 01c9373eda9fb66233ba4a0abb26355afd449224 Mon Sep 17 00:00:00 2001
 From: Aurelien Jarno <aurelien@aurel32.net>
 Date: Mon, 28 Nov 2022 19:47:18 +0100
 Subject: [PATCH] arm64: dts: rockchip: add DT entry for RNG to RK356x
@@ -30,3 +30,6 @@ index abee88911982..70f92adf86ac 100644
  	pinctrl: pinctrl {
  		compatible = "rockchip,rk3568-pinctrl";
  		rockchip,grf = <&grf>;
+-- 
+2.40.1
+

@@ -1,4 +1,4 @@
-From 544232e6ab8a71abdd770fe18d6280de7cd74281 Mon Sep 17 00:00:00 2001
+From f6047bc10f0a4caf97b017663c667e0bee51c1c7 Mon Sep 17 00:00:00 2001
 From: Aurelien Jarno <aurelien@aurel32.net>
 Date: Mon, 28 Nov 2022 19:47:16 +0100
 Subject: [PATCH] dt-bindings: RNG: Add Rockchip RNG bindings
@@ -77,3 +77,6 @@ index 000000000000..c2f5ef69cf07
 +    };
 +
 +...
+-- 
+2.40.1
+

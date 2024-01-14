@@ -1,4 +1,4 @@
-From 396971c3343a78a83a71f25a29872598e92aa64b Mon Sep 17 00:00:00 2001
+From b8fef0168c169b49ac47159f8eac3419e7c3454c Mon Sep 17 00:00:00 2001
 From: Tim Lunn <tim@feathertop.org>
 Date: Fri, 12 Jan 2024 23:05:25 +1100
 Subject: [PATCH] dts cleanups for mainline

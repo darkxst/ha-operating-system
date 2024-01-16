@@ -1,0 +1,64 @@
+From b966d08772164a80b3c9b75f5df2eb2576874444 Mon Sep 17 00:00:00 2001
+From: Tim Lunn <tim@feathertop.org>
+Date: Tue, 16 Jan 2024 16:02:37 +1100
+Subject: [PATCH] dt-bindings: mfd: Add rk809 support for rk817 audio codec
+
+RK809 has support for audio codec, using the rk817_codec driver.
+
+Update dt-binding documentation for rk809 to include the audio codec
+properties.
+---
+ .../bindings/mfd/rockchip,rk809.yaml          | 30 ++++++++++++++++++-
+ 1 file changed, 29 insertions(+), 1 deletion(-)
+
+diff --git a/Documentation/devicetree/bindings/mfd/rockchip,rk809.yaml b/Documentation/devicetree/bindings/mfd/rockchip,rk809.yaml
+index 7fb849ac74a7..891e9b0226fb 100644
+--- a/Documentation/devicetree/bindings/mfd/rockchip,rk809.yaml
++++ b/Documentation/devicetree/bindings/mfd/rockchip,rk809.yaml
+@@ -12,7 +12,7 @@ maintainers:
+ 
+ description: |
+   Rockchip RK809 series PMIC. This device consists of an i2c controlled MFD
+-  that includes regulators, an RTC, and power button.
++  that includes regulators, an RTC, a power button, and an audio codec.
+ 
+ properties:
+   compatible:
+@@ -89,6 +89,34 @@ properties:
+         $ref: ../regulator/regulator.yaml#
+     unevaluatedProperties: false
+ 
++  clocks:
++    description:
++      The input clock for the audio codec.
++
++  clock-names:
++    description:
++      The clock name for the codec clock.
++    items:
++      - const: mclk
++
++  '#sound-dai-cells':
++    description:
++      Needed for the interpretation of sound dais.
++    const: 0
++
++  codec:
++    description: |
++      The child node for the codec to hold additional properties. If no
++      additional properties are required for the codec, this node can be
++      omitted.
++    type: object
++    additionalProperties: false
++    properties:
++      rockchip,mic-in-differential:
++        type: boolean
++        description:
++          Describes if the microphone uses differential mode.
++
+ allOf:
+   - if:
+       properties:
+-- 
+2.40.1
+

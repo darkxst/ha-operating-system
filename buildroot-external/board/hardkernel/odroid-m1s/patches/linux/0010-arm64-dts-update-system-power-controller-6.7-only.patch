@@ -1,0 +1,25 @@
+From f110a10b9c3df65851d2de564be517ca994ed1a8 Mon Sep 17 00:00:00 2001
+From: Tim Lunn <tim@feathertop.org>
+Date: Tue, 16 Jan 2024 13:17:56 +1100
+Subject: [PATCH] arm64: dts: update system-power-controller (6.7+ only)
+
+---
+ arch/arm64/boot/dts/rockchip/rk3566-odroid-m1s.dts | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/arm64/boot/dts/rockchip/rk3566-odroid-m1s.dts b/arch/arm64/boot/dts/rockchip/rk3566-odroid-m1s.dts
+index 5e85fc7539a3..9d35fd3d7d9c 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3566-odroid-m1s.dts
++++ b/arch/arm64/boot/dts/rockchip/rk3566-odroid-m1s.dts
+@@ -291,7 +291,7 @@ rk809: pmic@20 {
+ 		clocks = <&cru I2S1_MCLKOUT_TX>;
+ 		pinctrl-names = "default";
+ 		pinctrl-0 = <&pmic_int>, <&i2s1m0_mclk>;
+-		rockchip,system-power-controller;
++		system-power-controller;
+ 		#sound-dai-cells = <0>;
+ 		vcc1-supply = <&vcc3v3_sys>;
+ 		vcc2-supply = <&vcc3v3_sys>;
+-- 
+2.40.1
+

@@ -1,4 +1,4 @@
-From dde82a2ffe63af3a93d0be007d60244119360bb3 Mon Sep 17 00:00:00 2001
+From 4bdcb8cf1f6d5ed9a3fd3cf1f25e9cc804ed2805 Mon Sep 17 00:00:00 2001
 From: Tim Lunn <tim@feathertop.org>
 Date: Tue, 16 Jan 2024 12:26:26 +1100
 Subject: [PATCH] dts fixes from dtbs_check
@@ -12,12 +12,17 @@ fix combphy
 
 /usr/local/src/iHost/ha-operating-system/output/build/linux-6.6.11/arch/arm64/boot/dts/rockchip/rk3566-odroid-m1s.dtb: phy@fe830000: 'phy-supply' does not match any of the regexes: 'pinctrl-[0-9]+'
 	From schema: /usr/local/src/iHost/ha-operating-system/output/build/linux-6.6.11/Documentation/devicetree/bindings/phy/phy-rockchip-naneng-combphy.yaml
+
+fix codec differential prop name
+
+pmic@20: codec: 'mic-in-differential' does not match any of the regexes:
+'pinctrl-[0-9]+'
 ---
- arch/arm64/boot/dts/rockchip/rk3566-odroid-m1s.dts | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ arch/arm64/boot/dts/rockchip/rk3566-odroid-m1s.dts | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
 diff --git a/arch/arm64/boot/dts/rockchip/rk3566-odroid-m1s.dts b/arch/arm64/boot/dts/rockchip/rk3566-odroid-m1s.dts
-index 65ba3e99ec62..5e85fc7539a3 100644
+index 65ba3e99ec62..b72ae23b4987 100644
 --- a/arch/arm64/boot/dts/rockchip/rk3566-odroid-m1s.dts
 +++ b/arch/arm64/boot/dts/rockchip/rk3566-odroid-m1s.dts
 @@ -182,7 +182,6 @@ vcc5v0_usb_host: vcc5v0-usb3-regulator {
@@ -28,6 +33,15 @@ index 65ba3e99ec62..5e85fc7539a3 100644
  	status = "okay";
  };
  
+@@ -503,7 +502,7 @@ regulator-state-mem {
+ 			};
+ 		};
+ 		codec {
+-			mic-in-differential;
++			rockchip,mic-in-differential;
+ 		};
+ 	};
+ };
 @@ -686,7 +685,7 @@ &usb2phy0_host {
  };
  

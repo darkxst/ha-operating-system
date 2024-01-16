@@ -1,4 +1,4 @@
-From b966d08772164a80b3c9b75f5df2eb2576874444 Mon Sep 17 00:00:00 2001
+From 00119fb4fb8efc60c913579d930e83377645c786 Mon Sep 17 00:00:00 2001
 From: Tim Lunn <tim@feathertop.org>
 Date: Tue, 16 Jan 2024 16:02:37 +1100
 Subject: [PATCH] dt-bindings: mfd: Add rk809 support for rk817 audio codec

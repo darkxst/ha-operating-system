@@ -1,16 +1,25 @@
-From b8fef0168c169b49ac47159f8eac3419e7c3454c Mon Sep 17 00:00:00 2001
+From 6647c79493f7a8ff4d189706bd8408886f5436ba Mon Sep 17 00:00:00 2001
 From: Tim Lunn <tim@feathertop.org>
 Date: Fri, 12 Jan 2024 23:05:25 +1100
 Subject: [PATCH] dts cleanups for mainline
 
 ---
- .../boot/dts/rockchip/rk3566-odroid-m1s.dts   | 99 +++++++++++--------
- 1 file changed, 56 insertions(+), 43 deletions(-)
+ .../boot/dts/rockchip/rk3566-odroid-m1s.dts   | 101 ++++++++++--------
+ 1 file changed, 57 insertions(+), 44 deletions(-)
 
 diff --git a/arch/arm64/boot/dts/rockchip/rk3566-odroid-m1s.dts b/arch/arm64/boot/dts/rockchip/rk3566-odroid-m1s.dts
-index 29908483f6fb..88ef7379eeac 100644
+index de054b7bc98d..65ba3e99ec62 100644
 --- a/arch/arm64/boot/dts/rockchip/rk3566-odroid-m1s.dts
 +++ b/arch/arm64/boot/dts/rockchip/rk3566-odroid-m1s.dts
+@@ -14,7 +14,7 @@
+ 
+ / {
+ 	model = "Hardkernel ODROID-M1S";
+-	compatible = "rockchip,rk3566-odroid-m1", "rockchip,rk3566";
++	compatible = "hardkernel,rk3566-odroid-m1", "rockchip,rk3566";
+ 
+ 	aliases {
+ 		ethernet1 = &gmac1;
 @@ -50,21 +50,20 @@ gmac1_clkin: external-gmac1-clock {
  
  	leds {
@@ -61,7 +70,7 @@ index 29908483f6fb..88ef7379eeac 100644
  	status = "okay";
  };
  
-@@ -310,85 +308,104 @@ rk809: pmic@20 {
+@@ -309,82 +307,101 @@ rk809: pmic@20 {
  
  		regulators {
  			vdd_logic: DCDC_REG1 {
@@ -71,7 +80,6 @@ index 29908483f6fb..88ef7379eeac 100644
 +				regulator-initial-mode = <0x2>;
  				regulator-min-microvolt = <500000>;
  				regulator-max-microvolt = <1350000>;
- 				regulator-init-microvolt = <900000>;
  				regulator-ramp-delay = <6001>;
 -				regulator-initial-mode = <0x2>;
 -				regulator-name = "vdd_logic";
@@ -88,7 +96,6 @@ index 29908483f6fb..88ef7379eeac 100644
 +				regulator-initial-mode = <0x2>;
  				regulator-min-microvolt = <500000>;
  				regulator-max-microvolt = <1350000>;
- 				regulator-init-microvolt = <900000>;
  				regulator-ramp-delay = <6001>;
 -				regulator-initial-mode = <0x2>;
 -				regulator-name = "vdd_gpu";
@@ -117,7 +124,6 @@ index 29908483f6fb..88ef7379eeac 100644
 +				regulator-initial-mode = <0x2>;
  				regulator-min-microvolt = <500000>;
  				regulator-max-microvolt = <1350000>;
- 				regulator-init-microvolt = <900000>;
  				regulator-ramp-delay = <6001>;
 -				regulator-initial-mode = <0x2>;
 -				regulator-name = "vdd_npu";
@@ -176,7 +182,7 @@ index 29908483f6fb..88ef7379eeac 100644
  				regulator-state-mem {
  					regulator-on-in-suspend;
  					regulator-suspend-microvolt = <900000>;
-@@ -396,33 +413,36 @@ regulator-state-mem {
+@@ -392,33 +409,36 @@ regulator-state-mem {
  			};
  
  			vccio_acodec: LDO_REG4 {
@@ -216,7 +222,7 @@ index 29908483f6fb..88ef7379eeac 100644
  				regulator-state-mem {
  					regulator-on-in-suspend;
  					regulator-suspend-microvolt = <3300000>;
-@@ -430,22 +450,24 @@ regulator-state-mem {
+@@ -426,22 +446,24 @@ regulator-state-mem {
  			};
  
  			vcca_1v8: LDO_REG7 {
@@ -243,7 +249,7 @@ index 29908483f6fb..88ef7379eeac 100644
  				regulator-state-mem {
  					regulator-on-in-suspend;
  					regulator-suspend-microvolt = <1800000>;
-@@ -453,40 +475,32 @@ regulator-state-mem {
+@@ -449,40 +471,32 @@ regulator-state-mem {
  			};
  
  			vcca1v8_image: LDO_REG9 {
@@ -289,7 +295,7 @@ index 29908483f6fb..88ef7379eeac 100644
  				regulator-state-mem {
  					regulator-off-in-suspend;
  				};
-@@ -499,18 +513,17 @@ codec {
+@@ -495,18 +509,17 @@ codec {
  };
  
  &i2c2 {
@@ -311,7 +317,7 @@ index 29908483f6fb..88ef7379eeac 100644
  };
  
  &i2s0_8ch {
-@@ -518,17 +531,17 @@ &i2s0_8ch {
+@@ -514,17 +527,17 @@ &i2s0_8ch {
  };
  
  &i2s1_8ch {
@@ -332,7 +338,7 @@ index 29908483f6fb..88ef7379eeac 100644
  		compatible = "ethernet-phy-ieee802.3-c22";
  		reg = <0x0>;
  	};
-@@ -593,8 +606,8 @@ &pmu_io_domains {
+@@ -589,8 +602,8 @@ &pmu_io_domains {
  };
  
  &pwm1 {

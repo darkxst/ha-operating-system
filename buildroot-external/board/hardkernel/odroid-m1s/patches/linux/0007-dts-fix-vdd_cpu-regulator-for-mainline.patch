@@ -1,0 +1,72 @@
+From 063efeab377961a4076bd1df029a80aefb4a153d Mon Sep 17 00:00:00 2001
+From: Tim Lunn <tim@feathertop.org>
+Date: Fri, 12 Jan 2024 22:32:56 +1100
+Subject: [PATCH] dts: fix vdd_cpu regulator for mainline
+
+remove regulator-init-microvolt
+
+/usr/local/src/iHost/ha-operating-system/output/build/linux-6.6.11/arch/arm64/boot/dts/rockchip/rk3566-odroid-m1s.dtb: regulator@1c: Unevaluated properties are not allowed ('regulator-init-microvolt' was unexpected)
+	From schema: /usr/local/src/iHost/ha-operating-system/output/build/linux-6.6.11/Documentation/devicetree/bindings/regulator/fcs,fan53555.yaml
+---
+ .../boot/dts/rockchip/rk3566-odroid-m1s.dts   | 19 ++++++++-----------
+ 1 file changed, 8 insertions(+), 11 deletions(-)
+
+diff --git a/arch/arm64/boot/dts/rockchip/rk3566-odroid-m1s.dts b/arch/arm64/boot/dts/rockchip/rk3566-odroid-m1s.dts
+index 9dd6377886ff..de054b7bc98d 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3566-odroid-m1s.dts
++++ b/arch/arm64/boot/dts/rockchip/rk3566-odroid-m1s.dts
+@@ -264,19 +264,19 @@ &hdmi_sound {
+ 
+ &i2c0 {
+ 	status = "okay";
+-	vdd_cpu: tcs4525@1c {
+-		compatible = "tcs,tcs452x";
++
++	vdd_cpu: regulator@1c {
++		compatible = "tcs,tcs4525";
+ 		reg = <0x1c>;
+-		vin-supply = <&vcc5v0_sys>;
+-		regulator-compatible = "fan53555-reg";
++		fcs,suspend-voltage-selector = <1>;
+ 		regulator-name = "vdd_cpu";
++		regulator-always-on;
++		regulator-boot-on;
+ 		regulator-min-microvolt = <712500>;
+ 		regulator-max-microvolt = <1390000>;
+-		regulator-init-microvolt = <900000>;
+ 		regulator-ramp-delay = <2300>;
+-		fcs,suspend-voltage-selector = <1>;
+-		regulator-boot-on;
+-		regulator-always-on;
++		vin-supply = <&vcc3v3_sys>;
++
+ 		regulator-state-mem {
+ 			regulator-off-in-suspend;
+ 		};
+@@ -313,7 +313,6 @@ vdd_logic: DCDC_REG1 {
+ 				regulator-boot-on;
+ 				regulator-min-microvolt = <500000>;
+ 				regulator-max-microvolt = <1350000>;
+-				regulator-init-microvolt = <900000>;
+ 				regulator-ramp-delay = <6001>;
+ 				regulator-initial-mode = <0x2>;
+ 				regulator-name = "vdd_logic";
+@@ -327,7 +326,6 @@ vdd_gpu: DCDC_REG2 {
+ 				regulator-boot-on;
+ 				regulator-min-microvolt = <500000>;
+ 				regulator-max-microvolt = <1350000>;
+-				regulator-init-microvolt = <900000>;
+ 				regulator-ramp-delay = <6001>;
+ 				regulator-initial-mode = <0x2>;
+ 				regulator-name = "vdd_gpu";
+@@ -351,7 +349,6 @@ vdd_npu: DCDC_REG4 {
+ 				regulator-boot-on;
+ 				regulator-min-microvolt = <500000>;
+ 				regulator-max-microvolt = <1350000>;
+-				regulator-init-microvolt = <900000>;
+ 				regulator-ramp-delay = <6001>;
+ 				regulator-initial-mode = <0x2>;
+ 				regulator-name = "vdd_npu";
+-- 
+2.40.1
+

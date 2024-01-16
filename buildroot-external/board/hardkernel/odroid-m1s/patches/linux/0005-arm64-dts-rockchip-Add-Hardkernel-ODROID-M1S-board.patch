@@ -1,4 +1,4 @@
-From 46f5fe1bc8584a5c41c80dd78f0fffaa877454e8 Mon Sep 17 00:00:00 2001
+From 102a6f1b65ffdcd96f755e1a299aa5a4c682e103 Mon Sep 17 00:00:00 2001
 From: Tim Lunn <tim@feathertop.org>
 Date: Mon, 25 Dec 2023 11:38:53 +1100
 Subject: [PATCH] arm64: dts: rockchip: Add Hardkernel ODROID-M1S board

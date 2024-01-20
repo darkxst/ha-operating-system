@@ -1,0 +1,46 @@
+From 6016355b5e5c5752752a5b77cd05fc9998af8460 Mon Sep 17 00:00:00 2001
+From: Andy Yan <andy.yan@rock-chips.com>
+Date: Wed, 2 Jun 2021 17:04:02 +0800
+Subject: [PATCH] ODROID-COMMON: add device tree binding header for VOP
+
+The header file [1] is picked from 5.10 kernel branch.
+
+[1] include/dt-bindings/display/rockchip_vop.h
+
+Change-Id: I10f7921928fbf7ff803c55a95cbce62df658fbed
+Signed-off-by: Andy Yan <andy.yan@rock-chips.com>
+---
+ include/dt-bindings/display/rockchip_vop.h | 21 +++++++++++++++++++++
+ 1 file changed, 21 insertions(+)
+ create mode 100644 include/dt-bindings/display/rockchip_vop.h
+
+diff --git a/include/dt-bindings/display/rockchip_vop.h b/include/dt-bindings/display/rockchip_vop.h
+new file mode 100644
+index 000000000000..3e14128e7ab1
+--- /dev/null
++++ b/include/dt-bindings/display/rockchip_vop.h
+@@ -0,0 +1,21 @@
++/* SPDX-License-Identifier: (GPL-2.0+ OR MIT) */
++/*
++ * Copyright (c) 2021 Rockchip Electronics Co., Ltd.
++ */
++
++
++#ifndef _DT_BINDINGS_ROCKCHIP_VOP_H
++#define _DT_BINDINGS_ROCKCHIP_VOP_H
++
++#define	ROCKCHIP_VOP2_CLUSTER0	0
++#define	ROCKCHIP_VOP2_CLUSTER1	1
++#define	ROCKCHIP_VOP2_ESMART0	2
++#define	ROCKCHIP_VOP2_ESMART1	3
++#define	ROCKCHIP_VOP2_SMART0	4
++#define	ROCKCHIP_VOP2_SMART1	5
++#define	ROCKCHIP_VOP2_CLUSTER2	6
++#define	ROCKCHIP_VOP2_CLUSTER3	7
++#define	ROCKCHIP_VOP2_ESMART2	8
++#define	ROCKCHIP_VOP2_ESMART3	9
++
++#endif
+-- 
+2.40.1
+

@@ -1,0 +1,33 @@
+From 5ce23f663fba957c8f81aec4cce25cdac47224d1 Mon Sep 17 00:00:00 2001
+From: Dongjin Kim <tobetter@gmail.com>
+Date: Wed, 21 Jun 2023 18:34:22 +0900
+Subject: [PATCH] dt-bindings: ili9881c: add compatible string for Elida
+ hj080be31ia1
+
+Elida hj080be31ia1 is a 8" MIPI display panel. It utilizes an ILI9881C
+controller chip, so its compatible string should be added to
+ilitek,ili9881c file.
+
+Add the compatible string for it.
+
+Signed-off-by: Dongjin Kim <tobetter@gmail.com>
+Change-Id: Ic169bb58e17621d265c8c55889a7cd37c80c5ced
+---
+ .../devicetree/bindings/display/panel/ilitek,ili9881c.yaml       | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/Documentation/devicetree/bindings/display/panel/ilitek,ili9881c.yaml b/Documentation/devicetree/bindings/display/panel/ilitek,ili9881c.yaml
+index e7ab6224b52e..97fa0167b90b 100644
+--- a/Documentation/devicetree/bindings/display/panel/ilitek,ili9881c.yaml
++++ b/Documentation/devicetree/bindings/display/panel/ilitek,ili9881c.yaml
+@@ -17,6 +17,7 @@ properties:
+     items:
+       - enum:
+           - bananapi,lhr050h41
++          - elida,hj080be31ia1
+           - feixin,k101-im2byl02
+           - tdo,tl050hdv35
+           - wanchanglong,w552946aba
+-- 
+2.40.1
+

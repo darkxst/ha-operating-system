@@ -1,4 +1,4 @@
-From 6016355b5e5c5752752a5b77cd05fc9998af8460 Mon Sep 17 00:00:00 2001
+From b13631e41fb9a161a01cca57398eb52bc924962e Mon Sep 17 00:00:00 2001
 From: Andy Yan <andy.yan@rock-chips.com>
 Date: Wed, 2 Jun 2021 17:04:02 +0800
 Subject: [PATCH] ODROID-COMMON: add device tree binding header for VOP

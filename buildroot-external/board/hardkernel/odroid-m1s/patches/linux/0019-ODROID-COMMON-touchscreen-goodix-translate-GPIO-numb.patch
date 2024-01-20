@@ -1,4 +1,4 @@
-From 1d5b787e0a5bd5f9956921cb8e6d4e68c1168558 Mon Sep 17 00:00:00 2001
+From 31bd723fded312acfe39a08c25d68230718143c0 Mon Sep 17 00:00:00 2001
 From: Dongjin Kim <tobetter@gmail.com>
 Date: Fri, 11 Mar 2022 13:38:38 +0900
 Subject: [PATCH] ODROID-COMMON: touchscreen/goodix: translate GPIO number to

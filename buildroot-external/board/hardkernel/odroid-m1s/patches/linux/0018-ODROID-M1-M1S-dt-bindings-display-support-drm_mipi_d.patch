@@ -1,4 +1,4 @@
-From f37ec6fda3c74c73ea419227df56115aff6632f0 Mon Sep 17 00:00:00 2001
+From fad00abb65e7f5c967a3e8b591073942070716d8 Mon Sep 17 00:00:00 2001
 From: Mark Yao <mark.yao@rock-chips.com>
 Date: Tue, 26 Jul 2016 11:25:21 +0800
 Subject: [PATCH] ODROID-M1/M1S: dt-bindings: display: support drm_mipi_dsi

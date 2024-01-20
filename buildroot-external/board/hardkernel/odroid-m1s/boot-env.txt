@@ -1,0 +1,2 @@
+#Uncomment this to enable Vu8s display
+#overlays=display_vu8s

@@ -1,0 +1,30 @@
+From 1d5b787e0a5bd5f9956921cb8e6d4e68c1168558 Mon Sep 17 00:00:00 2001
+From: Dongjin Kim <tobetter@gmail.com>
+Date: Fri, 11 Mar 2022 13:38:38 +0900
+Subject: [PATCH] ODROID-COMMON: touchscreen/goodix: translate GPIO number to
+ IRQ
+
+Change-Id: I886fdc4672fe9e9126a48a0c9b77a01c736c9e07
+Signed-off-by: Dongjin Kim <tobetter@gmail.com>
+---
+ drivers/input/touchscreen/goodix.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/drivers/input/touchscreen/goodix.c b/drivers/input/touchscreen/goodix.c
+index af32fbe57b63..d72be19f6dd3 100644
+--- a/drivers/input/touchscreen/goodix.c
++++ b/drivers/input/touchscreen/goodix.c
+@@ -1348,6 +1348,10 @@ static int goodix_ts_probe(struct i2c_client *client)
+ 			return error;
+ 	}
+ 
++	client->irq = gpiod_to_irq(ts->gpiod_int);
++	if (client->irq)
++		dev_info(&client->dev, "GT911 irq number=%d\n", client->irq);
++
+ 	error = goodix_i2c_test(client);
+ 	if (error) {
+ 		if (!ts->reset_controller_at_probe &&
+-- 
+2.40.1
+

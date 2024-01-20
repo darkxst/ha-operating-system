@@ -1,0 +1,5 @@
+config BR2_PACKAGE_ODROID_DTBO
+	bool "odroid dtbo overlays"
+	depends on BR2_LINUX_KERNEL
+	help
+	  Install overlays for Odroid M1s

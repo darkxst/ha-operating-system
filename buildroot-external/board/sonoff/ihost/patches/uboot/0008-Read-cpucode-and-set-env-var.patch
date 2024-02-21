@@ -1,4 +1,4 @@
-From c64d9a8ed484de81d8e004ec243ce8b563f4849b Mon Sep 17 00:00:00 2001
+From 1fc536e9fd95005f9493ab70be62c0e30b202fb9 Mon Sep 17 00:00:00 2001
 From: Tim Lunn <tim@feathertop.org>
 Date: Tue, 7 Nov 2023 15:18:37 +1100
 Subject: [PATCH] Read cpucode and set env var
@@ -12,7 +12,7 @@ Subject: [PATCH] Read cpucode and set env var
  5 files changed, 33 insertions(+)
 
 diff --git a/arch/arm/dts/rv1126-u-boot.dtsi b/arch/arm/dts/rv1126-u-boot.dtsi
-index b98583e96e..e28a7e3141 100644
+index 4485980135..536facabf3 100644
 --- a/arch/arm/dts/rv1126-u-boot.dtsi
 +++ b/arch/arm/dts/rv1126-u-boot.dtsi
 @@ -23,6 +23,9 @@
@@ -38,10 +38,10 @@ index 4155af8c3b..dad63408dd 100644
  int rockchip_setup_macaddr(void);
  void rockchip_capsule_update_board_setup(void);
 diff --git a/arch/arm/mach-rockchip/board.c b/arch/arm/mach-rockchip/board.c
-index 8d7b39ba15..f0eb1b61b1 100644
+index 2620530e03..7561fe4fdd 100644
 --- a/arch/arm/mach-rockchip/board.c
 +++ b/arch/arm/mach-rockchip/board.c
-@@ -330,8 +330,11 @@ int fastboot_set_reboot_flag(enum fastboot_reboot_reason reason)
+@@ -299,8 +299,11 @@ int fastboot_set_reboot_flag(enum fastboot_reboot_reason reason)
  #ifdef CONFIG_MISC_INIT_R
  __weak int misc_init_r(void)
  {
@@ -53,7 +53,7 @@ index 8d7b39ba15..f0eb1b61b1 100644
  	u8 cpuid[cpuid_length];
  	int ret;
  
-@@ -343,6 +346,14 @@ __weak int misc_init_r(void)
+@@ -312,6 +315,14 @@ __weak int misc_init_r(void)
  	if (ret)
  		return ret;
  

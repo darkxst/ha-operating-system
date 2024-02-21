@@ -1,4 +1,4 @@
-From 5e3b58215375fa4231f22ab01e82bde284f4f7a4 Mon Sep 17 00:00:00 2001
+From a15ceca8e5c02df6ffc9ae0a953bef5227de2c2d Mon Sep 17 00:00:00 2001
 From: Alex Bee <knaerzche@gmail.com>
 Date: Tue, 18 Jul 2023 16:57:15 +0200
 Subject: [PATCH] optee: Support Rockchip OP-TEE binaries
@@ -20,17 +20,17 @@ Rejected upstream as vendor specific
  2 files changed, 12 insertions(+)
 
 diff --git a/arch/arm/mach-rockchip/Kconfig b/arch/arm/mach-rockchip/Kconfig
-index 299a17a4c7..130c825179 100644
+index cce118a004..7cc35d621b 100644
 --- a/arch/arm/mach-rockchip/Kconfig
 +++ b/arch/arm/mach-rockchip/Kconfig
-@@ -450,6 +450,14 @@ config ROCKCHIP_BOOT_MODE_REG
+@@ -451,6 +451,14 @@ config ROCKCHIP_BOOT_MODE_REG
  	  The Soc will enter to different boot mode(defined in asm/arch-rockchip/boot_mode.h)
  	  according to the value from this register.
  
 +config ROCKCHIP_OPTEE_BINARY
 +	bool "Use a OP-TEE binary provided by Rockchip"
 +	depends on SPL_OPTEE_IMAGE
-+	default y if ROCKCHIP_RK3036 || ROCKCHIP_RK3128 || ROCKCHIP_RK3288
++	default y if ROCKCHIP_RK3036 || ROCKCHIP_RK3128 || ROCKCHIP_RK3288 || ROCKCHIP_RV1126
 +	help
 +	  This option enables the usage of vendor-provided OP-TEE binaries.
 +	  Say Y if you are using OP-TEE binary provided by Rockchip.

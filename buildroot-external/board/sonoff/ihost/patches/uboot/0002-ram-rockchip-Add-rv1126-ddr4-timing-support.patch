@@ -1,11 +1,10 @@
-From 6c31ea9d75a3f70fbf3e3dc73057fd2fef3c6b59 Mon Sep 17 00:00:00 2001
+From edde13a6841478bd8f91cb74341baf4d4b1fac84 Mon Sep 17 00:00:00 2001
 From: Tim Lunn <tim@feathertop.org>
 Date: Sat, 14 Oct 2023 15:02:44 +1100
-Subject: [PATCH] ram: rockchip: Add rv1126 ddr4 support
+Subject: [PATCH] ram: rockchip: Add rv1126 ddr4 timing support
 
-Copied from downstream Rockchip BSP u-boot
+Add ddr4 timing for rv1126 imported downstream Rockchip BSP u-boot.
 ---
- arch/arm/mach-rockchip/sdram.c                |  1 +
  .../sdram-rv1126-ddr4-detect-1056.inc         | 75 +++++++++++++++++++
  .../rockchip/sdram-rv1126-ddr4-detect-328.inc | 75 +++++++++++++++++++
  .../rockchip/sdram-rv1126-ddr4-detect-396.inc | 75 +++++++++++++++++++
@@ -14,7 +13,7 @@ Copied from downstream Rockchip BSP u-boot
  .../rockchip/sdram-rv1126-ddr4-detect-784.inc | 75 +++++++++++++++++++
  .../rockchip/sdram-rv1126-ddr4-detect-924.inc | 75 +++++++++++++++++++
  drivers/ram/rockchip/sdram_rv1126.c           |  8 ++
- 9 files changed, 534 insertions(+)
+ 8 files changed, 533 insertions(+)
  create mode 100644 drivers/ram/rockchip/sdram-rv1126-ddr4-detect-1056.inc
  create mode 100644 drivers/ram/rockchip/sdram-rv1126-ddr4-detect-328.inc
  create mode 100644 drivers/ram/rockchip/sdram-rv1126-ddr4-detect-396.inc
@@ -23,18 +22,6 @@ Copied from downstream Rockchip BSP u-boot
  create mode 100644 drivers/ram/rockchip/sdram-rv1126-ddr4-detect-784.inc
  create mode 100644 drivers/ram/rockchip/sdram-rv1126-ddr4-detect-924.inc
 
-diff --git a/arch/arm/mach-rockchip/sdram.c b/arch/arm/mach-rockchip/sdram.c
-index 99ecbdc341..fd549192ab 100644
---- a/arch/arm/mach-rockchip/sdram.c
-+++ b/arch/arm/mach-rockchip/sdram.c
-@@ -64,6 +64,7 @@ int dram_init_banksize(void)
- 		gd->bd->bi_dram[1].start = tos_parameter->tee_mem.phy_addr +
- 					tos_parameter->tee_mem.size;
- 		gd->bd->bi_dram[1].size = top - gd->bd->bi_dram[1].start;
-+		gd->bd->bi_dram[0].size = gd->bd->bi_dram[1].start + gd->bd->bi_dram[1].size;
- 	} else {
- 		gd->bd->bi_dram[0].start = CFG_SYS_SDRAM_BASE;
- 		gd->bd->bi_dram[0].size = 0x8400000;
 diff --git a/drivers/ram/rockchip/sdram-rv1126-ddr4-detect-1056.inc b/drivers/ram/rockchip/sdram-rv1126-ddr4-detect-1056.inc
 new file mode 100644
 index 0000000000..295b0871e0

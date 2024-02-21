@@ -1,4 +1,4 @@
-From 680324e36202645828d4f43c9b702e5956cc17cd Mon Sep 17 00:00:00 2001
+From 2810eca9b5fb6f57156dd73c076c85cb58e9402e Mon Sep 17 00:00:00 2001
 From: Tim Lunn <tim@feathertop.org>
 Date: Sat, 14 Oct 2023 15:03:27 +1100
 Subject: [PATCH] arch: rockchip: preloader ATAGS for vendor OP-TEE
@@ -9,9 +9,9 @@ https://github.com/edgeble/u-boot/commit/319cee2d2
  arch/arm/include/asm/arch-rockchip/rk_atags.h | 321 +++++++++++++++
  arch/arm/mach-rockchip/Kconfig                |   8 +
  arch/arm/mach-rockchip/Makefile               |   1 +
- arch/arm/mach-rockchip/rk_atags.c             | 388 ++++++++++++++++++
+ arch/arm/mach-rockchip/rk_atags.c             | 387 ++++++++++++++++++
  drivers/ram/rockchip/sdram_rv1126.c           |  64 +++
- 5 files changed, 782 insertions(+)
+ 5 files changed, 781 insertions(+)
  create mode 100644 arch/arm/include/asm/arch-rockchip/rk_atags.h
  create mode 100644 arch/arm/mach-rockchip/rk_atags.c
 
@@ -343,7 +343,7 @@ index 0000000000..d48cf92ab3
 +
 +#endif
 diff --git a/arch/arm/mach-rockchip/Kconfig b/arch/arm/mach-rockchip/Kconfig
-index 130c825179..95f89827e0 100644
+index 7cc35d621b..d1e07008c2 100644
 --- a/arch/arm/mach-rockchip/Kconfig
 +++ b/arch/arm/mach-rockchip/Kconfig
 @@ -527,6 +527,14 @@ config ROCKCHIP_SPI_IMAGE
@@ -375,10 +375,10 @@ index 1dc92066bb..c4978d5257 100644
  
 diff --git a/arch/arm/mach-rockchip/rk_atags.c b/arch/arm/mach-rockchip/rk_atags.c
 new file mode 100644
-index 0000000000..4f521d45e8
+index 0000000000..de7181a6d3
 --- /dev/null
 +++ b/arch/arm/mach-rockchip/rk_atags.c
-@@ -0,0 +1,388 @@
+@@ -0,0 +1,387 @@
 +// SPDX-License-Identifier:     GPL-2.0+
 +/*
 + * (C) Copyright 2018 Rockchip Electronics Co., Ltd.
@@ -766,7 +766,6 @@ index 0000000000..4f521d45e8
 +	if (atags_is_available())
 +		memset((char *)ATAGS_PHYS_BASE, 0, sizeof(struct tag));
 +}
-+
 diff --git a/drivers/ram/rockchip/sdram_rv1126.c b/drivers/ram/rockchip/sdram_rv1126.c
 index 0a78e18c73..1c754eebb3 100644
 --- a/drivers/ram/rockchip/sdram_rv1126.c

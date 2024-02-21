@@ -1,0 +1,31 @@
+From 01c0db641b589ffec3da50b1b3166b3f1cae38f1 Mon Sep 17 00:00:00 2001
+From: Tim Lunn <tim@feathertop.org>
+Date: Sat, 9 Dec 2023 21:22:40 +1100
+Subject: [PATCH] dts: wifi clock fixes
+
+---
+ arch/arm/boot/dts/rockchip/rv1126-sonoff-ihost.dtsi | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
+
+diff --git a/arch/arm/boot/dts/rockchip/rv1126-sonoff-ihost.dtsi b/arch/arm/boot/dts/rockchip/rv1126-sonoff-ihost.dtsi
+index 6b4e4edf3dde..acb00f53fc3d 100644
+--- a/arch/arm/boot/dts/rockchip/rv1126-sonoff-ihost.dtsi
++++ b/arch/arm/boot/dts/rockchip/rv1126-sonoff-ihost.dtsi
+@@ -365,13 +365,12 @@ &sdio {
+ 	cap-sd-highspeed;
+ 	cap-sdio-irq;
+ 	keep-power-in-suspend;
+-	max-frequency = <100000000>;
++	max-frequency = <50000000>;
+ 	mmc-pwrseq = <&sdio_pwrseq>;
+ 	non-removable;
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&sdmmc1_clk &sdmmc1_cmd &sdmmc1_bus4>;
+ 	rockchip,default-sample-phase = <90>;
+-	sd-uhs-sdr104;
+ 	vmmc-supply = <&vcc3v3_sys>;
+ 	vqmmc-supply = <&vcc_1v8>;
+ 	status = "okay";
+-- 
+2.40.1
+

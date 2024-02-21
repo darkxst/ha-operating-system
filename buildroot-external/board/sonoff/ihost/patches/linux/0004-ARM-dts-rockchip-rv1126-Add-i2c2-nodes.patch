@@ -1,0 +1,70 @@
+From 4ace2bdab66b528f87a17837dbbb452cd380d795 Mon Sep 17 00:00:00 2001
+From: Tim Lunn <tim@feathertop.org>
+Date: Tue, 31 Oct 2023 15:25:18 +1100
+Subject: [PATCH] ARM: dts: rockchip: rv1126: Add i2c2 nodes
+
+Add i2c2 node and i2c2_xfer pinctrl for Rockchip RV1126
+
+Signed-off-by: Tim Lunn <tim@feathertop.org>
+---
+ arch/arm/boot/dts/rockchip/rv1126-pinctrl.dtsi | 10 ++++++++++
+ arch/arm/boot/dts/rockchip/rv1126.dtsi         | 15 +++++++++++++++
+ 2 files changed, 25 insertions(+)
+
+diff --git a/arch/arm/boot/dts/rockchip/rv1126-pinctrl.dtsi b/arch/arm/boot/dts/rockchip/rv1126-pinctrl.dtsi
+index 4f85b7b3fc4c..167a48afa3a4 100644
+--- a/arch/arm/boot/dts/rockchip/rv1126-pinctrl.dtsi
++++ b/arch/arm/boot/dts/rockchip/rv1126-pinctrl.dtsi
+@@ -87,6 +87,16 @@ i2c0_xfer: i2c0-xfer {
+ 				<0 RK_PB5 1 &pcfg_pull_none_drv_level_0_smt>;
+ 		};
+ 	};
++	i2c2 {
++		/omit-if-no-ref/
++		i2c2_xfer: i2c2-xfer {
++			rockchip,pins =
++				/* i2c2_scl */
++				<0 RK_PC2 1 &pcfg_pull_none_drv_level_0_smt>,
++				/* i2c2_sda */
++				<0 RK_PC3 1 &pcfg_pull_none_drv_level_0_smt>;
++		};
++	};
+ 	pwm2 {
+ 		/omit-if-no-ref/
+ 		pwm2m0_pins: pwm2m0-pins {
+diff --git a/arch/arm/boot/dts/rockchip/rv1126.dtsi b/arch/arm/boot/dts/rockchip/rv1126.dtsi
+index adb11a43c5db..bb603cae13df 100644
+--- a/arch/arm/boot/dts/rockchip/rv1126.dtsi
++++ b/arch/arm/boot/dts/rockchip/rv1126.dtsi
+@@ -21,6 +21,7 @@ / {
+ 
+ 	aliases {
+ 		i2c0 = &i2c0;
++		i2c2 = &i2c2;
+ 		serial0 = &uart0;
+ 		serial1 = &uart1;
+ 		serial2 = &uart2;
+@@ -237,6 +238,20 @@ i2c0: i2c@ff3f0000 {
+ 		status = "disabled";
+ 	};
+ 
++	i2c2: i2c@ff400000 {
++		compatible = "rockchip,rv1126-i2c", "rockchip,rk3399-i2c";
++		reg = <0xff400000 0x1000>;
++		interrupts = <GIC_SPI 6 IRQ_TYPE_LEVEL_HIGH>;
++		rockchip,grf = <&pmugrf>;
++		clocks = <&pmucru CLK_I2C2>, <&pmucru PCLK_I2C2>;
++		clock-names = "i2c", "pclk";
++		pinctrl-names = "default";
++		pinctrl-0 = <&i2c2_xfer>;
++		#address-cells = <1>;
++		#size-cells = <0>;
++		status = "disabled";
++	};
++
+ 	uart1: serial@ff410000 {
+ 		compatible = "rockchip,rv1126-uart", "snps,dw-apb-uart";
+ 		reg = <0xff410000 0x100>;
+-- 
+2.40.1
+

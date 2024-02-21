@@ -1,0 +1,29 @@
+From c465bdbb38d5bf2c6a29426329c21dc9882730d8 Mon Sep 17 00:00:00 2001
+From: Tim Lunn <tim@feathertop.org>
+Date: Thu, 2 Nov 2023 13:15:36 +1100
+Subject: [PATCH] dt-bindings: fix docs for dwc3 compatible
+
+---
+ .../devicetree/bindings/usb/rockchip,rk3399-dwc3.yaml       | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+diff --git a/Documentation/devicetree/bindings/usb/rockchip,rk3399-dwc3.yaml b/Documentation/devicetree/bindings/usb/rockchip,rk3399-dwc3.yaml
+index 3159f9a6a0f7..60a61ceb6a1d 100644
+--- a/Documentation/devicetree/bindings/usb/rockchip,rk3399-dwc3.yaml
++++ b/Documentation/devicetree/bindings/usb/rockchip,rk3399-dwc3.yaml
+@@ -11,7 +11,11 @@ maintainers:
+ 
+ properties:
+   compatible:
+-    const: rockchip,rk3399-dwc3
++    oneOf:
++      - items:
++          - const: rockchip,rv1126-dwc3
++          - const: rockchip,rk3399-dwc3
++      - const: rockchip,rk3399-dwc3
+ 
+   '#address-cells':
+     const: 2
+-- 
+2.40.1
+

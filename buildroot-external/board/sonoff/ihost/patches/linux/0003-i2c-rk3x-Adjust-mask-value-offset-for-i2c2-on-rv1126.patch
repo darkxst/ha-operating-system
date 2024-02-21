@@ -1,4 +1,4 @@
-From 28b16582e34ca3d90bb6f56614972e3a7101a6c3 Mon Sep 17 00:00:00 2001
+From 0051ae834498afcf49c97a0631defa69d5bc9ecf Mon Sep 17 00:00:00 2001
 From: Tim Lunn <tim@feathertop.org>
 Date: Tue, 31 Oct 2023 15:21:26 +1100
 Subject: [PATCH] i2c: rk3x: Adjust mask/value offset for i2c2 on rv1126
@@ -16,10 +16,10 @@ Acked-by: Heiko Stuebner <heiko@sntech.de>
  1 file changed, 6 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/i2c/busses/i2c-rk3x.c b/drivers/i2c/busses/i2c-rk3x.c
-index b31cf4f18f85..cec00a22539c 100644
+index 4362db7c5789..086fdf262e7b 100644
 --- a/drivers/i2c/busses/i2c-rk3x.c
 +++ b/drivers/i2c/busses/i2c-rk3x.c
-@@ -1288,8 +1288,12 @@ static int rk3x_i2c_probe(struct platform_device *pdev)
+@@ -1295,8 +1295,12 @@ static int rk3x_i2c_probe(struct platform_device *pdev)
  			return -EINVAL;
  		}
  

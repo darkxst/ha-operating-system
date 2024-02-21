@@ -1,4 +1,4 @@
-From 9f0f7ff124dc644d426743816278da513d943dc6 Mon Sep 17 00:00:00 2001
+From dadb1a036604dd4b3da0b963534d34d64bc45fb1 Mon Sep 17 00:00:00 2001
 From: Tim Lunn <tim@feathertop.org>
 Date: Tue, 31 Oct 2023 20:31:06 +1100
 Subject: [PATCH] ARM: dts: rockchip: rv1126: Split up rgmii1 pinctrl
@@ -8,15 +8,15 @@ with devices using an RMII PHY.
 
 Signed-off-by: Tim Lunn <tim@feathertop.org>
 ---
- arch/arm/boot/dts/rv1126-edgeble-neu2-io.dts |  2 +-
- arch/arm/boot/dts/rv1126-pinctrl.dtsi        | 46 ++++++++++++++------
+ .../dts/rockchip/rv1126-edgeble-neu2-io.dts   |  2 +-
+ .../arm/boot/dts/rockchip/rv1126-pinctrl.dtsi | 46 +++++++++++++------
  2 files changed, 34 insertions(+), 14 deletions(-)
 
-diff --git a/arch/arm/boot/dts/rv1126-edgeble-neu2-io.dts b/arch/arm/boot/dts/rv1126-edgeble-neu2-io.dts
-index 3340fc3f0739..e0404d4fb1fd 100644
---- a/arch/arm/boot/dts/rv1126-edgeble-neu2-io.dts
-+++ b/arch/arm/boot/dts/rv1126-edgeble-neu2-io.dts
-@@ -32,7 +32,7 @@ &gmac {
+diff --git a/arch/arm/boot/dts/rockchip/rv1126-edgeble-neu2-io.dts b/arch/arm/boot/dts/rockchip/rv1126-edgeble-neu2-io.dts
+index f09be8405964..0c2396b8f8db 100644
+--- a/arch/arm/boot/dts/rockchip/rv1126-edgeble-neu2-io.dts
++++ b/arch/arm/boot/dts/rockchip/rv1126-edgeble-neu2-io.dts
+@@ -61,7 +61,7 @@ &gmac {
  	phy-mode = "rgmii";
  	phy-supply = <&vcc_3v3>;
  	pinctrl-names = "default";
@@ -25,11 +25,11 @@ index 3340fc3f0739..e0404d4fb1fd 100644
  	tx_delay = <0x2a>;
  	rx_delay = <0x1a>;
  	status = "okay";
-diff --git a/arch/arm/boot/dts/rv1126-pinctrl.dtsi b/arch/arm/boot/dts/rv1126-pinctrl.dtsi
-index cd81000a65d5..92229bc548db 100644
---- a/arch/arm/boot/dts/rv1126-pinctrl.dtsi
-+++ b/arch/arm/boot/dts/rv1126-pinctrl.dtsi
-@@ -81,36 +81,56 @@ i2c2_xfer: i2c2-xfer {
+diff --git a/arch/arm/boot/dts/rockchip/rv1126-pinctrl.dtsi b/arch/arm/boot/dts/rockchip/rv1126-pinctrl.dtsi
+index 167a48afa3a4..06b1d7f2d858 100644
+--- a/arch/arm/boot/dts/rockchip/rv1126-pinctrl.dtsi
++++ b/arch/arm/boot/dts/rockchip/rv1126-pinctrl.dtsi
+@@ -115,36 +115,56 @@ pwm11m0_pins: pwm11m0-pins {
  	};
  	rgmii {
  		/omit-if-no-ref/

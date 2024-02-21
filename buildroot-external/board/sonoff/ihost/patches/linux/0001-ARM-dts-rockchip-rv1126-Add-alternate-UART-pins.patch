@@ -1,4 +1,4 @@
-From 65b86b9e74079b89246da1058fb9ac4578753739 Mon Sep 17 00:00:00 2001
+From b40f20a98e4c38a279c0dc481f6b775c71422f59 Mon Sep 17 00:00:00 2001
 From: Tim Lunn <tim@feathertop.org>
 Date: Tue, 31 Oct 2023 14:51:47 +1100
 Subject: [PATCH] ARM: dts: rockchip: rv1126: Add alternate UART pins
@@ -8,14 +8,14 @@ used as serial ports for the indicator and Zigbee radio on the iHost.
 
 Signed-off-by: Tim Lunn <tim@feathertop.org>
 ---
- arch/arm/boot/dts/rv1126-pinctrl.dtsi | 16 ++++++++++++++++
+ arch/arm/boot/dts/rockchip/rv1126-pinctrl.dtsi | 16 ++++++++++++++++
  1 file changed, 16 insertions(+)
 
-diff --git a/arch/arm/boot/dts/rv1126-pinctrl.dtsi b/arch/arm/boot/dts/rv1126-pinctrl.dtsi
-index b77021772781..2acd7c0e507b 100644
---- a/arch/arm/boot/dts/rv1126-pinctrl.dtsi
-+++ b/arch/arm/boot/dts/rv1126-pinctrl.dtsi
-@@ -229,6 +229,14 @@ uart3m0_xfer: uart3m0-xfer {
+diff --git a/arch/arm/boot/dts/rockchip/rv1126-pinctrl.dtsi b/arch/arm/boot/dts/rockchip/rv1126-pinctrl.dtsi
+index bb34b0c9cb4a..4f85b7b3fc4c 100644
+--- a/arch/arm/boot/dts/rockchip/rv1126-pinctrl.dtsi
++++ b/arch/arm/boot/dts/rockchip/rv1126-pinctrl.dtsi
+@@ -263,6 +263,14 @@ uart3m0_xfer: uart3m0-xfer {
  				/* uart3_tx_m0 */
  				<3 RK_PC6 4 &pcfg_pull_up>;
  		};
@@ -30,7 +30,7 @@ index b77021772781..2acd7c0e507b 100644
  	};
  	uart4 {
  		/omit-if-no-ref/
-@@ -239,6 +247,14 @@ uart4m0_xfer: uart4m0-xfer {
+@@ -273,6 +281,14 @@ uart4m0_xfer: uart4m0-xfer {
  				/* uart4_tx_m0 */
  				<3 RK_PA4 4 &pcfg_pull_up>;
  		};

@@ -1,4 +1,4 @@
-From 4fda7d008b4d1194cb00931b5c03a34783155314 Mon Sep 17 00:00:00 2001
+From 06466a848756a84885f2f0627e00c7fbcfde12f7 Mon Sep 17 00:00:00 2001
 From: Tim Lunn <tim@feathertop.org>
 Date: Wed, 1 Nov 2023 22:04:06 +1100
 Subject: [PATCH] ARM: dts: rockchip: rv1126: Add USB Host, OTG node
@@ -92,7 +92,7 @@ index 543b4ec8d244..e10c512df9b5 100644
 +	status = "okay";
 +};
 diff --git a/arch/arm/boot/dts/rockchip/rv1126.dtsi b/arch/arm/boot/dts/rockchip/rv1126.dtsi
-index bb603cae13df..e1e95de2ce33 100644
+index 0333b4e01ad7..ef278b531e3a 100644
 --- a/arch/arm/boot/dts/rockchip/rv1126.dtsi
 +++ b/arch/arm/boot/dts/rockchip/rv1126.dtsi
 @@ -157,6 +157,16 @@ qos_vop: qos@fe8a0180 {
@@ -132,8 +132,8 @@ index bb603cae13df..e1e95de2ce33 100644
  		};
  	};
  
-@@ -319,6 +342,51 @@ pwm11: pwm@ff550030 {
- 		status = "disabled";
+@@ -297,6 +320,51 @@ dmac: dma-controller@ff4e0000 {
+ 		clock-names = "apb_pclk";
  	};
  
 +	u2phy0: usb2phy@ff4c0000 {
@@ -184,7 +184,7 @@ index bb603cae13df..e1e95de2ce33 100644
  	uart0: serial@ff560000 {
  		compatible = "rockchip,rv1126-uart", "snps,dw-apb-uart";
  		reg = <0xff560000 0x100>;
-@@ -398,6 +466,60 @@ uart5: serial@ff5a0000 {
+@@ -376,6 +444,60 @@ uart5: serial@ff5a0000 {
  		reg-io-width = <4>;
  		status = "disabled";
  	};

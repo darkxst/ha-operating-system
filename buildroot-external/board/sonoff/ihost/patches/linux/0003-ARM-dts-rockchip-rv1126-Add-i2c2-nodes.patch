@@ -1,4 +1,4 @@
-From 4ace2bdab66b528f87a17837dbbb452cd380d795 Mon Sep 17 00:00:00 2001
+From dd9f1db19822142285d5481681a696d2b87dafb7 Mon Sep 17 00:00:00 2001
 From: Tim Lunn <tim@feathertop.org>
 Date: Tue, 31 Oct 2023 15:25:18 +1100
 Subject: [PATCH] ARM: dts: rockchip: rv1126: Add i2c2 nodes
@@ -12,7 +12,7 @@ Signed-off-by: Tim Lunn <tim@feathertop.org>
  2 files changed, 25 insertions(+)
 
 diff --git a/arch/arm/boot/dts/rockchip/rv1126-pinctrl.dtsi b/arch/arm/boot/dts/rockchip/rv1126-pinctrl.dtsi
-index 4f85b7b3fc4c..167a48afa3a4 100644
+index 6ce0ad666a4b..8867a371c363 100644
 --- a/arch/arm/boot/dts/rockchip/rv1126-pinctrl.dtsi
 +++ b/arch/arm/boot/dts/rockchip/rv1126-pinctrl.dtsi
 @@ -87,6 +87,16 @@ i2c0_xfer: i2c0-xfer {
@@ -29,11 +29,11 @@ index 4f85b7b3fc4c..167a48afa3a4 100644
 +				<0 RK_PC3 1 &pcfg_pull_none_drv_level_0_smt>;
 +		};
 +	};
- 	pwm2 {
+ 	rgmii {
  		/omit-if-no-ref/
- 		pwm2m0_pins: pwm2m0-pins {
+ 		rgmiim1_pins: rgmiim1-pins {
 diff --git a/arch/arm/boot/dts/rockchip/rv1126.dtsi b/arch/arm/boot/dts/rockchip/rv1126.dtsi
-index adb11a43c5db..bb603cae13df 100644
+index 3fc170554163..0333b4e01ad7 100644
 --- a/arch/arm/boot/dts/rockchip/rv1126.dtsi
 +++ b/arch/arm/boot/dts/rockchip/rv1126.dtsi
 @@ -21,6 +21,7 @@ / {

@@ -1,4 +1,4 @@
-From c465bdbb38d5bf2c6a29426329c21dc9882730d8 Mon Sep 17 00:00:00 2001
+From 3b4fafb5f24d8848ff1ba435603dfc68bcff9c8c Mon Sep 17 00:00:00 2001
 From: Tim Lunn <tim@feathertop.org>
 Date: Thu, 2 Nov 2023 13:15:36 +1100
 Subject: [PATCH] dt-bindings: fix docs for dwc3 compatible

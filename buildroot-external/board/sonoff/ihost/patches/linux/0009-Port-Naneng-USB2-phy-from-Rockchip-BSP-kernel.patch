@@ -1,4 +1,4 @@
-From 85342ed7857f486244c1bdb622b1e2882d327921 Mon Sep 17 00:00:00 2001
+From e82a7f28070095bd6dbd23931cad389bbff8079e Mon Sep 17 00:00:00 2001
 From: Tim Lunn <tim@feathertop.org>
 Date: Sat, 7 Oct 2023 10:57:48 +1100
 Subject: [PATCH] Port Naneng USB2 phy from Rockchip BSP kernel
@@ -97,7 +97,7 @@ index 000000000000..b54fbfff2821
 +	};
 +};
 diff --git a/drivers/extcon/extcon.c b/drivers/extcon/extcon.c
-index 6f7a60d2ed91..0d7c993fc386 100644
+index e7f55c021e56..280a4a0a2a57 100644
 --- a/drivers/extcon/extcon.c
 +++ b/drivers/extcon/extcon.c
 @@ -53,6 +53,12 @@ static const struct __extcon_info {

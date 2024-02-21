@@ -1,4 +1,4 @@
-From 01c0db641b589ffec3da50b1b3166b3f1cae38f1 Mon Sep 17 00:00:00 2001
+From 3f0c5e282dfd48d17768386c7579b615fc7bc966 Mon Sep 17 00:00:00 2001
 From: Tim Lunn <tim@feathertop.org>
 Date: Sat, 9 Dec 2023 21:22:40 +1100
 Subject: [PATCH] dts: wifi clock fixes

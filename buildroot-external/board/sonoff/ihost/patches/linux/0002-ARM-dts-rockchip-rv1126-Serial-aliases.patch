@@ -1,4 +1,4 @@
-From b5305657ddc1f9fb44a2421fe1e91c2b8c9e3382 Mon Sep 17 00:00:00 2001
+From a134d8b2babc11dd6fd8730f67499dd79eca84eb Mon Sep 17 00:00:00 2001
 From: Tim Lunn <tim@feathertop.org>
 Date: Tue, 31 Oct 2023 14:59:06 +1100
 Subject: [PATCH] ARM: dts: rockchip: rv1126: Serial aliases
@@ -11,7 +11,7 @@ Signed-off-by: Tim Lunn <tim@feathertop.org>
  1 file changed, 6 insertions(+)
 
 diff --git a/arch/arm/boot/dts/rockchip/rv1126.dtsi b/arch/arm/boot/dts/rockchip/rv1126.dtsi
-index 9ccd1bad6229..adb11a43c5db 100644
+index 9c918420ecd5..3fc170554163 100644
 --- a/arch/arm/boot/dts/rockchip/rv1126.dtsi
 +++ b/arch/arm/boot/dts/rockchip/rv1126.dtsi
 @@ -21,6 +21,12 @@ / {

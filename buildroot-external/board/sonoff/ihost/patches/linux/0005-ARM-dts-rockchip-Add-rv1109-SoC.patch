@@ -1,4 +1,4 @@
-From b279b2d273d01135c50e8e136446e875437ccc94 Mon Sep 17 00:00:00 2001
+From e5e390ade467b163c2bf236df812572993438b1c Mon Sep 17 00:00:00 2001
 From: Tim Lunn <tim@feathertop.org>
 Date: Sun, 19 Nov 2023 14:13:31 +1100
 Subject: [PATCH] ARM: dts: rockchip: Add rv1109 SoC

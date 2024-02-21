@@ -1,4 +1,4 @@
-From e0a341881674ff5f3c106d837dafb97828749d68 Mon Sep 17 00:00:00 2001
+From 3ca54f37b4275d47caabc265fbcf8d00586ab03f Mon Sep 17 00:00:00 2001
 From: Tim Lunn <tim@feathertop.org>
 Date: Sat, 11 Nov 2023 21:25:36 +1100
 Subject: [PATCH] dt-bindings: arm: rockchip: Add Sonoff iHost
@@ -13,10 +13,10 @@ Acked-by: Rob Herring <robh@kernel.org>
  1 file changed, 7 insertions(+)
 
 diff --git a/Documentation/devicetree/bindings/arm/rockchip.yaml b/Documentation/devicetree/bindings/arm/rockchip.yaml
-index 5f7c6c4aad8f..a26bbcd00deb 100644
+index ca5389862887..648a7567d81d 100644
 --- a/Documentation/devicetree/bindings/arm/rockchip.yaml
 +++ b/Documentation/devicetree/bindings/arm/rockchip.yaml
-@@ -922,6 +922,13 @@ properties:
+@@ -897,6 +897,13 @@ properties:
            - const: rockchip,rk3568-bpi-r2pro
            - const: rockchip,rk3568
  

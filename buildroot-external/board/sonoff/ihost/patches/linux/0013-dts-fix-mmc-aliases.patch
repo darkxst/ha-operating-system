@@ -1,4 +1,4 @@
-From 0d209aa78c273c71552fc8a7e7f125197d60143c Mon Sep 17 00:00:00 2001
+From 32eb9398edb8ede0bd24c2a78e32096ca1cc51b1 Mon Sep 17 00:00:00 2001
 From: Tim Lunn <tim@feathertop.org>
 Date: Fri, 5 Jan 2024 22:04:29 +1100
 Subject: [PATCH] dts: fix mmc aliases

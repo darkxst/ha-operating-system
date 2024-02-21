@@ -1,4 +1,4 @@
-From 9348fff04c550f933a00c1f97b700a5f3847b9de Mon Sep 17 00:00:00 2001
+From 1eb77d671686a0a9f8a8a5554a71894777f0040a Mon Sep 17 00:00:00 2001
 From: Tim Lunn <tim@feathertop.org>
 Date: Thu, 7 Dec 2023 10:42:18 +1100
 Subject: [PATCH] dts: pmu_io_domain set wifi to 3.3v

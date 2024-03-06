@@ -1,0 +1,37 @@
+From 8031cdce7cf97c86e2b8f963f4676d0748d3ab07 Mon Sep 17 00:00:00 2001
+From: Tim Lunn <tim@feathertop.org>
+Date: Wed, 6 Mar 2024 15:38:16 +1100
+Subject: [PATCH] Sync pmu_io_domain with eWelink provided values again
+
+---
+ arch/arm/boot/dts/rockchip/rv1126-sonoff-ihost.dtsi | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
+
+diff --git a/arch/arm/boot/dts/rockchip/rv1126-sonoff-ihost.dtsi b/arch/arm/boot/dts/rockchip/rv1126-sonoff-ihost.dtsi
+index a5d1925ba617..b417e952cfa4 100644
+--- a/arch/arm/boot/dts/rockchip/rv1126-sonoff-ihost.dtsi
++++ b/arch/arm/boot/dts/rockchip/rv1126-sonoff-ihost.dtsi
+@@ -345,15 +345,15 @@ wifi_enable_h: wifi-enable-h {
+ };
+ 
+ &pmu_io_domains {
+-	pmuio0-supply = <&vcc1v8_pmu>;
++	pmuio0-supply = <&vcc3v3_sys>;
+ 	pmuio1-supply = <&vcc3v3_sys>;
+ 	vccio1-supply = <&vcc_1v8>;
+ 	vccio2-supply = <&vccio_sd>;
+-	vccio3-supply = <&vcc3v3_sd>;
+-	vccio4-supply = <&vcc_dovdd>;
++	vccio3-supply = <&vccio_sd>;
++	vccio4-supply = <&vcc_1v8>;
+ 	vccio5-supply = <&vcc_1v8>;
+-	vccio6-supply = <&vcc_1v8>;
+-	vccio7-supply = <&vcc_dovdd>;
++	vccio6-supply = <&vcc_3v3>;
++	vccio7-supply = <&vcc_1v8>;
+ 	status = "okay";
+ };
+ 
+-- 
+2.40.1
+

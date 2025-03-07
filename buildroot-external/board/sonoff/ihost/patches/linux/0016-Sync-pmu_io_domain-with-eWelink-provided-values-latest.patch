@@ -1,0 +1,17 @@
+diff --git a/arch/arm/boot/dts/rockchip/rv1126-sonoff-ihost.dtsi b/arch/arm/boot/dts/rockchip/rv1126-sonoff-ihost.dtsi
+index d04560d33..169bbd8a8 100644
+--- a/arch/arm/boot/dts/rockchip/rv1126-sonoff-ihost.dtsi
++++ b/arch/arm/boot/dts/rockchip/rv1126-sonoff-ihost.dtsi
+@@ -349,9 +349,9 @@ &pmu_io_domains {
+ 	pmuio1-supply = <&vcc3v3_sys>;
+ 	vccio1-supply = <&vcc_1v8>;
+ 	vccio2-supply = <&vccio_sd>;
+-	vccio3-supply = <&vccio_sd>;
+-	vccio4-supply = <&vcc_1v8>;
+-	vccio5-supply = <&vcc_1v8>;
++	vccio3-supply = <&vcc_3v3>;
++	vccio4-supply = <&vcc_3v3>;
++	vccio5-supply = <&vcc_3v3>;
+ 	vccio6-supply = <&vcc_3v3>;
+ 	vccio7-supply = <&vcc_1v8>;
+ 	status = "okay";

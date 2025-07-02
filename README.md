@@ -1,4 +1,10 @@
 # HAOS for Sonoff iHost
+July 2025 - Home Assistant has now deprecated support for 32-bit ARM processors. 
+https://www.home-assistant.io/blog/2025/05/22/deprecating-core-and-supervised-installation-methods-and-32-bit-systems/
+
+Thus support for HAOS will no longer be possible. You have until 2025.12 release to migrate to a suitable replacement 64-bit device.
+
+------------------------------------------
 
 This is an unofficial port of [Home Assistant Operating System (HAOS)](https://github.com/home-assistant/operating-system) to run on [Sonoff iHost (Smart Home Hub Appliance) hardware by ITead](https://itead.cc/product/sonoff-ihost-smart-home-hub/).
 
